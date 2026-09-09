@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Prenota — Crocevia</title>
+<meta name="description" content="Richiedi una prenotazione per educazione cinofila, passeggiate di gruppo, asilo diurno o pensione con Crocevia.">
+<meta name="theme-color" content="#0d2219">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@75..125,400..800&display=swap" rel="stylesheet">
+<style>
+:root{
+  --fondo:#0d2219;
+  --superficie:#24352a;
+  --filo:#3e4a31;
+  --inchiostro:#f4f1e4;
+  --grigio:#b2bfb3;
+  --terra:#c38345;
+  --terra-alto:#efd49e;
+  --tipo:"Archivo",system-ui,sans-serif;
+  --r:4px;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+@media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}*{animation:none!important;transition:none!important}}
+body{
+  margin:0;background:var(--fondo);color:var(--inchiostro);
+  font-family:var(--tipo);font-size:16.5px;line-height:1.6;font-weight:400;
+  -webkit-font-smoothing:antialiased;
+}
+h1,h2{margin:0;font-weight:700;line-height:1.05;letter-spacing:-.02em;font-variation-settings:"wdth" 112}
+a{color:var(--terra-alto)}
+.involucro{max-width:720px;margin:0 auto;padding:2.4rem 1.4rem 4rem}
+header.testata{border-bottom:1px solid var(--filo);padding-bottom:1.2rem;margin-bottom:1.8rem}
+.marchio{font-size:1.05rem;font-weight:800;letter-spacing:.02em}
+.marchio a{color:var(--inchiostro);text-decoration:none}
+.sottotitolo{color:var(--grigio);font-size:.92rem;margin-top:.3rem}
+.etichetta{text-transform:uppercase;letter-spacing:.12em;font-size:.72rem;color:var(--terra-alto);font-weight:700;margin:0 0 .3rem}
+h1.titolo{font-size:clamp(1.9rem,5vw,2.5rem);margin-bottom:.4rem}
+p.premessa{color:var(--grigio);margin:0 0 2rem;max-width:56ch}
+fieldset{border:1px solid var(--filo);border-radius:var(--r);padding:1.3rem 1.3rem 1.5rem;margin:0 0 1.4rem;background:var(--superficie)}
+legend{padding:0 .5rem;font-weight:700;color:var(--terra-alto);font-size:.95rem}
+label{display:block;font-size:.86rem;color:var(--grigio);margin:0 0 .3rem}
+.campo{margin-bottom:1rem}
+.riga{display:grid;gap:1rem}
+@media(min-width:560px){.riga-2{grid-template-columns:1fr 1fr}.riga-3{grid-template-columns:1fr 1fr 1fr}}
+input[type=text],input[type=tel],input[type=email],input[type=date],input[type=number],select,textarea{
+  width:100%;background:var(--fondo);border:1px solid var(--filo);border-radius:var(--r);
+  color:var(--inchiostro);padding:.65rem .7rem;font:inherit;font-size:.95rem;
+}
+input:focus,select:focus,textarea:focus{outline:2px solid var(--terra);outline-offset:1px}
+textarea{min-height:5rem;resize:vertical}
+.checkriga{display:flex;align-items:center;gap:.55rem;font-size:.9rem;color:var(--inchiostro)}
+.checkriga input{width:auto}
+.prezzo-nota{font-size:.8rem;color:var(--grigio);margin-top:.35rem}
+[data-blocco]{display:none}
+[data-blocco].attivo{display:block}
+.bottone{
+  display:inline-flex;align-items:center;gap:.5rem;background:var(--terra);color:#1b1206;
+  border:none;border-radius:var(--r);padding:.85rem 1.4rem;font:inherit;font-weight:700;
+  font-size:1rem;cursor:pointer;width:100%;justify-content:center;
+}
+.bottone:hover{background:var(--terra-alto)}
+.info-invio{font-size:.82rem;color:var(--grigio);margin-top:.9rem;text-align:center}
+.piede{margin-top:2.5rem;padding-top:1.2rem;border-top:1px solid var(--filo);font-size:.82rem;color:var(--grigio);display:flex;flex-wrap:wrap;gap:.4rem 1rem}
+.piede a{color:var(--grigio)}
+</style>
+</head>
+<body>
+<div class="involucro">
+
+  <header class="testata">
+    <div class="marchio"><a href="index.html">CROCEVIA</a></div>
+    <div class="sottotitolo">Educazione cinofila · Asilo diurno · Pensione · Passeggiate di gruppo</div>
+  </header>
+
+  <p class="etichetta">Prenotazione</p>
+  <h1 class="titolo">Prenota il tuo posto</h1>
+  <p class="premessa">Compila il modulo: alla fine si apre WhatsApp con il messaggio già pronto da inviarmi. La prenotazione diventa definitiva quando la confermo io e ricevo il pagamento anticipato — prima di quel momento la data non è bloccata. Prezzi su <a href="educazione.html">Educazione</a> e <a href="pensione-asilo.html">Pensione &amp; Asilo</a>, condizioni nei <a href="termini.html">termini e condizioni</a>.</p>
+
+  <form id="modulo-prenotazione">
+
+    <fieldset>
+      <legend>I tuoi dati</legend>
+      <div class="riga riga-2">
+        <div class="campo">
+          <label for="nome">Nome e cognome *</label>
+          <input type="text" id="nome" name="nome" required autocomplete="name">
+        </div>
+        <div class="campo">
+          <label for="telefono">Telefono *</label>
+          <input type="tel" id="telefono" name="telefono" required autocomplete="tel">
+        </div>
+      </div>
+      <div class="campo">
+        <label for="email">Email</label>
+        <input type="email" id="email" name="email" autocomplete="email">
+      </div>
+    </fieldset>
+
+    <fieldset>
+      <legend>Il tuo cane</legend>
+      <div class="riga riga-3">
+        <div class="campo">
+          <label for="cane-nome">Nome del cane *</label>
+          <input type="text" id="cane-nome" name="cane-nome" required>
+        </div>
+        <div class="campo">
+          <label for="cane-razza">Razza</label>
+          <input type="text" id="cane-razza" name="cane-razza">
+        </div>
+        <div class="campo">
+          <label for="cane-eta">Età</label>
+          <input type="text" id="cane-eta" name="cane-eta" placeholder="es. 3 anni">
+        </div>
+      </div>
+    </fieldset>
+
+    <fieldset>
+      <legend>Servizio</legend>
+      <div class="campo">
+        <label for="servizio">Cosa ti interessa? *</label>
+        <select id="servizio" name="servizio" required>
+          <option value="" disabled selected>Scegli un servizio…</option>
+          <optgroup label="Educazione">
+            <option value="Valutazione cane (primo incontro) — 50 €" data-tipo="singola">Valutazione cane (primo incontro) — 50 €</option>
+            <option value="Lezione individuale in presenza — 30 €/ora" data-tipo="singola">Lezione individuale in presenza — 30 €/ora</option>
+            <option value="Lezione online — 30 €/ora" data-tipo="singola">Lezione online — 30 €/ora</option>
+            <option value="Pacchetto 5 lezioni — 135 € (-10%)" data-tipo="pacchetto">Pacchetto 5 lezioni — 135 € (-10%)</option>
+            <option value="Pacchetto 10 lezioni — 240 € (-20%)" data-tipo="pacchetto">Pacchetto 10 lezioni — 240 € (-20%)</option>
+          </optgroup>
+          <optgroup label="Passeggiate di gruppo">
+            <option value="Passeggiata singola — 15 €" data-tipo="singola">Passeggiata singola — 15 €</option>
+            <option value="Pacchetto 5 passeggiate — 62,50 € (-17%)" data-tipo="pacchetto">Pacchetto 5 passeggiate — 62,50 € (-17%)</option>
+            <option value="Pacchetto 10 passeggiate — 100 € (-33%)" data-tipo="pacchetto">Pacchetto 10 passeggiate — 100 € (-33%)</option>
+          </optgroup>
+          <optgroup label="Pensione & Asilo — Settimo Milanese, un solo cane alla volta">
+            <option value="Stallo / Pensione" data-tipo="soggiorno">Stallo / Pensione — da 28 a 35 €/giorno</option>
+            <option value="Asilo diurno" data-tipo="soggiorno">Asilo diurno — da 16 a 20 €/giorno</option>
+          </optgroup>
+        </select>
+        <p class="prezzo-nota">Formule e sconti per più incontri o giorni: vedi <a href="educazione.html">Educazione</a> o <a href="pensione-asilo.html">Pensione &amp; Asilo</a>.</p>
+      </div>
+
+      <div data-blocco="singola" class="campo">
+        <label for="data-singola">Data desiderata</label>
+        <input type="date" id="data-singola" name="data-singola">
+      </div>
+
+      <div data-blocco="pacchetto" class="campo">
+        <label for="data-inizio-pacchetto">Data di inizio preferita</label>
+        <input type="date" id="data-inizio-pacchetto" name="data-inizio-pacchetto">
+      </div>
+
+      <div data-blocco="soggiorno">
+        <div class="riga riga-2">
+          <div class="campo">
+            <label for="data-dal">Dal</label>
+            <input type="date" id="data-dal" name="data-dal">
+          </div>
+          <div class="campo">
+            <label for="data-al">Al</label>
+            <input type="date" id="data-al" name="data-al">
+          </div>
+        </div>
+        <div class="campo">
+          <label class="checkriga"><input type="checkbox" id="pappa" name="pappa"> Pappa fornita dall'educatore (+5 €/giorno)</label>
+        </div>
+      </div>
+    </fieldset>
+
+    <fieldset>
+      <legend>Note</legend>
+      <div class="campo">
+        <label for="note">Allergie, comportamento, richieste particolari</label>
+        <textarea id="note" name="note" placeholder="Tutto quello che è utile sapere prima di iniziare"></textarea>
+      </div>
+    </fieldset>
+
+    <button type="submit" class="bottone">Invia su WhatsApp</button>
+    <p class="info-invio">Si apre WhatsApp con il messaggio pre-compilato: da lì confermiamo insieme data e pagamento. In alternativa scrivi a <a href="mailto:manuelpegoraro91@gmail.com">manuelpegoraro91@gmail.com</a>.</p>
+  </form>
+
+  <footer class="piede">
+    <span>Crocevia — Manuel Pegoraro</span>
+    <span>P. IVA 14868890964</span>
+    <span><a href="index.html">Home</a></span>
+    <span><a href="educazione.html">Educazione</a></span>
+    <span><a href="pensione-asilo.html">Pensione &amp; Asilo</a></span>
+    <span><a href="chi-siamo.html">Chi siamo</a></span>
+    <span><a href="dove-operiamo.html">Dove operiamo</a></span>
+    <span><a href="contatti.html">Contatti</a></span>
+    <span><a href="termini.html">Termini e condizioni</a></span>
+    <span><a href="privacy.html">Privacy</a></span>
+  </footer>
+
+</div>
+
+<script>
+(function(){
+  var select = document.getElementById('servizio');
+  var blocchi = document.querySelectorAll('[data-blocco]');
+
+  function aggiorna(){
+    var opt = select.options[select.selectedIndex];
+    var tipo = opt ? opt.getAttribute('data-tipo') : null;
+    blocchi.forEach(function(b){
+      b.classList.toggle('attivo', b.getAttribute('data-blocco') === tipo);
+    });
+  }
+  select.addEventListener('change', aggiorna);
+  aggiorna();
+
+  document.getElementById('modulo-prenotazione').addEventListener('submit', function(e){
+    e.preventDefault();
+    var v = function(id){ var el = document.getElementById(id); return el ? el.value.trim() : ''; };
+
+    var righe = [];
+    righe.push('Ciao Manuel, vorrei prenotare con Crocevia.');
+    righe.push('');
+    righe.push('Nome: ' + v('nome'));
+    righe.push('Telefono: ' + v('telefono'));
+    if (v('email')) righe.push('Email: ' + v('email'));
+    righe.push('');
+    righe.push('Cane: ' + v('cane-nome') + (v('cane-razza') ? ' (' + v('cane-razza') + ')' : ''));
+    if (v('cane-eta')) righe.push('Età: ' + v('cane-eta'));
+    righe.push('');
+    righe.push('Servizio: ' + v('servizio'));
+
+    var tipo = select.options[select.selectedIndex] ? select.options[select.selectedIndex].getAttribute('data-tipo') : null;
+    if (tipo === 'singola' && v('data-singola')) righe.push('Data desiderata: ' + v('data-singola'));
+    if (tipo === 'pacchetto' && v('data-inizio-pacchetto')) righe.push('Inizio preferito: ' + v('data-inizio-pacchetto'));
+    if (tipo === 'soggiorno') {
+      if (v('data-dal')) righe.push('Dal: ' + v('data-dal'));
+      if (v('data-al')) righe.push('Al: ' + v('data-al'));
+      if (document.getElementById('pappa').checked) righe.push('Pappa fornita: sì (+5 €/giorno)');
+    }
+    if (v('note')) { righe.push(''); righe.push('Note: ' + v('note')); }
+
+    var testo = encodeURIComponent(righe.join('\n'));
+    window.location.href = 'https://wa.me/393334325389?text=' + testo;
+  });
+})();
+</script>
+
+</body>
+</html>
