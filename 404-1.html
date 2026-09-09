@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Pagina non trovata — Crocevia</title>
+<meta name="robots" content="noindex,follow">
+<meta name="theme-color" content="#0d2219">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@75..125,400..800&display=swap" rel="stylesheet">
+<style>
+:root{
+  --fondo:#0d2219;
+  --filo:#3e4a31;
+  --inchiostro:#f4f1e4;
+  --grigio:#b2bfb3;
+  --terra:#c38345;
+  --cielo:#efd49e;
+  --tipo:"Archivo",system-ui,sans-serif;
+  --r:4px;
+}
+*{box-sizing:border-box}
+body{
+  margin:0;min-height:100dvh;background:var(--fondo);color:var(--inchiostro);
+  font-family:var(--tipo);font-size:16.5px;line-height:1.62;
+  -webkit-font-smoothing:antialiased;
+  display:flex;align-items:center;justify-content:center;
+}
+a{color:inherit}
+:focus-visible{outline:2px solid var(--cielo);outline-offset:3px;border-radius:var(--r)}
+
+.foglio{max-width:460px;margin:0 auto;padding:2.6rem 1.4rem;text-align:center}
+
+.etichetta{color:var(--terra);font-size:.84rem;letter-spacing:.02em;margin:0 0 .6rem}
+.numero{
+  font-weight:800;font-size:5.5rem;line-height:1;margin:0 0 .6rem;
+  letter-spacing:-.03em;font-variation-settings:"wdth" 112;color:var(--terra);
+}
+h1{
+  margin:0 0 1rem;font-weight:700;font-size:1.6rem;line-height:1.25;
+  letter-spacing:-.02em;font-variation-settings:"wdth" 112;
+}
+p{color:var(--grigio);margin:0 0 2rem}
+
+.azioni{display:flex;flex-wrap:wrap;gap:.8rem;justify-content:center}
+.bottone{
+  display:inline-block;padding:.8rem 1.5rem;border-radius:var(--r);
+  text-decoration:none;font-weight:600;font-size:.95rem;
+}
+.bottone-pieno{background:var(--inchiostro);color:var(--fondo)}
+.bottone-vuoto{border:1px solid var(--filo,#3e4a31);color:var(--inchiostro)}
+.bottone:hover{opacity:.85}
+</style>
+</head>
+<body>
+
+<div class="foglio">
+  <p class="etichetta">Crocevia</p>
+  <p class="numero">404</p>
+  <h1>Anche i migliori naso all'aria a volte perdono la traccia.</h1>
+  <p>La pagina che cerchi non c'è, o si è spostata. Torniamo sui nostri passi.</p>
+  <div class="azioni">
+    <a class="bottone bottone-pieno" href="index.html">Torna al sito</a>
+    <a class="bottone bottone-vuoto" href="prenota.html">Prenota</a>
+  </div>
+</div>
+
+</body>
+</html>
