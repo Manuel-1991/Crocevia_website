@@ -23,7 +23,8 @@ compone un messaggio e apre WhatsApp.
 | `termini.html` | termini e condizioni |
 | `404.html` | pagina non trovata |
 
-Contorno: `apple-touch-icon.png` (icona su iPhone quando si salva in home),
+Contorno: `style.css` (stile condiviso da tutte le pagine),
+`apple-touch-icon.png` (icona su iPhone quando si salva in home),
 `robots.txt`, `sitemap.xml`, `.nojekyll` (dice a GitHub Pages di pubblicare i
 file così come sono).
 
@@ -31,10 +32,10 @@ file così come sono).
 responsabilità, prenotazione) in formato `.docx`, non collegati dalle
 pagine.
 
-`assets/img/` è la cartella pronta per le foto vere del sito (una
-sottocartella per pagina). Il logo, per ora, resta incollato dentro ogni
-pagina come prima — vedi `IMMAGINI.md` per la nuova organizzazione e come
-caricare le foto.
+`assets/img/brand/` contiene logo e favicon (file veri, non più incollati
+dentro le pagine). `assets/img/<pagina>/` sono le cartelle pronte per le
+foto vere del sito, una per pagina, ancora vuote — vedi `IMMAGINI.md` per
+la nuova organizzazione e come caricare le foto.
 
 ## Le tre viste
 
@@ -51,6 +52,8 @@ La vista orizzontale guarda larghezza **e** altezza: un telefono girato è largo
 
 ## Se metti mano al codice
 
+- Lo stile è tutto in `style.css`, condiviso da tutte le pagine: modificalo
+  lì, non serve più ripetere le modifiche su dieci file.
 - **Non togliere `<meta name="viewport">`.** Senza, il telefono disegna la
   pagina larga 980px e la rimpicciolisce: testo minuscolo e nessuna regola
   mobile che entra in funzione.
