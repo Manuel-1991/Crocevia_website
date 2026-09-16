@@ -58,9 +58,14 @@ h1,h2,h3{ font-family:"Cinzel", Georgia, serif; font-weight:700; color:#f7f1de; 
   flex-wrap: nowrap;
 }
 .brand{ display:flex; align-items:center; gap:10px; }
+.brand-text{ display:flex; align-items:baseline; gap:8px; white-space:nowrap; }
 .brand-word{
   font-family:"Cinzel", serif; font-weight:700; font-size:16px;
-  letter-spacing: 0.16em; color: var(--ink);
+  letter-spacing: 0.16em; color: var(--ink); white-space:nowrap;
+}
+.brand-tagline{
+  font-family:"EB Garamond", Georgia, serif; font-style:italic; font-size:12.5px;
+  color: var(--ink-muted); white-space:nowrap;
 }
 .crest{ width:34px; height:34px; flex:none; }
 .nav-links{
@@ -549,6 +554,12 @@ main section b{ color:#f7f1de; }
     overflow:visible; padding:0;
   }
   .nav-links a{ font-size:11px; letter-spacing:0.07em; }
+}
+
+/* il nome accanto al logo compare solo quando c'è davvero spazio:
+   sotto i 1200px si scontrerebbe con il menu disteso */
+@media (max-width: 1199px){
+  .brand-text{ display:none; }
 }
 
 /* Chi ha chiesto meno animazioni non le riceve. */
