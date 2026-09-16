@@ -27,8 +27,14 @@ Contorno: `apple-touch-icon.png` (icona su iPhone quando si salva in home),
 `robots.txt`, `sitemap.xml`, `.nojekyll` (dice a GitHub Pages di pubblicare i
 file così come sono).
 
-Il logo è dentro le pagine, non è un file a parte: nessun collegamento da
-rompere.
+`documenti/` contiene i moduli (privacy, liberatoria foto/video, scarico
+responsabilità, prenotazione) in formato `.docx`, non collegati dalle
+pagine.
+
+`assets/img/` è la cartella pronta per le foto vere del sito (una
+sottocartella per pagina). Il logo, per ora, resta incollato dentro ogni
+pagina come prima — vedi `IMMAGINI.md` per la nuova organizzazione e come
+caricare le foto.
 
 ## Le tre viste
 
