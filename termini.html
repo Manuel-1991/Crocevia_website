@@ -231,6 +231,8 @@ h1.left{ text-align:left; }
 .footer-contact{ font-size:14.5px; color: var(--ink); }
 .footer-contact a{ color: var(--ink); border-bottom:1px solid var(--terracotta); }
 .footer-piva{ font-size:12px; color: var(--ink-muted); opacity:0.75; margin-top:12px; }
+.footer-trustbox{ max-width:320px; margin:16px auto 0; border-radius:10px; overflow:hidden; background:#fff; }
+.footer-trustbox iframe{ display:block !important; width:100% !important; height:52px !important; border:0; }
 
 @media (max-width: 600px){
   .cta-row, .loc-row, .bio-row{ flex-direction:column; }
@@ -462,6 +464,7 @@ main section b{ color:#f7f1de; }
   body{ padding-bottom: calc(var(--barra) + env(safe-area-inset-bottom)); }
   .wrap{ padding: 0 20px 56px; }
   .site-footer{ padding: 26px 20px 30px; }
+  .footer-trustbox{ max-width:280px; }
 
   /* --- niente colonne affiancate su schermo stretto --- */
   .cta-row, .loc-row, .bio-row{ flex-direction:column; gap:16px; }
@@ -541,6 +544,7 @@ main section b{ color:#f7f1de; }
 
   .barra-azione{ font-size:13.5px; padding: .45rem 1rem calc(.45rem + env(safe-area-inset-bottom)); }
   .site-footer{ padding: 20px 22px 24px; }
+  .footer-trustbox{ max-width:220px; margin-top:10px; }
 }
 
 /* ------------------------------------------------------------------
@@ -549,6 +553,7 @@ main section b{ color:#f7f1de; }
    navigazione torna in linea, con un filo di respiro in più.
    ------------------------------------------------------------------ */
 @media (min-width: 1000px){
+  .footer-trustbox{ max-width:340px; }
   body{ padding-bottom: 0; }
   .nav-toggle{ display:none; }
   .barra-azione{ display:none; }
@@ -750,7 +755,7 @@ main section b{ color:#f7f1de; }
       <a href="tel:+393334325389">333 432 5389</a> &middot;
       <a href="mailto:manuelpegoraro91@gmail.com">manuelpegoraro91@gmail.com</a>
     </div>
-    <div class="footer-trustbox" style="margin-top:16px;">
+    <div class="footer-trustbox">
 <!-- TrustBox widget - Review Collector -->
 <div class="trustpilot-widget" data-locale="it-IT" data-template-id="56278e9abfbbba0bdcd568bc" data-businessunit-id="6aa41cf092bbdc6972354e3d" data-style-height="52px" data-style-width="100%" data-token="20ea00d4-f632-4d41-9ffc-bf7c2a32e8ed">
   <a href="https://it.trustpilot.com/review/croceviacani.it" target="_blank" rel="noopener">Trustpilot</a>
