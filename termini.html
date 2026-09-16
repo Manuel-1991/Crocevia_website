@@ -231,10 +231,6 @@ h1.left{ text-align:left; }
 .footer-contact{ font-size:14.5px; color: var(--ink); }
 .footer-contact a{ color: var(--ink); border-bottom:1px solid var(--terracotta); }
 .footer-piva{ font-size:12px; color: var(--ink-muted); opacity:0.75; margin-top:12px; }
-.footer-trustbox{ max-width:320px; margin:16px auto 0; border-radius:10px; overflow:hidden; background:#fff; border:1px solid var(--border-soft); }
-.footer-trustbox a{ display:flex; align-items:center; justify-content:center; height:52px; padding:0 14px; font-size:13.5px; font-weight:600; }
-.footer-trustbox a:hover{ background:rgba(0,0,0,0.04); }
-.footer-trustbox iframe{ display:block !important; width:100% !important; height:52px !important; border:0; }
 
 @media (max-width: 600px){
   .cta-row, .loc-row, .bio-row{ flex-direction:column; }
@@ -466,7 +462,6 @@ main section b{ color:#f7f1de; }
   body{ padding-bottom: calc(var(--barra) + env(safe-area-inset-bottom)); }
   .wrap{ padding: 0 20px 56px; }
   .site-footer{ padding: 26px 20px 30px; }
-  .footer-trustbox{ max-width:280px; }
 
   /* --- niente colonne affiancate su schermo stretto --- */
   .cta-row, .loc-row, .bio-row{ flex-direction:column; gap:16px; }
@@ -546,7 +541,6 @@ main section b{ color:#f7f1de; }
 
   .barra-azione{ font-size:13.5px; padding: .45rem 1rem calc(.45rem + env(safe-area-inset-bottom)); }
   .site-footer{ padding: 20px 22px 24px; }
-  .footer-trustbox{ max-width:220px; margin-top:10px; }
 }
 
 /* ------------------------------------------------------------------
@@ -555,7 +549,6 @@ main section b{ color:#f7f1de; }
    navigazione torna in linea, con un filo di respiro in più.
    ------------------------------------------------------------------ */
 @media (min-width: 1000px){
-  .footer-trustbox{ max-width:340px; }
   body{ padding-bottom: 0; }
   .nav-toggle{ display:none; }
   .barra-azione{ display:none; }
@@ -571,6 +564,34 @@ main section b{ color:#f7f1de; }
 @media (prefers-reduced-motion: reduce){
   .nav-links, .nav-toggle .barre,
   .nav-toggle .barre::before, .nav-toggle .barre::after{ transition:none; }
+}
+
+/* Badge Trustpilot: riquadro fisso in basso a destra, dimensione bloccata
+   cosi' il markup iniettato da Trustpilot non puo' mai eccedere il box. */
+.tp-badge{
+  position:fixed; right:12px; bottom:calc(var(--barra) + env(safe-area-inset-bottom) + 12px);
+  width:132px; height:44px; overflow:hidden;
+  border-radius:10px; background:#fff; border:1px solid var(--border-soft);
+  box-shadow:0 6px 18px rgba(0,0,0,.35);
+  z-index:25;
+}
+.tp-badge, .tp-badge *{ box-sizing:border-box; }
+.tp-badge .trustpilot-widget{ width:100% !important; height:100% !important; }
+.tp-badge iframe{ display:block !important; width:100% !important; height:100% !important; border:0 !important; }
+.tp-badge a{
+  display:flex; width:100%; height:100%; align-items:center; justify-content:center;
+  padding:0 8px; font-size:11.5px; font-weight:600; text-align:center; line-height:1.15;
+}
+.tp-badge a:hover{ background:rgba(0,0,0,.04); }
+
+@media (min-width:1000px){
+  .tp-badge{ right:20px; bottom:20px; width:150px; height:52px; }
+  .tp-badge a{ font-size:13px; }
+}
+
+@media (orientation:landscape) and (max-width:999px) and (max-height:560px){
+  .tp-badge{ width:116px; height:38px; right:10px; }
+  .tp-badge a{ font-size:10.5px; padding:0 6px; }
 }
 </style>
 <!-- TrustBox script -->
@@ -590,7 +611,7 @@ main section b{ color:#f7f1de; }
 <div class="crumb"><a href="index.html">Home</a> / Termini</div>
 <div class="page-head left"><h1 class="left">Termini e condizioni</h1></div>
 
-<p class="data">In vigore dal [data]. Versione 1.</p>
+<p class="data">In vigore dal 1&deg; ottobre 2026. Versione 1.</p>
 
   <p class="premessa">Queste condizioni valgono per tutti i servizi di Crocevia. Prenotando accetti quanto scritto qui sotto. Se qualcosa non ti è chiaro, chiedimelo prima di prenotare: preferisco spiegarlo che scoprirlo dopo.</p>
 
@@ -621,9 +642,12 @@ main section b{ color:#f7f1de; }
       <li>P. IVA 14868890964</li>
       <li>Sede legale: Via Stelvio, Settimo Milanese (MI)</li>
       <li>Telefono: +39 333 432 5389</li>
-      <li>Email: manuelpegoraro91@gmail.com</li>
+      <li>Email: info@croceviacani.it</li>
     </ul>
-    <p>[Se hai una polizza di responsabilità civile professionale, indica qui compagnia e numero: è la riga che i clienti più attenti cercano per prima.]</p>
+    <!-- PROMEMORIA (non visibile sul sito): quando la polizza di
+         responsabilità civile professionale sarà attiva, aggiungere qui
+         compagnia e numero. È la riga che i clienti più attenti cercano
+         per prima, soprattutto per la pensione. -->
   </section>
 
   <section id="oggetto">
@@ -641,22 +665,23 @@ main section b{ color:#f7f1de; }
   <section id="pagamento">
     <h2>4. Prezzi e pagamento</h2>
     <p>I prezzi in vigore sono quelli del listino comunicato al momento della prenotazione. <b>Il pagamento è anticipato per tutti i servizi</b>, al momento della prenotazione.</p>
-    <p>Modalità accettate: [bonifico, contanti, Satispay, PayPal — indica quelle che usi davvero].</p>
+    <p>Modalità accettate: bonifico, contanti e PayPal.</p>
     <p>Per stallo, pensione e asilo, l'opzione pappa fornita da me costa 5 € al giorno in aggiunta.</p>
   </section>
 
   <section id="disdette">
     <h2>5. Disdette, ritardi e recuperi</h2>
-    <p><b>Lezioni e passeggiate.</b> Disdetta con almeno [48 ore] di preavviso: l'incontro si recupera senza costi. Con meno preavviso, o in caso di mancata presentazione, l'incontro si considera svolto.</p>
-    <p><b>Stallo, pensione e asilo.</b> Disdetta con almeno [7 giorni] di preavviso: rimborso [integrale / parziale]. Con meno preavviso [indica la regola]. Il rientro anticipato del cane non dà diritto al rimborso dei giorni non usati.</p>
-    <p><b>Ritardi.</b> La lezione finisce all'ora prevista anche se comincia in ritardo. Oltre [20 minuti] di ritardo senza avviso considero l'incontro come non presentato.</p>
+    <p><b>Lezioni e passeggiate.</b> Disdetta con almeno 24 ore di preavviso: l'incontro si recupera senza costi. Con meno preavviso, o in caso di mancata presentazione, l'incontro si considera svolto.</p>
+    <p><b>Stallo, pensione e asilo.</b> Disdetta con almeno 14 giorni di preavviso: rimborso integrale. Tra 14 e 3 giorni di preavviso: trattengo il 50% dell'importo. Con meno di 3 giorni di preavviso, o in caso di mancata presentazione, l'importo è trattenuto per intero. Il rientro anticipato del cane non dà diritto al rimborso dei giorni non usati.</p>
+    <p>Accolgo un solo cane alla volta: un posto disdetto tardi resta vuoto, ed è la ragione di questi tempi.</p>
+    <p><b>Ritardi.</b> La lezione finisce all'ora prevista anche se comincia in ritardo. Oltre 20 minuti di ritardo senza avviso considero l'incontro come non presentato.</p>
     <p><b>Maltempo.</b> Le attività all'aperto possono essere spostate se le condizioni non sono sicure per i cani. Ti avviso il prima possibile e concordiamo una nuova data, senza costi.</p>
     <p><b>Se disdico io.</b> Se sono io a non poter essere presente, ti propongo una nuova data oppure ti rimborso l'importo per intero, a tua scelta.</p>
   </section>
 
   <section id="pacchetti">
     <h2>6. Validità dei pacchetti</h2>
-    <p>I pacchetti da 5 e 10 lezioni o passeggiate vanno consumati entro [X mesi] dal primo incontro. Sono nominativi e riferiti a un solo cane: non si cedono a terzi e non si dividono su più cani.</p>
+    <p>I pacchetti da 5 e 10 lezioni o passeggiate vanno consumati entro 12 mesi dal primo incontro. Sono nominativi e riferiti a un solo cane: non si cedono a terzi e non si dividono su più cani.</p>
     <p>Le lezioni non usate entro la scadenza non sono rimborsabili. Se c'è di mezzo una malattia del cane o un imprevisto serio, parliamone: la scadenza si può prorogare.</p>
   </section>
 
@@ -666,10 +691,11 @@ main section b{ color:#f7f1de; }
     <ul>
       <li>microchip e iscrizione all'anagrafe canina;</li>
       <li>libretto sanitario o passaporto in regola, da esibire alla prima presa in carico;</li>
-      <li>vaccinazioni in corso di validità [indica quali richiedi: cimurro, epatite, parvovirosi, leptospirosi, tosse dei canili];</li>
+      <li>vaccinazioni in corso di validità contro cimurro, epatite, parvovirosi e leptospirosi;</li>
       <li>trattamento antiparassitario esterno e interno aggiornato.</li>
     </ul>
-    <p>Un cane con sintomi evidenti di malattia contagiosa non può essere accolto. Le femmine in calore [sono accolte solo per servizi individuali / non sono accolte in pensione — scegli].</p>
+    <p>La vaccinazione contro la tosse dei canili non è obbligatoria, ma la consiglio a chi partecipa alle passeggiate di gruppo e all'asilo: sono i contesti in cui si trasmette più facilmente.</p>
+    <p>Un cane con sintomi evidenti di malattia contagiosa non può essere accolto. Le femmine in calore vanno segnalate al momento della prenotazione: valuto insieme a te se e come accoglierle, in base al servizio richiesto e agli altri cani presenti in quei giorni.</p>
   </section>
 
   <section id="dichiarazioni">
@@ -715,7 +741,7 @@ main section b{ color:#f7f1de; }
   <section id="immagini">
     <h2>13. Fotografie e video</h2>
     <p>Durante le attività può capitare che fotografi i cani. Uso queste immagini solo per la comunicazione dell'attività — sito, social, materiale informativo — e mai per finalità commerciali di terzi.</p>
-    <p>L'autorizzazione è facoltativa, la raccolgo al momento della prenotazione e puoi revocarla quando vuoi scrivendo a manuelpegoraro91@gmail.com. Non pubblico immagini in cui sei riconoscibile senza un tuo consenso specifico.</p>
+    <p>L'autorizzazione è facoltativa, la raccolgo al momento della prenotazione e puoi revocarla quando vuoi scrivendo a info@croceviacani.it. Non pubblico immagini in cui sei riconoscibile senza un tuo consenso specifico.</p>
   </section>
 
   <section id="dati">
@@ -728,7 +754,7 @@ main section b{ color:#f7f1de; }
     <h2>15. Diritto di recesso</h2>
     <p>Se prenoti a distanza — telefono, email, WhatsApp — e agisci come consumatore, il Codice del Consumo ti riconosce quattordici giorni per recedere senza motivazione.</p>
     <p>Il diritto non si applica ai servizi di svago e tempo libero prenotati per una data o un periodo determinati. Non si applica inoltre al servizio già interamente eseguito su tua richiesta espressa entro i quattordici giorni: in quel caso, se recedi a servizio iniziato, mi devi la parte già svolta.</p>
-    <p>Per esercitarlo basta una comunicazione scritta a manuelpegoraro91@gmail.com.</p>
+    <p>Per esercitarlo basta una comunicazione scritta a info@croceviacani.it.</p>
   </section>
 
   <section id="modifiche">
@@ -738,7 +764,7 @@ main section b{ color:#f7f1de; }
 
   <section id="legge">
     <h2>17. Reclami, legge e foro</h2>
-    <p>Se qualcosa non va, scrivimi: quasi tutto si risolve parlandone. Ti rispondo entro [X giorni].</p>
+    <p>Se qualcosa non va, scrivimi: quasi tutto si risolve parlandone. Ti rispondo entro 30 giorni.</p>
     <p>Al contratto si applica la legge italiana. Per il consumatore è competente il giudice del luogo di residenza o domicilio, se in Italia.</p>
   </section>
 
@@ -755,18 +781,19 @@ main section b{ color:#f7f1de; }
     </div>
     <div class="footer-contact">
       <a href="tel:+393334325389">333 432 5389</a> &middot;
-      <a href="mailto:manuelpegoraro91@gmail.com">manuelpegoraro91@gmail.com</a>
-    </div>
-    <div class="footer-trustbox">
-<!-- TrustBox widget - Review Collector -->
-<div class="trustpilot-widget" data-locale="it-IT" data-template-id="56278e9abfbbba0bdcd568bc" data-businessunit-id="6aa41cf092bbdc6972354e3d" data-style-height="52px" data-style-width="100%" data-token="8e12cd81-25b0-4bdb-9d22-582afb3cc023">
-  <a href="https://it.trustpilot.com/review/croceviacani.it" target="_blank" rel="noopener">Trustpilot</a>
-</div>
-<!-- End TrustBox widget -->
+      <a href="mailto:info@croceviacani.it">info@croceviacani.it</a>
     </div>
     <div class="footer-piva">Crocevia &middot; Manuel Pegoraro &middot; P.IVA 14868890964</div>
   </div>
 </footer>
+<div class="tp-badge">
+<!-- TrustBox widget - Review Collector -->
+<div class="trustpilot-widget" data-locale="it-IT" data-template-id="56278e9abfbbba0bdcd568bc" data-businessunit-id="6aa41cf092bbdc6972354e3d" data-style-height="100%" data-style-width="100%" data-token="8e12cd81-25b0-4bdb-9d22-582afb3cc023">
+  <a href="https://it.trustpilot.com/review/croceviacani.it" target="_blank" rel="noopener">Trustpilot</a>
+</div>
+<!-- End TrustBox widget -->
+</div>
+
 <a class="barra-azione" href="prenota.html">Prenota</a>
 <script>
 (function(){

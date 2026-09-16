@@ -231,10 +231,6 @@ h1.left{ text-align:left; }
 .footer-contact{ font-size:14.5px; color: var(--ink); }
 .footer-contact a{ color: var(--ink); border-bottom:1px solid var(--terracotta); }
 .footer-piva{ font-size:12px; color: var(--ink-muted); opacity:0.75; margin-top:12px; }
-.footer-trustbox{ max-width:320px; margin:16px auto 0; border-radius:10px; overflow:hidden; background:#fff; border:1px solid var(--border-soft); }
-.footer-trustbox a{ display:flex; align-items:center; justify-content:center; height:52px; padding:0 14px; font-size:13.5px; font-weight:600; }
-.footer-trustbox a:hover{ background:rgba(0,0,0,0.04); }
-.footer-trustbox iframe{ display:block !important; width:100% !important; height:52px !important; border:0; }
 
 @media (max-width: 600px){
   .cta-row, .loc-row, .bio-row{ flex-direction:column; }
@@ -331,7 +327,6 @@ h1.left{ text-align:left; }
   body{ padding-bottom: calc(var(--barra) + env(safe-area-inset-bottom)); }
   .wrap{ padding: 0 20px 56px; }
   .site-footer{ padding: 26px 20px 30px; }
-  .footer-trustbox{ max-width:280px; }
 
   /* --- niente colonne affiancate su schermo stretto --- */
   .cta-row, .loc-row, .bio-row{ flex-direction:column; gap:16px; }
@@ -411,7 +406,6 @@ h1.left{ text-align:left; }
 
   .barra-azione{ font-size:13.5px; padding: .45rem 1rem calc(.45rem + env(safe-area-inset-bottom)); }
   .site-footer{ padding: 20px 22px 24px; }
-  .footer-trustbox{ max-width:220px; margin-top:10px; }
 }
 
 /* ------------------------------------------------------------------
@@ -420,7 +414,6 @@ h1.left{ text-align:left; }
    navigazione torna in linea, con un filo di respiro in più.
    ------------------------------------------------------------------ */
 @media (min-width: 1000px){
-  .footer-trustbox{ max-width:340px; }
   body{ padding-bottom: 0; }
   .nav-toggle{ display:none; }
   .barra-azione{ display:none; }
@@ -436,6 +429,34 @@ h1.left{ text-align:left; }
 @media (prefers-reduced-motion: reduce){
   .nav-links, .nav-toggle .barre,
   .nav-toggle .barre::before, .nav-toggle .barre::after{ transition:none; }
+}
+
+/* Badge Trustpilot: riquadro fisso in basso a destra, dimensione bloccata
+   cosi' il markup iniettato da Trustpilot non puo' mai eccedere il box. */
+.tp-badge{
+  position:fixed; right:12px; bottom:calc(var(--barra) + env(safe-area-inset-bottom) + 12px);
+  width:132px; height:44px; overflow:hidden;
+  border-radius:10px; background:#fff; border:1px solid var(--border-soft);
+  box-shadow:0 6px 18px rgba(0,0,0,.35);
+  z-index:25;
+}
+.tp-badge, .tp-badge *{ box-sizing:border-box; }
+.tp-badge .trustpilot-widget{ width:100% !important; height:100% !important; }
+.tp-badge iframe{ display:block !important; width:100% !important; height:100% !important; border:0 !important; }
+.tp-badge a{
+  display:flex; width:100%; height:100%; align-items:center; justify-content:center;
+  padding:0 8px; font-size:11.5px; font-weight:600; text-align:center; line-height:1.15;
+}
+.tp-badge a:hover{ background:rgba(0,0,0,.04); }
+
+@media (min-width:1000px){
+  .tp-badge{ right:20px; bottom:20px; width:150px; height:52px; }
+  .tp-badge a{ font-size:13px; }
+}
+
+@media (orientation:landscape) and (max-width:999px) and (max-height:560px){
+  .tp-badge{ width:116px; height:38px; right:10px; }
+  .tp-badge a{ font-size:10.5px; padding:0 6px; }
 }
 </style>
 <!-- TrustBox script -->
@@ -496,18 +517,19 @@ h1.left{ text-align:left; }
     </div>
     <div class="footer-contact">
       <a href="tel:+393334325389">333 432 5389</a> &middot;
-      <a href="mailto:manuelpegoraro91@gmail.com">manuelpegoraro91@gmail.com</a>
-    </div>
-    <div class="footer-trustbox">
-<!-- TrustBox widget - Review Collector -->
-<div class="trustpilot-widget" data-locale="it-IT" data-template-id="56278e9abfbbba0bdcd568bc" data-businessunit-id="6aa41cf092bbdc6972354e3d" data-style-height="52px" data-style-width="100%" data-token="8e12cd81-25b0-4bdb-9d22-582afb3cc023">
-  <a href="https://it.trustpilot.com/review/croceviacani.it" target="_blank" rel="noopener">Trustpilot</a>
-</div>
-<!-- End TrustBox widget -->
+      <a href="mailto:info@croceviacani.it">info@croceviacani.it</a>
     </div>
     <div class="footer-piva">Crocevia &middot; Manuel Pegoraro &middot; P.IVA 14868890964</div>
   </div>
 </footer>
+<div class="tp-badge">
+<!-- TrustBox widget - Review Collector -->
+<div class="trustpilot-widget" data-locale="it-IT" data-template-id="56278e9abfbbba0bdcd568bc" data-businessunit-id="6aa41cf092bbdc6972354e3d" data-style-height="100%" data-style-width="100%" data-token="8e12cd81-25b0-4bdb-9d22-582afb3cc023">
+  <a href="https://it.trustpilot.com/review/croceviacani.it" target="_blank" rel="noopener">Trustpilot</a>
+</div>
+<!-- End TrustBox widget -->
+</div>
+
 <a class="barra-azione" href="prenota.html">Prenota</a>
 <script>
 (function(){
