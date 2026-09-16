@@ -93,11 +93,8 @@ h1,h2,h3{ font-family:"Cinzel", Georgia, serif; font-weight:700; color:#f7f1de; 
 .crumb a{ color: var(--bandana); border-bottom: 1px solid transparent; }
 .crumb a:hover{ border-bottom-color: var(--bandana); }
 .logo-nav{ display:block; height:44px; width:auto; border-radius:5px; }
-.hero-badge{
-  display:inline-block; background: var(--ink); border-radius:12px;
-  padding:10px; box-shadow:0 16px 36px rgba(0,0,0,.4); margin:0 0 20px;
-}
-.logo-hero{ display:block; width:172px; height:auto; border-radius:6px; }
+.hero-badge{ display:inline-block; margin:0 0 20px; }
+.logo-hero{ display:block; width:220px; height:auto; margin:0 auto; }
 .page-head{ text-align:center; max-width:600px; margin:0 auto 42px; }
 .page-head h1{ font-size: clamp(30px, 4.4vw, 40px); margin-bottom: 12px; }
 .page-sub{
@@ -524,8 +521,8 @@ main section b{ color:#f7f1de; }
   .page-head{ margin-bottom: 16px; }
   .page-head h1{ font-size: 24px; margin-bottom: 8px; }
   .page-sub{ font-size: 15.5px; line-height:1.45; }
-  .hero-badge{ padding:6px; margin-bottom: 8px; border-radius:9px; }
-  .logo-hero{ width: 84px; }
+  .hero-badge{ margin-bottom: 8px; }
+  .logo-hero{ width: 120px; }
   .hero-ribbon{ margin-bottom: 8px; }
   .hero-sub{ margin-bottom: 16px; font-size:14px; }
   .section, .teaser{ padding: 16px 18px; margin-bottom: 14px; }
