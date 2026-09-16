@@ -231,10 +231,6 @@ h1.left{ text-align:left; }
 .footer-contact{ font-size:14.5px; color: var(--ink); }
 .footer-contact a{ color: var(--ink); border-bottom:1px solid var(--terracotta); }
 .footer-piva{ font-size:12px; color: var(--ink-muted); opacity:0.75; margin-top:12px; }
-.footer-trustbox{ max-width:320px; margin:16px auto 0; border-radius:10px; overflow:hidden; background:#fff; border:1px solid var(--border-soft); }
-.footer-trustbox a{ display:flex; align-items:center; justify-content:center; height:52px; padding:0 14px; font-size:13.5px; font-weight:600; }
-.footer-trustbox a:hover{ background:rgba(0,0,0,0.04); }
-.footer-trustbox iframe{ display:block !important; width:100% !important; height:52px !important; border:0; }
 
 @media (max-width: 600px){
   .cta-row, .loc-row, .bio-row{ flex-direction:column; }
@@ -466,7 +462,6 @@ main section b{ color:#f7f1de; }
   body{ padding-bottom: calc(var(--barra) + env(safe-area-inset-bottom)); }
   .wrap{ padding: 0 20px 56px; }
   .site-footer{ padding: 26px 20px 30px; }
-  .footer-trustbox{ max-width:280px; }
 
   /* --- niente colonne affiancate su schermo stretto --- */
   .cta-row, .loc-row, .bio-row{ flex-direction:column; gap:16px; }
@@ -546,7 +541,6 @@ main section b{ color:#f7f1de; }
 
   .barra-azione{ font-size:13.5px; padding: .45rem 1rem calc(.45rem + env(safe-area-inset-bottom)); }
   .site-footer{ padding: 20px 22px 24px; }
-  .footer-trustbox{ max-width:220px; margin-top:10px; }
 }
 
 /* ------------------------------------------------------------------
@@ -555,7 +549,6 @@ main section b{ color:#f7f1de; }
    navigazione torna in linea, con un filo di respiro in più.
    ------------------------------------------------------------------ */
 @media (min-width: 1000px){
-  .footer-trustbox{ max-width:340px; }
   body{ padding-bottom: 0; }
   .nav-toggle{ display:none; }
   .barra-azione{ display:none; }
@@ -573,9 +566,6 @@ main section b{ color:#f7f1de; }
   .nav-toggle .barre::before, .nav-toggle .barre::after{ transition:none; }
 }
 </style>
-<!-- TrustBox script -->
-<script type="text/javascript" src="//widget.trustpilot.com/bootstrap/v5/tp.widget.bootstrap.min.js" async></script>
-<!-- End TrustBox script -->
 <header class="site-header">
   <nav class="nav">
     <a href="index.html" class="brand" aria-label="Crocevia — Home">
@@ -590,7 +580,7 @@ main section b{ color:#f7f1de; }
 <div class="crumb"><a href="index.html">Home</a> / Privacy</div>
 <div class="page-head left"><h1 class="left">Informativa sulla privacy</h1></div>
 
-<p class="data">In vigore dal [data]. Versione 1.</p>
+<p class="data">In vigore dal 1&deg; ottobre 2026. Versione 1.</p>
 
   <p class="premessa">Questa pagina spiega quali dati raccolgo su di te e sul tuo cane quando mi scrivi o prenoti un servizio, perché li raccolgo e cosa puoi chiedermi in merito. È scritta per essere letta, non solo per essere pubblicata: se qualcosa non è chiaro, scrivimi.</p>
 
@@ -614,7 +604,7 @@ main section b{ color:#f7f1de; }
     <ul>
       <li>P. IVA 14868890964</li>
       <li>Sede legale: Via Stelvio, Settimo Milanese (MI)</li>
-      <li>Email: manuelpegoraro91@gmail.com</li>
+      <li>Email: info@croceviacani.it</li>
       <li>Telefono: +39 333 432 5389</li>
     </ul>
   </section>
@@ -665,7 +655,6 @@ main section b{ color:#f7f1de; }
     <h2>6. Servizi di terze parti e cookie</h2>
     <p>Questo sito non installa cookie di profilazione né strumenti pubblicitari o di analisi statistica.</p>
     <p>Per la grafica del sito uso i caratteri tipografici di <b>Google Fonts</b>: il tuo browser si collega ai server di Google per scaricarli, e questo comporta l'invio del tuo indirizzo IP a Google secondo le sue modalità (<a href="https://policies.google.com/privacy" target="_blank" rel="noopener">informativa Google</a>).</p>
-    <p>Per raccogliere e mostrare le recensioni dei clienti uso il widget di <b>Trustpilot</b>: il tuo browser carica uno script dai server di Trustpilot (widget.trustpilot.com), che può installare i propri cookie tecnici necessari al funzionamento del modulo di recensione, secondo le modalità descritte nella loro informativa (<a href="https://legal.trustpilot.com/end-user-privacy-terms" target="_blank" rel="noopener">informativa Trustpilot</a>).</p>
     <p>Il sito rimanda anche a servizi esterni che scegli tu di aprire — ad esempio WhatsApp per scrivermi, o il mio profilo Pawshake: una volta che li apri, si applicano le rispettive informative privacy, non questa.</p>
   </section>
 
@@ -685,7 +674,7 @@ main section b{ color:#f7f1de; }
       <li>ricevere i dati in un formato portabile;</li>
       <li>revocare in qualsiasi momento un consenso dato (es. per foto e video), senza effetto sui trattamenti già svolti.</li>
     </ul>
-    <p>Per esercitare questi diritti scrivimi a manuelpegoraro91@gmail.com. Se ritieni che il trattamento non sia conforme alla normativa, puoi anche proporre reclamo al <a href="https://www.garanteprivacy.it" target="_blank" rel="noopener">Garante per la protezione dei dati personali</a>.</p>
+    <p>Per esercitare questi diritti scrivimi a info@croceviacani.it. Se ritieni che il trattamento non sia conforme alla normativa, puoi anche proporre reclamo al <a href="https://www.garanteprivacy.it" target="_blank" rel="noopener">Garante per la protezione dei dati personali</a>.</p>
   </section>
 
   <section id="minori">
@@ -700,7 +689,7 @@ main section b{ color:#f7f1de; }
 
   <section id="contatti">
     <h2>11. Come contattarmi</h2>
-    <p>Per qualsiasi domanda su questa informativa o sul trattamento dei tuoi dati: manuelpegoraro91@gmail.com — +39 333 432 5389.</p>
+    <p>Per qualsiasi domanda su questa informativa o sul trattamento dei tuoi dati: info@croceviacani.it — +39 333 432 5389.</p>
   </section>
 
 </main>
@@ -716,14 +705,7 @@ main section b{ color:#f7f1de; }
     </div>
     <div class="footer-contact">
       <a href="tel:+393334325389">333 432 5389</a> &middot;
-      <a href="mailto:manuelpegoraro91@gmail.com">manuelpegoraro91@gmail.com</a>
-    </div>
-    <div class="footer-trustbox">
-<!-- TrustBox widget - Review Collector -->
-<div class="trustpilot-widget" data-locale="it-IT" data-template-id="56278e9abfbbba0bdcd568bc" data-businessunit-id="6aa41cf092bbdc6972354e3d" data-style-height="52px" data-style-width="100%" data-token="20ea00d4-f632-4d41-9ffc-bf7c2a32e8ed">
-  <a href="https://it.trustpilot.com/review/croceviacani.it" target="_blank" rel="noopener">Trustpilot</a>
-</div>
-<!-- End TrustBox widget -->
+      <a href="mailto:info@croceviacani.it">info@croceviacani.it</a>
     </div>
     <div class="footer-piva">Crocevia &middot; Manuel Pegoraro &middot; P.IVA 14868890964</div>
   </div>
