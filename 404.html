@@ -576,13 +576,16 @@ main section b{ color:#f7f1de; }
   z-index:25;
 }
 .tp-badge, .tp-badge *{ box-sizing:border-box; }
-.tp-badge .trustpilot-widget{ width:100% !important; height:100% !important; }
+.tp-badge .trustpilot-widget{ width:100% !important; height:100% !important; pointer-events:none; }
 .tp-badge iframe{ display:block !important; width:100% !important; height:100% !important; border:0 !important; }
 .tp-badge a{
   display:flex; width:100%; height:100%; align-items:center; justify-content:center;
   padding:0 8px; font-size:11.5px; font-weight:600; text-align:center; line-height:1.15;
 }
 .tp-badge a:hover{ background:rgba(0,0,0,.04); }
+/* Maschera: unico elemento cliccabile che copre l'intero box, cosi' il
+   comportamento non dipende da come Trustpilot renderizza il widget sotto. */
+.tp-badge .tp-mask{ position:absolute; inset:0; z-index:5; }
 
 @media (min-width:1000px){
   .tp-badge{ right:20px; bottom:20px; width:150px; height:52px; }
@@ -637,10 +640,13 @@ main section b{ color:#f7f1de; }
 </footer>
 <div class="tp-badge">
 <!-- TrustBox widget - Review Collector -->
-<div class="trustpilot-widget" data-locale="it-IT" data-template-id="56278e9abfbbba0bdcd568bc" data-businessunit-id="6aa41cf092bbdc6972354e3d" data-style-height="100%" data-style-width="100%" data-token="8e12cd81-25b0-4bdb-9d22-582afb3cc023">
-  <a href="https://it.trustpilot.com/review/croceviacani.it" target="_blank" rel="noopener">Trustpilot</a>
+<div class="trustpilot-widget" data-locale="it-IT" data-template-id="56278e9abfbbba0bdcd568bc" data-businessunit-id="6aa41cf092bbdc6972354e3d" data-style-height="100%" data-style-width="100%" data-token="8e12cd81-25b0-4bdb-9d22-582afb3cc023" aria-hidden="true">
+  <a href="https://it.trustpilot.com/review/croceviacani.it" target="_blank" rel="noopener" tabindex="-1">Trustpilot</a>
 </div>
 <!-- End TrustBox widget -->
+<!-- Maschera cliccabile sopra l'intero box: il widget sotto resta funzionante
+     (impressioni/tracking Trustpilot) ma non intercetta piu' i click. -->
+<a class="tp-mask" href="https://it.trustpilot.com/review/croceviacani.it" target="_blank" rel="noopener" aria-label="Leggi le recensioni Crocevia su Trustpilot"></a>
 </div>
 
 <a class="barra-azione" href="prenota.html">Prenota</a>
