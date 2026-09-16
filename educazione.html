@@ -79,9 +79,15 @@
   <a href="https://it.trustpilot.com/review/croceviacani.it" target="_blank" rel="noopener" tabindex="-1">Trustpilot</a>
 </div>
 <!-- End TrustBox widget -->
-<!-- Maschera cliccabile sopra l'intero box: il widget sotto resta funzionante
-     (impressioni/tracking Trustpilot) ma non intercetta piu' i click. -->
-<a class="tp-mask" href="https://it.trustpilot.com/review/croceviacani.it" target="_blank" rel="noopener" aria-label="Leggi le recensioni Crocevia su Trustpilot"></a>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true"><symbol id="tp-star" viewBox="0 0 24 24"><path d="M12 17.27 18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/></symbol></svg>
+<!-- Maschera cliccabile e visibile sopra l'intero box: il widget sopra resta
+     funzionante (impressioni/tracking Trustpilot) ma nascosto dietro. -->
+<a class="tp-mask" href="https://it.trustpilot.com/review/croceviacani.it" target="_blank" rel="noopener" aria-label="Lascia una recensione su Trustpilot">
+  <span class="stars" aria-hidden="true">
+    <svg><use href="#tp-star"></use></svg><svg><use href="#tp-star"></use></svg><svg><use href="#tp-star"></use></svg><svg><use href="#tp-star"></use></svg><svg><use href="#tp-star"></use></svg>
+  </span>
+  <span class="tp-copy"><span class="l1">Lascia una recensione</span><span class="l2">su Trustpilot</span></span>
+</a>
 </div>
 
 <a class="barra-azione" href="prenota.html">Prenota</a>
