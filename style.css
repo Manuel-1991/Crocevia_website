@@ -58,7 +58,7 @@ h1,h2,h3{ font-family:"Cinzel", Georgia, serif; font-weight:700; color:#f7f1de; 
   flex-wrap: nowrap;
 }
 .brand{ display:flex; align-items:center; gap:10px; }
-.brand-text{ display:flex; flex-direction:column; justify-content:center; gap:2px; }
+.brand-text{ display:flex; flex-direction:column; justify-content:center; align-items:center; gap:2px; text-align:center; }
 .brand-word{
   font-family:"Cinzel", serif; font-weight:700; font-size:15px; line-height:1;
   letter-spacing: 0.14em; color: var(--ink); white-space:nowrap;
