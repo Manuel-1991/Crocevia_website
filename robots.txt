@@ -4,4 +4,4 @@ Allow: /
 # la pagina di errore non va indicizzata
 Disallow: /404.html
 
-Sitemap: https://manuel-1991.github.io/Crocevia_website/sitemap.xml
+Sitemap: https://croceviacani.it/sitemap.xml
