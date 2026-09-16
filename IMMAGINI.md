@@ -26,10 +26,11 @@ riceverle.
 ```
 assets/
 └── img/
-    ├── brand/            logo e favicon (file veri, già collegati alle pagine)
+    ├── brand/            logo, favicon e icona iPhone (file veri, già collegati alle pagine)
     │   ├── logo-nav.webp
     │   ├── logo-hero.webp
-    │   └── favicon.png
+    │   ├── favicon.png
+    │   └── apple-touch-icon.png
     ├── index/             foto per la home
     ├── educazione/        foto per educazione.html
     ├── pensione-asilo/    foto per pensione-asilo.html

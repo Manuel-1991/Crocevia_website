@@ -23,19 +23,18 @@ compone un messaggio e apre WhatsApp.
 | `termini.html` | termini e condizioni |
 | `404.html` | pagina non trovata |
 
-Contorno: `style.css` (stile condiviso da tutte le pagine),
-`apple-touch-icon.png` (icona su iPhone quando si salva in home),
-`robots.txt`, `sitemap.xml`, `.nojekyll` (dice a GitHub Pages di pubblicare i
-file così come sono).
+Contorno: `style.css` (stile condiviso da tutte le pagine), `robots.txt`,
+`sitemap.xml`, `.nojekyll` (dice a GitHub Pages di pubblicare i file così
+come sono).
 
 `documenti/` contiene i moduli (privacy, liberatoria foto/video, scarico
 responsabilità, prenotazione) in formato `.docx`, non collegati dalle
 pagine.
 
-`assets/img/brand/` contiene logo e favicon (file veri, non più incollati
-dentro le pagine). `assets/img/<pagina>/` sono le cartelle pronte per le
-foto vere del sito, una per pagina, ancora vuote — vedi `IMMAGINI.md` per
-la nuova organizzazione e come caricare le foto.
+`assets/img/brand/` contiene logo, favicon e icona per iPhone (file veri,
+non più incollati dentro le pagine). `assets/img/<pagina>/` sono le
+cartelle pronte per le foto vere del sito, una per pagina, ancora vuote —
+vedi `IMMAGINI.md` per la nuova organizzazione e come caricare le foto.
 
 ## Le tre viste
 
