@@ -430,7 +430,38 @@ h1.left{ text-align:left; }
   .nav-links, .nav-toggle .barre,
   .nav-toggle .barre::before, .nav-toggle .barre::after{ transition:none; }
 }
+
+/* Badge Trustpilot: riquadro fisso in basso a destra, dimensione bloccata
+   cosi' il markup iniettato da Trustpilot non puo' mai eccedere il box. */
+.tp-badge{
+  position:fixed; right:12px; bottom:calc(var(--barra) + env(safe-area-inset-bottom) + 12px);
+  width:132px; height:44px; overflow:hidden;
+  border-radius:10px; background:#fff; border:1px solid var(--border-soft);
+  box-shadow:0 6px 18px rgba(0,0,0,.35);
+  z-index:25;
+}
+.tp-badge, .tp-badge *{ box-sizing:border-box; }
+.tp-badge .trustpilot-widget{ width:100% !important; height:100% !important; }
+.tp-badge iframe{ display:block !important; width:100% !important; height:100% !important; border:0 !important; }
+.tp-badge a{
+  display:flex; width:100%; height:100%; align-items:center; justify-content:center;
+  padding:0 8px; font-size:11.5px; font-weight:600; text-align:center; line-height:1.15;
+}
+.tp-badge a:hover{ background:rgba(0,0,0,.04); }
+
+@media (min-width:1000px){
+  .tp-badge{ right:20px; bottom:20px; width:150px; height:52px; }
+  .tp-badge a{ font-size:13px; }
+}
+
+@media (orientation:landscape) and (max-width:999px) and (max-height:560px){
+  .tp-badge{ width:116px; height:38px; right:10px; }
+  .tp-badge a{ font-size:10.5px; padding:0 6px; }
+}
 </style>
+<!-- TrustBox script -->
+<script type="text/javascript" src="//widget.trustpilot.com/bootstrap/v5/tp.widget.bootstrap.min.js" async></script>
+<!-- End TrustBox script -->
 <header class="site-header">
   <nav class="nav">
     <a href="index.html" class="brand" aria-label="Crocevia — Home">
@@ -492,6 +523,14 @@ h1.left{ text-align:left; }
     <div class="footer-piva">Crocevia &middot; Manuel Pegoraro &middot; P.IVA 14868890964</div>
   </div>
 </footer>
+<div class="tp-badge">
+<!-- TrustBox widget - Review Collector -->
+<div class="trustpilot-widget" data-locale="it-IT" data-template-id="56278e9abfbbba0bdcd568bc" data-businessunit-id="6aa41cf092bbdc6972354e3d" data-style-height="100%" data-style-width="100%" data-token="20ea00d4-f632-4d41-9ffc-bf7c2a32e8ed">
+  <a href="https://it.trustpilot.com/review/croceviacani.it" target="_blank" rel="noopener">Trustpilot</a>
+</div>
+<!-- End TrustBox widget -->
+</div>
+
 <a class="barra-azione" href="prenota.html">Prenota</a>
 <script>
 (function(){
