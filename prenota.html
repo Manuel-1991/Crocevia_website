@@ -571,30 +571,43 @@ main section b{ color:#f7f1de; }
 .tp-badge{
   position:fixed; right:12px; bottom:calc(var(--barra) + env(safe-area-inset-bottom) + 12px);
   width:132px; height:44px; overflow:hidden;
-  border-radius:10px; background:#fff; border:1px solid var(--border-soft);
+  border-radius:10px; background:#00b67a; border:1px solid rgba(0,0,0,.12);
   box-shadow:0 6px 18px rgba(0,0,0,.35);
   z-index:25;
 }
 .tp-badge, .tp-badge *{ box-sizing:border-box; }
 .tp-badge .trustpilot-widget{ width:100% !important; height:100% !important; pointer-events:none; }
 .tp-badge iframe{ display:block !important; width:100% !important; height:100% !important; border:0 !important; }
-.tp-badge a{
-  display:flex; width:100%; height:100%; align-items:center; justify-content:center;
-  padding:0 8px; font-size:11.5px; font-weight:600; text-align:center; line-height:1.15;
+/* Maschera: unico elemento cliccabile e visibile, copre l'intero box. Il
+   widget Trustpilot sopra resta nel DOM e funzionante (tracking/impressioni)
+   ma nascosto dietro: il comportamento non dipende piu' da come lo renderizza. */
+.tp-badge .tp-mask{
+  position:absolute; inset:0; z-index:5;
+  display:flex; flex-direction:column; align-items:center; justify-content:center;
+  gap:2px; padding:0 8px;
+  background:#00b67a; color:#fff; text-decoration:none; text-align:center;
 }
-.tp-badge a:hover{ background:rgba(0,0,0,.04); }
-/* Maschera: unico elemento cliccabile che copre l'intero box, cosi' il
-   comportamento non dipende da come Trustpilot renderizza il widget sotto. */
-.tp-badge .tp-mask{ position:absolute; inset:0; z-index:5; }
+.tp-badge .tp-mask:hover{ background:rgba(0,0,0,.08); }
+.tp-badge .tp-mask:focus-visible{ outline:2px solid #fff; outline-offset:-3px; }
+.tp-badge .tp-mask .stars{ display:flex; gap:1px; }
+.tp-badge .tp-mask .stars svg{ display:block; width:7px; height:7px; fill:#fff; }
+.tp-badge .tp-mask .tp-copy{ display:flex; flex-direction:column; align-items:center; }
+.tp-badge .tp-mask .l1{ font-weight:700; font-size:8.6px; white-space:nowrap; }
+.tp-badge .tp-mask .l2{ font-weight:400; font-size:7.2px; opacity:.88; white-space:nowrap; }
 
 @media (min-width:1000px){
   .tp-badge{ right:20px; bottom:20px; width:150px; height:52px; }
-  .tp-badge a{ font-size:13px; }
+  .tp-badge .tp-mask .stars svg{ width:9px; height:9px; }
+  .tp-badge .tp-mask .l1{ font-size:10px; }
+  .tp-badge .tp-mask .l2{ font-size:8.3px; }
 }
 
 @media (orientation:landscape) and (max-width:999px) and (max-height:560px){
   .tp-badge{ width:116px; height:38px; right:10px; }
-  .tp-badge a{ font-size:10.5px; padding:0 6px; }
+  .tp-badge .tp-mask{ padding:0 6px; }
+  .tp-badge .tp-mask .stars{ display:none; }
+  .tp-badge .tp-mask .l1{ font-size:7.6px; line-height:1.25; white-space:normal; }
+  .tp-badge .tp-mask .l2{ font-size:6.6px; }
 }
 </style>
 <!-- TrustBox script -->
@@ -794,9 +807,15 @@ main section b{ color:#f7f1de; }
   <a href="https://it.trustpilot.com/review/croceviacani.it" target="_blank" rel="noopener" tabindex="-1">Trustpilot</a>
 </div>
 <!-- End TrustBox widget -->
-<!-- Maschera cliccabile sopra l'intero box: il widget sotto resta funzionante
-     (impressioni/tracking Trustpilot) ma non intercetta piu' i click. -->
-<a class="tp-mask" href="https://it.trustpilot.com/review/croceviacani.it" target="_blank" rel="noopener" aria-label="Leggi le recensioni Crocevia su Trustpilot"></a>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true"><symbol id="tp-star" viewBox="0 0 24 24"><path d="M12 17.27 18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/></symbol></svg>
+<!-- Maschera cliccabile e visibile sopra l'intero box: il widget sopra resta
+     funzionante (impressioni/tracking Trustpilot) ma nascosto dietro. -->
+<a class="tp-mask" href="https://it.trustpilot.com/review/croceviacani.it" target="_blank" rel="noopener" aria-label="Lascia una recensione su Trustpilot">
+  <span class="stars" aria-hidden="true">
+    <svg><use href="#tp-star"></use></svg><svg><use href="#tp-star"></use></svg><svg><use href="#tp-star"></use></svg><svg><use href="#tp-star"></use></svg><svg><use href="#tp-star"></use></svg>
+  </span>
+  <span class="tp-copy"><span class="l1">Lascia una recensione</span><span class="l2">su Trustpilot</span></span>
+</a>
 </div>
 
 <script>
