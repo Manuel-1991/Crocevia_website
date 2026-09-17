@@ -80,9 +80,11 @@
 })();
 
 /* comparsa allo scroll: gli elementi con classe .reveal partono
-   trasparenti (in CSS) e prendono .is-visible la prima volta che
-   entrano nello schermo. Un <noscript> nella pagina neutralizza .reveal
-   se lo script non parte, così il contenuto non resta mai invisibile. */
+   trasparenti (in CSS) e prendono .is-visible ogni volta che entrano
+   nello schermo — e la perdono uscendone, così scendendo e risalendo
+   con lo scroll l'animazione si ripete invece di sparire dopo la prima
+   volta. Un <noscript> nella pagina neutralizza .reveal se lo script
+   non parte, così il contenuto non resta mai invisibile. */
 (function(){
   var elementi = document.querySelectorAll('.reveal');
   if(!elementi.length) return;
@@ -95,10 +97,7 @@
 
   var osservatore = new IntersectionObserver(function(entries){
     entries.forEach(function(entry){
-      if(entry.isIntersecting){
-        entry.target.classList.add('is-visible');
-        osservatore.unobserve(entry.target);
-      }
+      entry.target.classList.toggle('is-visible', entry.isIntersecting);
     });
   }, { threshold: 0.15, rootMargin: '0px 0px -40px 0px' });
 
