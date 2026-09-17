@@ -225,21 +225,17 @@ h1.left{ text-align:left; }
   transition: transform .15s ease, border-color .15s ease;
 }
 .cta-block:hover{ transform: translateY(-2px); }
-.cta-block.edu{ background: var(--gold-tint-soft); border:1px solid rgba(212,172,87,0.55); }
-.cta-block.edu:hover{ border-color: var(--gold); }
-.cta-block.pen{ background: var(--bordeaux-tint-soft); border:1px solid rgba(138,58,64,0.6); }
-.cta-block.pen:hover{ border-color: var(--bordeaux); }
+.cta-block.edu, .cta-block.pen{ background: var(--bordeaux-tint-soft); border:1px solid rgba(138,58,64,0.6); }
+.cta-block.edu:hover, .cta-block.pen:hover{ border-color: var(--bordeaux); }
 .cta-block .t{ font-family:"Cinzel", serif; font-weight:600; font-size:16.5px; letter-spacing:0.04em; }
-.cta-block.edu .t{ color: var(--gold); }
-.cta-block.pen .t{ color: var(--bordeaux); }
+.cta-block.edu .t, .cta-block.pen .t{ color: var(--bordeaux); }
 .cta-block .s{ font-style:italic; font-size:14px; color: var(--ink-muted); margin-top:9px; }
 
 .end-cta{
   border-radius:4px; padding: 24px; text-align:center; margin-top: 8px;
   font-family:"Cinzel", serif; font-weight:600; font-size:15px; letter-spacing:0.04em;
 }
-.end-cta.edu{ border:1px solid var(--gold); background: var(--gold-tint); color: var(--gold); }
-.end-cta.pen{ border:1px solid var(--bordeaux); background: var(--bordeaux-tint); color: var(--bordeaux); }
+.end-cta.edu, .end-cta.pen{ border:1px solid var(--bordeaux); background: var(--bordeaux-tint); color: var(--bordeaux); }
 .end-cta.plain{ border:1px solid var(--verde); background: var(--verde-tint); color: var(--verde-light); }
 .end-cta a{ color:inherit; }
 
@@ -249,20 +245,17 @@ h1.left{ text-align:left; }
   border-radius:4px; padding: 26px 28px; margin-bottom: 20px;
   border-left-width: 3px;
 }
-.section.edu{ border-left-color: var(--gold); }
-.section.pen{ border-left-color: var(--bordeaux); }
+.section.edu, .section.pen{ border-left-color: var(--bordeaux); }
 .section.verde{ border-left-color: var(--verde); }
 .section h3{
   font-size:14.5px; letter-spacing:0.08em; margin-bottom:10px; text-transform:uppercase;
 }
-.section.edu h3{ color: var(--gold); }
-.section.pen h3{ color: var(--bordeaux); }
+.section.edu h3, .section.pen h3{ color: var(--bordeaux); }
 .section.verde h3{ color: var(--verde-light); }
 .section p{ margin:0; color: var(--ink); }
 .section p + p{ margin-top:10px; }
 .price{ font-style:normal; font-weight:600; }
-.section.edu .price{ color: var(--gold); }
-.section.pen .price{ color: var(--bordeaux); }
+.section.edu .price, .section.pen .price{ color: var(--bordeaux); }
 
 /* ---------- teaser / plain sections ---------- */
 .teaser{
