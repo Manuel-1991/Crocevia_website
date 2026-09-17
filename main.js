@@ -37,3 +37,44 @@
     if(window.innerWidth >= 1000) chiudi();
   });
 })();
+
+/* interruttore tema chiaro/scuro — la scelta manuale (in localStorage)
+   prevale sempre sulla preferenza di sistema, già gestita via CSS. */
+(function(){
+  var CHIAVE = 'crocevia-tema';
+  var BG_SCURO = '#0d2219';
+  var BG_CHIARO = '#f2e6c4';
+  var pulsante = document.getElementById('cambia-tema');
+  var meta = document.querySelector('meta[name="theme-color"]');
+  var sistemaChiaro = window.matchMedia && window.matchMedia('(prefers-color-scheme: light)');
+
+  function temaForzato(){
+    try{ return localStorage.getItem(CHIAVE); }catch(e){ return null; }
+  }
+  function temaEffettivo(){
+    var forzato = temaForzato();
+    if(forzato === 'chiaro' || forzato === 'scuro') return forzato;
+    return (sistemaChiaro && sistemaChiaro.matches) ? 'chiaro' : 'scuro';
+  }
+  function aggiorna(){
+    var attivo = temaEffettivo();
+    if(meta) meta.setAttribute('content', attivo === 'chiaro' ? BG_CHIARO : BG_SCURO);
+    if(pulsante){
+      pulsante.setAttribute('aria-label', attivo === 'chiaro' ? 'Passa al tema scuro' : 'Passa al tema chiaro');
+      pulsante.setAttribute('aria-pressed', attivo === 'chiaro' ? 'true' : 'false');
+    }
+  }
+  aggiorna();
+  if(sistemaChiaro && sistemaChiaro.addEventListener){
+    sistemaChiaro.addEventListener('change', function(){
+      if(!temaForzato()) aggiorna();
+    });
+  }
+  if(!pulsante) return;
+  pulsante.addEventListener('click', function(){
+    var nuovo = temaEffettivo() === 'chiaro' ? 'scuro' : 'chiaro';
+    document.documentElement.setAttribute('data-tema', nuovo);
+    try{ localStorage.setItem(CHIAVE, nuovo); }catch(e){}
+    aggiorna();
+  });
+})();

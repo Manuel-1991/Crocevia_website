@@ -91,7 +91,7 @@
       ".cc-actions{display:flex;flex-wrap:wrap;gap:10px;}" +
       ".cc-btn{font-family:\"Cinzel\",serif;font-weight:600;font-size:12.5px;letter-spacing:.05em;" +
       "text-transform:uppercase;padding:11px 20px;border-radius:3px;cursor:pointer;border:1px solid var(--border,#3e4a31);background:transparent;color:var(--ink,#f4f1e4);}" +
-      ".cc-btn.cc-primary{background:var(--gold,#c38345);border-color:var(--gold,#c38345);color:#1a1005;}" +
+      ".cc-btn.cc-primary{background:var(--gold,#c38345);border-color:var(--gold,#c38345);color:var(--on-accent,#1a1005);}" +
       ".cc-btn:focus-visible{outline:2px solid var(--gold,#c38345);outline-offset:2px;}";
     var style = document.createElement("style");
     style.id = STYLE_ID;
