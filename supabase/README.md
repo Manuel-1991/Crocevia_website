@@ -1,7 +1,14 @@
 # Supabase — Crocevia
 
+Claude ha un collegamento diretto (via MCP) al progetto Supabase
+`gcjxhgvghncjjvcnacbv` e da qui in avanti applica schema, seed e migrazioni
+direttamente — non serve più incollarli a mano in SQL Editor. I file in
+questa cartella restano comunque la fonte di verità e la cronologia
+leggibile di cosa è stato fatto e perché.
+
 ## 1. Creare lo schema
 
+Già applicato al progetto live. Per un'installazione nuova da zero:
 Dashboard Supabase → **SQL Editor** → New query → incolla tutto `schema.sql` → Run.
 Crea tabelle, regole di sicurezza (RLS) e i vincoli che impediscono doppie
 prenotazioni. Si può rieseguire senza danni se serve aggiornarlo.
@@ -22,14 +29,25 @@ setup è finito, di rigenerarla da Dashboard → Project Settings → API
 
 ## 3. Aggiornamenti (migrations/)
 
-Dopo il primo setup, ogni cambiamento allo schema già in produzione arriva
-come un file numerato in `migrations/`: si esegue una volta sola in SQL
-Editor, nell'ordine dei numeri. Non serve rieseguire `schema.sql` — resta
-aggiornato solo come riferimento di come deve apparire un'installazione
-pulita.
+Ogni cambiamento allo schema già in produzione arriva come un file numerato
+in `migrations/`, applicato direttamente al progetto live. `schema.sql`
+resta aggiornato solo come riferimento di come deve apparire
+un'installazione pulita da zero.
 
 - `002_capienza_5_cani.sql` — porta la capienza pensione/asilo da 1 a 5
   cani al giorno (condivisa tra i due servizi)
+- `003_search_path_funzioni_capienza.sql` — irrobustisce le funzioni della
+  capienza (segnalazione dell'advisor di sicurezza di Supabase)
+- `004_commento_vista_disponibilita.sql` — documenta nel database perché
+  `disponibilita_pensione_asilo` bypassa volutamente le RLS di
+  `prenotazioni` (serve al calendario condiviso, non è un errore)
+
+Avvisi di sicurezza rivisti e lasciati come sono, perché non applicabili
+a questo progetto: l'estensione `btree_gist` nello schema `public`
+(comune, spostarla non vale lo sforzo per questa scala) e le funzioni
+`blocca_cambio_ruolo`/`gestisci_nuovo_utente` segnalate come chiamabili
+via RPC (sono funzioni trigger: Postgres impedisce di chiamarle
+direttamente, l'avviso è un falso positivo).
 
 ## 4. Prossimi passi
 
