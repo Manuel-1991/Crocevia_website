@@ -272,6 +272,19 @@ main section p{ margin: 0 0 11px; }
 main section ul, main section ol{ margin: 0 0 11px; padding-left:20px; color: var(--ink); }
 main section li{ margin-bottom:6px; }
 main section b{ color:#f7f1de; }
+main section table{
+  width:100%; border-collapse:collapse; margin: 0 0 14px; font-size:14.5px;
+  border:1px solid var(--border-soft); border-radius:4px; overflow:hidden;
+}
+main section th, main section td{
+  text-align:left; vertical-align:top; padding:10px 12px;
+  border-bottom:1px solid var(--border-soft); color: var(--ink);
+}
+main section th{
+  font-family:"Cinzel", serif; font-size:11px; letter-spacing:0.06em;
+  text-transform:uppercase; color: var(--bandana); background: var(--surface-soft);
+}
+main section tr:last-child td{ border-bottom:none; }
 .riquadro{
   border:1px solid var(--border-soft); border-left:3px solid var(--gold);
   background: var(--gold-tint-soft); border-radius:4px;
@@ -597,6 +610,7 @@ main section b{ color:#f7f1de; }
 <!-- TrustBox script -->
 <script type="text/javascript" src="//widget.trustpilot.com/bootstrap/v5/tp.widget.bootstrap.min.js" async></script>
 <!-- End TrustBox script -->
+<script src="cookie-consent.js" defer></script>
 <header class="site-header">
   <nav class="nav">
     <a href="index.html" class="brand" aria-label="Crocevia — Home">
@@ -611,7 +625,7 @@ main section b{ color:#f7f1de; }
 <div class="crumb"><a href="index.html">Home</a> / Privacy</div>
 <div class="page-head left"><h1 class="left">Informativa sulla privacy</h1></div>
 
-<p class="data">In vigore dal 1&deg; ottobre 2026. Versione 1.</p>
+<p class="data">In vigore dal 1&deg; ottobre 2026. Versione 2 — aggiornata con l'introduzione di Google Analytics su consenso.</p>
 
   <p class="premessa">Questa pagina spiega quali dati raccolgo su di te e sul tuo cane quando mi scrivi o prenoti un servizio, perché li raccolgo e cosa puoi chiedermi in merito. È scritta per essere letta, non solo per essere pubblicata: se qualcosa non è chiaro, scrivimi.</p>
 
@@ -648,7 +662,7 @@ main section b{ color:#f7f1de; }
       <li><b>Dati sul cane:</b> razza, età, stato vaccinale, eventuali patologie o terapie in corso, informazioni comportamentali (comprese eventuali segnalazioni di aggressività) che mi comunichi al momento della prenotazione. Non sono dati personali tuoi ai sensi del GDPR, ma li tratto con la stessa attenzione perché servono a organizzare il lavoro in sicurezza.</li>
       <li><b>Dati di pagamento:</b> non conservo numeri di carta o coordinate bancarie: i pagamenti passano dai circuiti che uso di volta in volta (es. bonifico, app di pagamento), che trattano i propri dati secondo le loro informative.</li>
       <li><b>Fotografie e video:</b> raccolti solo con il tuo consenso specifico, come descritto nei <a href="termini.html">termini e condizioni</a>.</li>
-      <li><b>Dati tecnici minimi del sito:</b> il sito non usa cookie di profilazione né strumenti di analisi/statistica di terze parti.</li>
+      <li><b>Dati tecnici minimi del sito:</b> il sito non usa cookie di profilazione. Usa Google Analytics in forma aggregata e anonimizzata, solo se acconsenti — vedi la sezione <a href="#terzi">Servizi di terze parti e cookie</a>.</li>
     </ul>
   </section>
 
@@ -684,7 +698,25 @@ main section b{ color:#f7f1de; }
 
   <section id="terzi">
     <h2>6. Servizi di terze parti e cookie</h2>
-    <p>Questo sito non installa cookie di profilazione né strumenti pubblicitari o di analisi statistica.</p>
+    <p>Uso i cookie in modo minimo e trasparente. Puoi scegliere le tue preferenze in ogni momento dal link <b>&quot;Gestisci cookie&quot;</b> in fondo a ogni pagina.</p>
+    <table>
+      <thead>
+        <tr><th>Categoria</th><th>Cosa fa</th><th>Richiede consenso</th></tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>Necessari</td>
+          <td>Memorizzano solo la tua scelta sui cookie (nel tuo browser, non su un server). Nessun cookie di terze parti.</td>
+          <td>No — servono al funzionamento del sito</td>
+        </tr>
+        <tr>
+          <td>Statistiche</td>
+          <td><b>Google Analytics 4</b>: mi aiuta a capire quali pagine funzionano e da dove arrivano le richieste di prenotazione, in forma aggregata. Attivo solo se acconsenti; l'indirizzo IP viene troncato/anonimizzato. Titolare del trattamento per questo servizio: Google Ireland Limited, con possibile trasferimento di dati verso gli USA in base alle clausole contrattuali standard previste dal GDPR (<a href="https://policies.google.com/privacy" target="_blank" rel="noopener">informativa Google</a>).</td>
+          <td>Sì</td>
+        </tr>
+      </tbody>
+    </table>
+    <p>Puoi revocare il consenso alle statistiche in qualsiasi momento da &quot;Gestisci cookie&quot;: la modifica si applica subito, senza bisogno di ricaricare la pagina.</p>
     <p>Per la grafica del sito uso i caratteri tipografici di <b>Google Fonts</b>: il tuo browser si collega ai server di Google per scaricarli, e questo comporta l'invio del tuo indirizzo IP a Google secondo le sue modalità (<a href="https://policies.google.com/privacy" target="_blank" rel="noopener">informativa Google</a>).</p>
     <p>Per raccogliere e mostrare le recensioni dei clienti uso il widget di <b>Trustpilot</b>: il tuo browser carica uno script dai server di Trustpilot (widget.trustpilot.com), che può installare i propri cookie tecnici necessari al funzionamento del modulo di recensione, secondo le modalità descritte nella loro informativa (<a href="https://legal.trustpilot.com/end-user-privacy-terms" target="_blank" rel="noopener">informativa Trustpilot</a>).</p>
     <p>Il sito rimanda anche a servizi esterni che scegli tu di aprire — ad esempio WhatsApp per scrivermi, o il mio profilo Pawshake: una volta che li apri, si applicano le rispettive informative privacy, non questa.</p>
@@ -733,7 +765,8 @@ main section b{ color:#f7f1de; }
       <a href="contatti.html">Contatti</a> &middot;
       <a href="prenota.html">Prenota</a> &middot;
       <a href="privacy.html">Privacy</a> &middot;
-      <a href="termini.html">Termini</a>
+      <a href="termini.html">Termini</a> &middot;
+      <a href="#" id="gestisci-cookie">Gestisci cookie</a>
     </div>
     <div class="footer-contact">
       <a href="tel:+393334325389">333 432 5389</a> &middot;
