@@ -355,13 +355,16 @@
       prezzo_totale: p.totale,
       acconto_importo: p.acconto,
       saldo_importo: p.saldo
-    }).then(function(r){
+    }).select().single().then(function(r){
       if (r.error) { avviso(r.error.message, 'errore'); return; }
-      avviso('Richiesta inviata. Il pagamento online dell\'acconto arriva a breve: nel frattempo ti contattiamo noi per confermare. Trovi la richiesta nella tua area privata.', 'ok');
-      document.getElementById('form-prenotazione').reset();
-      selDal = null; selAl = null;
-      document.getElementById('riepilogo-prezzo').hidden = true;
-      renderCalendario();
+      avviso('Prenotazione creata: ti portiamo al pagamento dell\'acconto…', 'ok');
+      sb.functions.invoke('crea-pagamento', { body: { prenotazione_id: r.data.id, tipo: 'acconto' } }).then(function(fr){
+        if (fr.error || !fr.data || !fr.data.url) {
+          avviso('Prenotazione creata ma il pagamento non è partito: vai nella tua area privata per riprovare.', 'errore');
+          return;
+        }
+        window.location.href = fr.data.url;
+      });
     });
   });
 })();

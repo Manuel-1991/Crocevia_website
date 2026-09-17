@@ -99,6 +99,8 @@
 
   <p class="premessa">Ciao <strong id="benvenuto-email"></strong>. <button type="button" id="bottone-esci" class="bottone bottone-vuoto">Esci</button></p>
 
+  <p id="messaggio-pagamento" class="avviso" hidden></p>
+
   <section class="sezione-conto">
     <h2>Il tuo profilo</h2>
     <p class="premessa" style="margin-bottom:16px;">Servono tutti questi dati prima di poter prenotare pensione o asilo.</p>
@@ -273,6 +275,7 @@
       nascondi(blocco);
       mostra(area);
       document.getElementById('benvenuto-email').textContent = utenteCorrente.email;
+      mostraEsitoPagamento();
       caricaProfilo();
       caricaAnimali();
       caricaPrenotazioni();
@@ -282,6 +285,29 @@
       nascondi(area);
     }
   });
+
+  function mostraEsitoPagamento(){
+    var parametri = new URLSearchParams(window.location.search);
+    var esito = parametri.get('pagamento');
+    if (!esito) return;
+    var msg = document.getElementById('messaggio-pagamento');
+    if (esito === 'riuscito') {
+      avviso(msg, 'Pagamento ricevuto, grazie! Se la prenotazione qui sotto risulta ancora "in attesa" aggiorna la pagina tra qualche secondo.', 'ok');
+    } else {
+      avviso(msg, 'Pagamento annullato: la prenotazione resta in attesa, puoi riprovare quando vuoi.', 'errore');
+    }
+    window.history.replaceState({}, '', window.location.pathname);
+  }
+
+  function avviaPagamento(prenotazioneId, tipo){
+    sb.functions.invoke('crea-pagamento', { body: { prenotazione_id: prenotazioneId, tipo: tipo } }).then(function(r){
+      if (r.error || !r.data || !r.data.url) {
+        window.alert('Non è stato possibile avviare il pagamento. Riprova tra poco.');
+        return;
+      }
+      window.location.href = r.data.url;
+    });
+  }
 
   // ---------- profilo ----------
 
@@ -424,7 +450,7 @@
 
   function caricaPrenotazioni(){
     sb.from('prenotazioni')
-      .select('id, data_dal, data_al, stato, prezzo_totale, acconto_importo, saldo_importo, animali(nome), servizi(nome)')
+      .select('id, data_dal, data_al, stato, prezzo_totale, acconto_importo, acconto_pagato_il, saldo_importo, saldo_pagato_il, animali(nome), servizi(nome)')
       .eq('cliente_id', utenteCorrente.id)
       .order('data_dal', { ascending: false })
       .then(function(r){
@@ -437,12 +463,26 @@
         r.data.forEach(function(p){
           var card = document.createElement('div');
           card.className = 'card-prenotazione';
+          var azione = '';
+          if (p.stato === 'in_attesa_pagamento' && !p.acconto_pagato_il) {
+            azione = '<button type="button" class="bottone bottone-pieno" data-paga="acconto">Paga acconto ' + euro(p.acconto_importo) + '</button>';
+          } else if (p.stato === 'confermata' && !p.saldo_pagato_il) {
+            azione = '<button type="button" class="bottone bottone-vuoto" data-paga="saldo">Paga saldo ' + euro(p.saldo_importo) + '</button>';
+          }
           card.innerHTML =
             '<div><h3>' + escapeHtml(p.servizi ? p.servizi.nome : '') + ' — ' + escapeHtml(p.animali ? p.animali.nome : '') + '</h3>' +
             '<p>' + escapeHtml(p.data_dal) + ' → ' + escapeHtml(p.data_al) + '</p>' +
-            '<p>Totale ' + euro(p.prezzo_totale) + (p.acconto_importo ? ' · acconto ' + euro(p.acconto_importo) : '') + (p.saldo_importo ? ' · saldo ' + euro(p.saldo_importo) : '') + '</p>' +
+            '<p>Totale ' + euro(p.prezzo_totale) +
+              (p.acconto_importo ? ' · acconto ' + euro(p.acconto_importo) + (p.acconto_pagato_il ? ' (pagato)' : '') : '') +
+              (p.saldo_importo ? ' · saldo ' + euro(p.saldo_importo) + (p.saldo_pagato_il ? ' (pagato)' : '') : '') +
+            '</p>' +
+            (azione ? '<p style="margin-top:10px;">' + azione + '</p>' : '') +
             '</div>' +
             '<span class="badge-stato badge-' + p.stato + '">' + (etichetteStato[p.stato] || p.stato) + '</span>';
+          var bottonePaga = card.querySelector('[data-paga]');
+          if (bottonePaga) {
+            bottonePaga.addEventListener('click', function(){ avviaPagamento(p.id, bottonePaga.getAttribute('data-paga')); });
+          }
           listaPrenotazioni.appendChild(card);
         });
       });

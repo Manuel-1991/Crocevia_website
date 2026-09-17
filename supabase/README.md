@@ -49,10 +49,51 @@ a questo progetto: l'estensione `btree_gist` nello schema `public`
 via RPC (sono funzioni trigger: Postgres impedisce di chiamarle
 direttamente, l'avviso è un falso positivo).
 
-## 4. Prossimi passi
+## 5. Pagamenti (functions/)
+
+Due Edge Function, già distribuite al progetto live:
+
+- **`crea-pagamento`** — chiamata dal sito (autenticata) quando un cliente
+  clicca "Paga acconto" o "Paga saldo": legge la prenotazione con il token
+  dell'utente stesso (le RLS impediscono di pagare prenotazioni altrui),
+  crea una sessione di pagamento Stripe Checkout e la registra in
+  `pagamenti` come "in attesa". Torna l'URL a cui il sito reindirizza.
+- **`stripe-webhook`** — chiamata da Stripe quando il pagamento va a buon
+  fine: verifica la firma con `STRIPE_WEBHOOK_SECRET`, poi con la chiave
+  service role segna il pagamento "pagato" e la prenotazione "confermata"
+  (acconto) o aggiorna `saldo_pagato_il` (saldo).
+
+### Due secret da impostare (una tantum, Dashboard Supabase → Edge
+Functions → Secrets) — nessun redeploy necessario dopo averli salvati:
+
+| Secret | Valore |
+|---|---|
+| `STRIPE_SECRET_KEY` | la chiave `sk_test_...` che mi hai già dato |
+| `STRIPE_WEBHOOK_SECRET` | vedi sotto — arriva da Stripe, non da me |
+
+### Un passaggio manuale su Stripe (non posso farlo io: il proxy di rete di
+questo ambiente blocca le chiamate dirette a api.stripe.com)
+
+Stripe Dashboard (modalità **test**, dato che le chiavi sono `pk_test_`/
+`sk_test_`) → **Developer → Webhooks → Add endpoint**:
+- Endpoint URL: `https://gcjxhgvghncjjvcnacbv.supabase.co/functions/v1/stripe-webhook`
+- Evento da inviare: `checkout.session.completed`
+- Dopo la creazione, copia il "Signing secret" (`whsec_...`) e mettilo come
+  `STRIPE_WEBHOOK_SECRET` nel punto sopra.
+
+Per testare i pagamenti in modalità test si usano le carte di prova di
+Stripe (es. `4242 4242 4242 4242`, qualsiasi data futura e CVC), nessun
+addebito reale.
+
+## 6. Prossimi passi
 
 1. ~~Eseguire `schema.sql`~~ ✓
 2. ~~Popolare la tabella `servizi`~~ ✓
 3. ~~Login/registrazione + area privata cliente~~ ✓
 4. ~~Calendario disponibilità pensione/asilo~~ ✓
-5. Edge Function `crea-prenotazione` + `stripe-webhook` (pagamento acconto)
+5. ~~Edge Function `crea-pagamento` + `stripe-webhook`~~ ✓ (mancano solo i
+   due secret e il webhook Stripe, vedi sopra)
+6. Pagina per lo staff (addetto/admin): vedere le richieste in arrivo,
+   confermarle, gestire i saldi
+7. Scadenza automatica delle prenotazioni "in attesa di pagamento" mai
+   pagate, per non tenere bloccato un posto all'infinito
