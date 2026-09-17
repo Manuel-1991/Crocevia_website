@@ -41,6 +41,13 @@ un'installazione pulita da zero.
 - `004_commento_vista_disponibilita.sql` — documenta nel database perché
   `disponibilita_pensione_asilo` bypassa volutamente le RLS di
   `prenotazioni` (serve al calendario condiviso, non è un errore)
+- `005_scadenza_automatica_prenotazioni.sql` — annulla (pg_cron) le
+  prenotazioni "in attesa di pagamento" mai pagate, così non bloccano un
+  posto all'infinito
+- `006_staff_puo_creare_prenotazioni_manuali.sql` — permette a
+  addetto/admin di creare una prenotazione per conto di un cliente già
+  registrato (chi telefona invece di usare il sito)
+- `007_scadenza_15_minuti.sql` — accorcia la scadenza da 30 a 15 minuti
 
 Avvisi di sicurezza rivisti e lasciati come sono, perché non applicabili
 a questo progetto: l'estensione `btree_gist` nello schema `public`
@@ -68,14 +75,10 @@ L'endpoint webhook su Stripe (modalità test, account sandbox
 `https://gcjxhgvghncjjvcnacbv.supabase.co/functions/v1/stripe-webhook`,
 evento `checkout.session.completed`.
 
-### Due secret restano da impostare a mano (Supabase non espone questa
-scrittura via API/MCP): Dashboard Supabase → Project Settings → Edge
-Functions → Secrets — nessun redeploy necessario dopo averli salvati:
-
-| Secret | Valore |
-|---|---|
-| `STRIPE_SECRET_KEY` | la chiave `sk_test_...` già data in chat |
-| `STRIPE_WEBHOOK_SECRET` | il valore `whsec_...` dato in chat quando l'endpoint è stato creato (mai scritto qui: è un segreto, non appartiene al repository) |
+I due secret (`STRIPE_SECRET_KEY`, `STRIPE_WEBHOOK_SECRET`) sono già
+impostati su Supabase. Flusso testato end-to-end (vedi cronologia della
+conversazione): registrazione, prenotazione, pagamento, webhook di
+conferma, tutto verificato in modalità test/sandbox.
 
 Per testare i pagamenti in modalità test si usano le carte di prova di
 Stripe (es. `4242 4242 4242 4242`, qualsiasi data futura e CVC), nessun
@@ -87,9 +90,16 @@ addebito reale.
 2. ~~Popolare la tabella `servizi`~~ ✓
 3. ~~Login/registrazione + area privata cliente~~ ✓
 4. ~~Calendario disponibilità pensione/asilo~~ ✓
-5. ~~Edge Function `crea-pagamento` + `stripe-webhook`~~ ✓ (mancano solo i
-   due secret e il webhook Stripe, vedi sopra)
-6. Pagina per lo staff (addetto/admin): vedere le richieste in arrivo,
-   confermarle, gestire i saldi
-7. Scadenza automatica delle prenotazioni "in attesa di pagamento" mai
-   pagate, per non tenere bloccato un posto all'infinito
+5. ~~Edge Function `crea-pagamento` + `stripe-webhook`~~ ✓
+6. ~~Pagina staff (addetto/admin)~~ ✓
+7. ~~Scadenza automatica delle prenotazioni non pagate~~ ✓ (15 minuti)
+8. Provider email per Supabase Auth (Resend o simile) — bloccato: serve
+   un account esterno e una configurazione da dashboard che non è
+   raggiungibile dagli strumenti di questa sessione
+9. ~~Termini e condizioni riconciliati col sistema di pagamento reale~~ ✓
+10. ~~Prenotazione manuale da parte dello staff~~ ✓
+
+Restano, prima di andare live con pagamenti veri: cambiare le chiavi
+Stripe da test a live (con nuovo webhook in modalità live), verificare
+l'attivazione completa dell'account Stripe per gli incassi reali, e un
+vero test con carta reale a importo basso.
