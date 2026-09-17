@@ -365,6 +365,19 @@ main section p{ margin: 0 0 11px; }
 main section ul, main section ol{ margin: 0 0 11px; padding-left:20px; color: var(--ink); }
 main section li{ margin-bottom:6px; }
 main section b{ color:var(--ink-strong); }
+main section table{
+  width:100%; border-collapse:collapse; margin: 0 0 14px; font-size:14.5px;
+  border:1px solid var(--border-soft); border-radius:4px; overflow:hidden;
+}
+main section th, main section td{
+  text-align:left; vertical-align:top; padding:10px 12px;
+  border-bottom:1px solid var(--border-soft); color: var(--ink);
+}
+main section th{
+  font-family:"Cinzel", serif; font-size:11px; letter-spacing:0.06em;
+  text-transform:uppercase; color: var(--bandana); background: var(--surface-soft);
+}
+main section tr:last-child td{ border-bottom:none; }
 .riquadro{
   border:1px solid var(--border-soft); border-left:3px solid var(--gold);
   background: var(--gold-tint-soft); border-radius:4px;
