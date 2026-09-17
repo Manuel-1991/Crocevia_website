@@ -576,7 +576,7 @@
 
   function caricaPrenotazioni(){
     sb.from('prenotazioni')
-      .select('id, data_dal, data_al, stato, prezzo_totale, acconto_importo, acconto_pagato_il, saldo_importo, saldo_pagato_il, animali(nome), servizi(nome)')
+      .select('id, data_dal, data_al, stato, prezzo_totale, acconto_importo, acconto_pagato_il, saldo_importo, saldo_pagato_il, pappa_fornita, animali(nome), servizi(nome)')
       .eq('cliente_id', utenteCorrente.id)
       .order('data_dal', { ascending: false })
       .then(function(r){
@@ -597,7 +597,7 @@
           }
           card.innerHTML =
             '<div><h3>' + escapeHtml(p.servizi ? p.servizi.nome : '') + ' — ' + escapeHtml(p.animali ? p.animali.nome : '') + '</h3>' +
-            '<p>' + escapeHtml(p.data_dal) + ' → ' + escapeHtml(p.data_al) + '</p>' +
+            '<p>' + escapeHtml(p.data_dal) + ' → ' + escapeHtml(p.data_al) + (p.pappa_fornita ? ' · pappa fornita' : '') + '</p>' +
             '<p>Totale ' + euro(p.prezzo_totale) +
               (p.acconto_importo ? ' · acconto ' + euro(p.acconto_importo) + (p.acconto_pagato_il ? ' (pagato)' : '') : '') +
               (p.saldo_importo ? ' · saldo ' + euro(p.saldo_importo) + (p.saldo_pagato_il ? ' (pagato)' : '') : '') +

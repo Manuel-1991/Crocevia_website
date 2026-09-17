@@ -80,7 +80,7 @@ Deno.serve(async (req) => {
     const { data: p, error } = await supabase
       .from("prenotazioni")
       .select(
-        "id, data_dal, data_al, prezzo_totale, acconto_importo, saldo_importo, evento_calendario_id, animali(nome), servizi(nome), profili(nome,cognome,telefono,email)",
+        "id, data_dal, data_al, prezzo_totale, acconto_importo, saldo_importo, pappa_fornita, evento_calendario_id, animali(nome), servizi(nome), profili(nome,cognome,telefono,email)",
       )
       .eq("id", prenotazione_id)
       .single();
@@ -102,6 +102,7 @@ Deno.serve(async (req) => {
         "Cliente: " + nomeCliente +
         (cliente.telefono ? "\nTelefono: " + cliente.telefono : "") +
         (cliente.email ? "\nEmail: " + cliente.email : "") +
+        (p.pappa_fornita ? "\nPappa fornita: sì" : "") +
         "\nTotale: " + p.prezzo_totale + " € · acconto: " + p.acconto_importo + " € · saldo: " + p.saldo_importo + " €",
       start: { date: p.data_dal },
       end: { date: aggiungiGiorno(p.data_al) },

@@ -101,8 +101,13 @@
         </div>
       </div>
 
+      <div class="campo">
+        <label class="checkriga"><input type="checkbox" id="pappa-fornita"> Pappa fornita da me (+5 €/notte, per tutto il soggiorno) — si salda alla fine, non fa parte dell'acconto</label>
+      </div>
+
       <div id="riepilogo-prezzo" class="riepilogo-prezzo" hidden>
         <p id="riepilogo-notti"></p>
+        <p id="riepilogo-pappa" hidden></p>
         <p class="totale" id="riepilogo-totale"></p>
         <p id="riepilogo-acconto"></p>
         <p id="riepilogo-saldo"></p>
@@ -300,12 +305,15 @@
 
   // ---------- prezzo ----------
 
-  function calcolaPrezzo(prezzoNotte, dal, al){
+  function calcolaPrezzo(prezzoNotte, dal, al, pappaFornita){
     var notti = Math.round((dataLocale(al) - dataLocale(dal)) / 86400000) + 1;
     var moltiplicatore = notti >= 30 ? 0.8 : (notti >= 7 ? 0.9 : 1);
-    var totale = Math.round(notti * prezzoNotte * moltiplicatore * 100) / 100;
-    var acconto = Math.round(totale * 10) / 100;
-    return { notti: notti, totale: totale, acconto: acconto, saldo: Math.round((totale - acconto) * 100) / 100 };
+    var base = Math.round(notti * prezzoNotte * moltiplicatore * 100) / 100;
+    var pappa = pappaFornita ? Math.round(notti * 5 * 100) / 100 : 0;
+    var acconto = Math.round(base * 10) / 100; // solo sul soggiorno, mai sulla pappa
+    var totale = Math.round((base + pappa) * 100) / 100;
+    var saldo = Math.round((base - acconto + pappa) * 100) / 100;
+    return { notti: notti, totale: totale, acconto: acconto, saldo: saldo, pappa: pappa };
   }
 
   function euro(n){ return Number(n).toLocaleString('it-IT', { style: 'currency', currency: 'EUR' }); }
@@ -318,15 +326,20 @@
     var servizio = servizi.filter(function(s){ return s.id === servizioId; })[0];
     if (!dal || !al || !servizio || al < dal) { box.hidden = true; return; }
 
-    var p = calcolaPrezzo(Number(servizio.prezzo), dal, al);
+    var pappaFornita = document.getElementById('pappa-fornita').checked;
+    var p = calcolaPrezzo(Number(servizio.prezzo), dal, al, pappaFornita);
     document.getElementById('riepilogo-notti').textContent = p.notti + (p.notti === 1 ? ' notte' : ' notti');
+    var elPappa = document.getElementById('riepilogo-pappa');
+    if (pappaFornita) { elPappa.textContent = 'Pappa fornita: ' + euro(p.pappa) + ' (nel saldo)'; elPappa.hidden = false; }
+    else { elPappa.hidden = true; }
     document.getElementById('riepilogo-totale').textContent = 'Totale: ' + euro(p.totale);
-    document.getElementById('riepilogo-acconto').textContent = 'Acconto ora (10%, non rimborsabile): ' + euro(p.acconto);
+    document.getElementById('riepilogo-acconto').textContent = 'Acconto ora (10% del soggiorno, non rimborsabile): ' + euro(p.acconto);
     document.getElementById('riepilogo-saldo').textContent = 'Saldo alla fine del soggiorno: ' + euro(p.saldo);
     box.hidden = false;
   }
 
   document.getElementById('select-servizio').addEventListener('change', aggiornaRiepilogo);
+  document.getElementById('pappa-fornita').addEventListener('change', aggiornaRiepilogo);
 
   // ---------- invio ----------
 
@@ -339,11 +352,13 @@
     var dal = document.getElementById('data-dal').value;
     var al = document.getElementById('data-al').value;
 
+    var pappaFornita = document.getElementById('pappa-fornita').checked;
+
     if (!animaleId) { avviso('Aggiungi prima un animale nella tua area privata.', 'errore'); return; }
     if (!dal || !al || al < dal) { avviso('Scegli un intervallo di date valido.', 'errore'); return; }
 
     var servizio = servizi.filter(function(s){ return s.id === servizioId; })[0];
-    var p = calcolaPrezzo(Number(servizio.prezzo), dal, al);
+    var p = calcolaPrezzo(Number(servizio.prezzo), dal, al, pappaFornita);
 
     sb.from('prenotazioni').insert({
       cliente_id: utenteCorrente.id,
@@ -352,6 +367,7 @@
       data_dal: dal,
       data_al: al,
       stato: 'in_attesa_pagamento',
+      pappa_fornita: pappaFornita,
       prezzo_totale: p.totale,
       acconto_importo: p.acconto,
       saldo_importo: p.saldo

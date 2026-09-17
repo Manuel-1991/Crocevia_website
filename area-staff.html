@@ -93,6 +93,9 @@
           </div>
         </div>
         <div class="campo">
+          <label class="checkriga"><input type="checkbox" id="manuale-pappa-fornita"> Pappa fornita (+5 €/notte, per tutto il soggiorno, nel saldo)</label>
+        </div>
+        <div class="campo">
           <label class="checkriga"><input type="checkbox" id="manuale-acconto-ricevuto"> Acconto già ricevuto (contanti/bonifico) — segna la prenotazione come confermata</label>
         </div>
         <div class="campo">
@@ -184,7 +187,7 @@
 
   function caricaPrenotazioniStaff(){
     sb.from('prenotazioni')
-      .select('id, data_dal, data_al, stato, prezzo_totale, acconto_importo, acconto_pagato_il, saldo_importo, saldo_pagato_il, creato_il, animali(nome), servizi(nome), profili(nome,cognome,telefono,email)')
+      .select('id, data_dal, data_al, stato, prezzo_totale, acconto_importo, acconto_pagato_il, saldo_importo, saldo_pagato_il, pappa_fornita, pappa_importo, creato_il, animali(nome), servizi(nome), profili(nome,cognome,telefono,email)')
       .order('data_dal')
       .then(function(r){
         if (r.error) { avviso(messaggio, r.error.message, 'errore'); return; }
@@ -236,7 +239,7 @@
           card.innerHTML =
             '<div><h3>' + (idNuove[p.id] ? '<span class="badge-stato badge-nuova" style="margin-right:6px;">Nuova</span>' : '') + escapeHtml(p.servizi ? p.servizi.nome : '') + ' — ' + escapeHtml(p.animali ? p.animali.nome : '') + '</h3>' +
             '<p>' + escapeHtml(cliente.nome || '') + ' ' + escapeHtml(cliente.cognome || '') + (contatto ? ' · ' + escapeHtml(contatto) : '') + '</p>' +
-            '<p>' + escapeHtml(p.data_dal) + ' → ' + escapeHtml(p.data_al) + '</p>' +
+            '<p>' + escapeHtml(p.data_dal) + ' → ' + escapeHtml(p.data_al) + (p.pappa_fornita ? ' · <b>pappa fornita</b>' : '') + '</p>' +
             '<p>Totale ' + euro(p.prezzo_totale) +
               (p.acconto_importo ? ' · acconto ' + euro(p.acconto_importo) + (p.acconto_pagato_il ? ' (pagato)' : ' (da pagare)') : '') +
               (p.saldo_importo ? ' · saldo ' + euro(p.saldo_importo) + (p.saldo_pagato_il ? ' (pagato)' : ' (da pagare)') : '') +
@@ -316,12 +319,15 @@
 
   function dataLocale(s){ return new Date(s + 'T00:00:00'); }
 
-  function calcolaPrezzoManuale(prezzoNotte, dal, al){
+  function calcolaPrezzoManuale(prezzoNotte, dal, al, pappaFornita){
     var notti = Math.round((dataLocale(al) - dataLocale(dal)) / 86400000) + 1;
     var moltiplicatore = notti >= 30 ? 0.8 : (notti >= 7 ? 0.9 : 1);
-    var totale = Math.round(notti * prezzoNotte * moltiplicatore * 100) / 100;
-    var acconto = Math.round(totale * 10) / 100;
-    return { notti: notti, totale: totale, acconto: acconto, saldo: Math.round((totale - acconto) * 100) / 100 };
+    var base = Math.round(notti * prezzoNotte * moltiplicatore * 100) / 100;
+    var pappa = pappaFornita ? Math.round(notti * 5 * 100) / 100 : 0;
+    var acconto = Math.round(base * 10) / 100;
+    var totale = Math.round((base + pappa) * 100) / 100;
+    var saldo = Math.round((base - acconto + pappa) * 100) / 100;
+    return { notti: notti, totale: totale, acconto: acconto, saldo: saldo, pappa: pappa };
   }
 
   function caricaServiziManuale(){
@@ -340,10 +346,13 @@
     var servizio = serviziManuale.filter(function(s){ return s.id === servizioId; })[0];
     var box = document.getElementById('manuale-riepilogo');
     if (!dal || !al || !servizio || al < dal) { box.textContent = ''; return; }
-    var p = calcolaPrezzoManuale(Number(servizio.prezzo), dal, al);
-    box.textContent = p.notti + (p.notti === 1 ? ' notte' : ' notti') + ' · totale ' + euro(p.totale) + ' · acconto ' + euro(p.acconto) + ' · saldo ' + euro(p.saldo);
+    var pappaFornita = document.getElementById('manuale-pappa-fornita').checked;
+    var p = calcolaPrezzoManuale(Number(servizio.prezzo), dal, al, pappaFornita);
+    box.textContent = p.notti + (p.notti === 1 ? ' notte' : ' notti') +
+      (pappaFornita ? ' · pappa ' + euro(p.pappa) + ' (nel saldo)' : '') +
+      ' · totale ' + euro(p.totale) + ' · acconto ' + euro(p.acconto) + ' · saldo ' + euro(p.saldo);
   }
-  ['manuale-dal', 'manuale-al', 'manuale-servizio'].forEach(function(id){
+  ['manuale-dal', 'manuale-al', 'manuale-servizio', 'manuale-pappa-fornita'].forEach(function(id){
     document.getElementById(id).addEventListener('change', aggiornaRiepilogoManuale);
   });
 
@@ -388,11 +397,12 @@
     var al = document.getElementById('manuale-al').value;
     var accontoRicevuto = document.getElementById('manuale-acconto-ricevuto').checked;
     var saltaCalendario = document.getElementById('manuale-salta-calendario').checked;
+    var pappaFornita = document.getElementById('manuale-pappa-fornita').checked;
 
     if (!dal || !al || al < dal) { avviso(messaggioManuale, 'Scegli un intervallo di date valido.', 'errore'); return; }
 
     var servizio = serviziManuale.filter(function(s){ return s.id === servizioId; })[0];
-    var p = calcolaPrezzoManuale(Number(servizio.prezzo), dal, al);
+    var p = calcolaPrezzoManuale(Number(servizio.prezzo), dal, al, pappaFornita);
 
     var dati = {
       cliente_id: clienteTrovato.id,
@@ -400,6 +410,7 @@
       servizio_id: servizioId,
       data_dal: dal,
       data_al: al,
+      pappa_fornita: pappaFornita,
       prezzo_totale: p.totale,
       acconto_importo: p.acconto,
       saldo_importo: p.saldo,
