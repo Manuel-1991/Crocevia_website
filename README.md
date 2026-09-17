@@ -1,7 +1,7 @@
 # Crocevia — sito
 
 Sito di **Crocevia** — educazione cinofila, asilo diurno, pensione e passeggiate
-di gruppo. Manuel Pegoraro, educatore cinofilo FICSS.
+di gruppo. Manuel, educatore cinofilo FICSS.
 Settimo Milanese (MI) · campo e bosco sul Lago Maggiore.
 
 Dieci pagine HTML statiche, senza framework e senza backend: si aprono anche
@@ -109,4 +109,4 @@ Testi lasciati come sono, sono decisioni da prendere:
 
 ---
 
-© Crocevia — Manuel Pegoraro · P.IVA 14868890964
+© Crocevia — Manuel · P.IVA 14868890964
