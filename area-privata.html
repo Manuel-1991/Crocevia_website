@@ -72,6 +72,19 @@
       </div>
     </fieldset>
     <button type="submit" class="bottone bottone-pieno bottone-full">Accedi</button>
+    <p style="margin-top:10px;"><a href="#" id="link-password-dimenticata">Password dimenticata?</a></p>
+  </form>
+
+  <form id="form-recupero" hidden>
+    <fieldset>
+      <legend>Recupera password</legend>
+      <div class="campo">
+        <label for="recupero-email">Email *</label>
+        <input type="email" id="recupero-email" required autocomplete="email">
+      </div>
+    </fieldset>
+    <button type="submit" class="bottone bottone-pieno bottone-full">Invia link di recupero</button>
+    <p style="margin-top:10px;"><a href="#" id="annulla-recupero">Torna al login</a></p>
   </form>
 
   <form id="form-registrazione" hidden>
@@ -93,6 +106,25 @@
     <button type="submit" class="bottone bottone-pieno bottone-full">Crea account</button>
   </form>
 
+</div>
+
+<div id="pannello-nuova-password" hidden>
+  <p class="premessa">Hai seguito il link di recupero: imposta la tua nuova password.</p>
+  <p id="messaggio-nuova-password" class="avviso" hidden></p>
+  <form id="form-nuova-password">
+    <fieldset>
+      <legend>Nuova password</legend>
+      <div class="campo">
+        <label for="nuova-password">Nuova password * (almeno 6 caratteri)</label>
+        <input type="password" id="nuova-password" required minlength="6" autocomplete="new-password">
+      </div>
+      <div class="campo">
+        <label for="nuova-password-conferma">Conferma nuova password *</label>
+        <input type="password" id="nuova-password-conferma" required minlength="6" autocomplete="new-password">
+      </div>
+    </fieldset>
+    <button type="submit" class="bottone bottone-pieno bottone-full">Salva nuova password</button>
+  </form>
 </div>
 
 <div id="area-cliente" hidden>
@@ -137,6 +169,24 @@
         <input type="text" id="profilo-codice-fiscale" required>
       </div>
       <button type="submit" class="bottone bottone-pieno">Salva profilo</button>
+    </form>
+  </section>
+
+  <section class="sezione-conto">
+    <h2>Cambia password</h2>
+    <p id="messaggio-cambio-password" class="avviso" hidden></p>
+    <form id="form-cambio-password">
+      <div class="riga riga-2">
+        <div class="campo">
+          <label for="cambio-password-nuova">Nuova password * (almeno 6 caratteri)</label>
+          <input type="password" id="cambio-password-nuova" required minlength="6" autocomplete="new-password">
+        </div>
+        <div class="campo">
+          <label for="cambio-password-conferma">Conferma *</label>
+          <input type="password" id="cambio-password-conferma" required minlength="6" autocomplete="new-password">
+        </div>
+      </div>
+      <button type="submit" class="bottone bottone-pieno">Aggiorna password</button>
     </form>
   </section>
 
@@ -214,6 +264,8 @@
   var tabRegistrati = document.getElementById('tab-registrati');
   var formLogin = document.getElementById('form-login');
   var formRegistrazione = document.getElementById('form-registrazione');
+  var formRecupero = document.getElementById('form-recupero');
+  var pannelloNuovaPassword = document.getElementById('pannello-nuova-password');
   var messaggioAuth = document.getElementById('messaggio-auth');
 
   function mostra(el){ el.hidden = false; }
@@ -228,14 +280,38 @@
   tabAccedi.addEventListener('click', function(){
     tabAccedi.classList.add('attiva');
     tabRegistrati.classList.remove('attiva');
-    mostra(formLogin); nascondi(formRegistrazione);
+    mostra(formLogin); nascondi(formRegistrazione); nascondi(formRecupero);
     nascondi(messaggioAuth);
   });
   tabRegistrati.addEventListener('click', function(){
     tabRegistrati.classList.add('attiva');
     tabAccedi.classList.remove('attiva');
-    mostra(formRegistrazione); nascondi(formLogin);
+    mostra(formRegistrazione); nascondi(formLogin); nascondi(formRecupero);
     nascondi(messaggioAuth);
+  });
+
+  document.getElementById('link-password-dimenticata').addEventListener('click', function(e){
+    e.preventDefault();
+    nascondi(formLogin); nascondi(formRegistrazione); mostra(formRecupero);
+    nascondi(messaggioAuth);
+  });
+  document.getElementById('annulla-recupero').addEventListener('click', function(e){
+    e.preventDefault();
+    nascondi(formRecupero); mostra(formLogin);
+    nascondi(messaggioAuth);
+  });
+
+  formRecupero.addEventListener('submit', function(e){
+    e.preventDefault();
+    nascondi(messaggioAuth);
+    var email = document.getElementById('recupero-email').value.trim();
+    sb.auth.resetPasswordForEmail(email, {
+      redirectTo: window.location.origin + '/area-privata.html'
+    }).then(function(r){
+      if (r.error) { avviso(messaggioAuth, r.error.message, 'errore'); return; }
+      avviso(messaggioAuth, 'Se l\'indirizzo è registrato, ti abbiamo inviato un\'email con il link per reimpostare la password.', 'ok');
+      formRecupero.reset();
+    });
   });
 
   formLogin.addEventListener('submit', function(e){
@@ -272,6 +348,14 @@
   });
 
   sb.auth.onAuthStateChange(function(evento, sessione){
+    if (evento === 'PASSWORD_RECOVERY') {
+      nascondi(blocco);
+      nascondi(area);
+      mostra(pannelloNuovaPassword);
+      return;
+    }
+    if (!pannelloNuovaPassword.hidden) return; // non interrompere il recupero in corso
+
     if (sessione && sessione.user) {
       utenteCorrente = sessione.user;
       nascondi(blocco);
@@ -286,6 +370,45 @@
       mostra(blocco);
       nascondi(area);
     }
+  });
+
+  document.getElementById('form-nuova-password').addEventListener('submit', function(e){
+    e.preventDefault();
+    var msg = document.getElementById('messaggio-nuova-password');
+    msg.hidden = true;
+    var nuova = document.getElementById('nuova-password').value;
+    var conferma = document.getElementById('nuova-password-conferma').value;
+    if (nuova !== conferma) { avviso(msg, 'Le due password non coincidono.', 'errore'); return; }
+    sb.auth.updateUser({ password: nuova }).then(function(r){
+      if (r.error) { avviso(msg, r.error.message, 'errore'); return; }
+      nascondi(pannelloNuovaPassword);
+      window.history.replaceState({}, '', window.location.pathname);
+      sb.auth.getSession().then(function(s){
+        if (s.data.session) {
+          utenteCorrente = s.data.session.user;
+          nascondi(blocco);
+          mostra(area);
+          document.getElementById('benvenuto-email').textContent = utenteCorrente.email;
+          caricaProfilo();
+          caricaAnimali();
+          caricaPrenotazioni();
+        }
+      });
+    });
+  });
+
+  document.getElementById('form-cambio-password').addEventListener('submit', function(e){
+    e.preventDefault();
+    var msg = document.getElementById('messaggio-cambio-password');
+    msg.hidden = true;
+    var nuova = document.getElementById('cambio-password-nuova').value;
+    var conferma = document.getElementById('cambio-password-conferma').value;
+    if (nuova !== conferma) { avviso(msg, 'Le due password non coincidono.', 'errore'); return; }
+    sb.auth.updateUser({ password: nuova }).then(function(r){
+      if (r.error) { avviso(msg, r.error.message, 'errore'); return; }
+      avviso(msg, 'Password aggiornata.', 'ok');
+      document.getElementById('form-cambio-password').reset();
+    });
   });
 
   function mostraEsitoPagamento(){
