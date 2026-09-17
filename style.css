@@ -193,6 +193,15 @@ h1,h2,h3{ font-family:"Cinzel", Georgia, serif; font-weight:700; color:var(--ink
 .crumb a{ color: var(--bandana); border-bottom: 1px solid transparent; }
 .crumb a:hover{ border-bottom-color: var(--bandana); }
 .logo-nav{ display:block; height:44px; width:auto; border-radius:5px; }
+
+/* ---------- hero a piena larghezza (home) ---------- */
+.hero-band{
+  background:
+    radial-gradient(ellipse 900px 460px at 50% -12%, var(--gold-tint-soft), transparent 70%),
+    var(--surface-soft);
+  border-bottom:1px solid var(--border-soft);
+  padding: 50px 24px 54px;
+}
 .hero-badge{ display:inline-block; margin:0 0 20px; }
 .logo-hero{ display:block; width:220px; height:auto; margin:0 auto; }
 .page-head{ text-align:center; max-width:600px; margin:0 auto 42px; }
@@ -217,6 +226,23 @@ h1.left{ text-align:left; }
 .hero-sub{
   text-align:center; font-style:italic; font-size:15.5px; color: var(--ink-muted);
   margin: 0 0 40px;
+}
+
+/* ---------- comparsa allo scroll ---------- */
+/* .is-visible viene aggiunta da main.js quando l'elemento entra nello
+   schermo (IntersectionObserver). Se JS non parte o l'utente ha chiesto
+   meno movimento, il CSS da solo mostra tutto normalmente: niente resta
+   invisibile per un errore di script. */
+.reveal{
+  opacity:0; transform: translateY(18px);
+  transition: opacity .6s ease, transform .6s ease;
+}
+.reveal.is-visible{ opacity:1; transform:none; }
+.cta-row > .reveal:nth-child(2), .loc-row > .reveal:nth-child(2), .bio-row > .reveal:nth-child(2){
+  transition-delay: .1s;
+}
+@media (prefers-reduced-motion: reduce){
+  .reveal{ opacity:1; transform:none; transition:none; }
 }
 
 .cta-row{ display:flex; gap:22px; margin: 0 0 46px; }
@@ -258,16 +284,34 @@ h1.left{ text-align:left; }
 .price{ font-style:normal; font-weight:600; }
 .section.edu .price, .section.pen .price{ color: var(--bordeaux); }
 
-/* ---------- teaser / plain sections ---------- */
+/* ---------- teaser (media + testo) ---------- */
 .teaser{
-  display:block; border:1px solid var(--border-soft); background: var(--surface-soft);
-  border-radius:4px; padding: 24px 26px; margin-bottom: 18px;
+  display:grid; grid-template-columns: 128px 1fr; align-items:center; gap:22px;
+  border:1px solid var(--border-soft); background: var(--surface-soft);
+  border-radius:4px; padding: 22px 26px; margin-bottom: 18px;
   transition: transform .15s ease, border-color .15s ease;
 }
 .teaser:hover{ transform: translateY(-2px); border-color: var(--gold); }
+/* la seconda card inverte l'ordine: testo/foto alternati, non una colonna piatta */
+.teaser--inversa{ grid-template-columns: 1fr 128px; }
+.teaser--inversa .teaser-figura{ order:2; }
+.teaser-figura{
+  width:128px; height:128px; border-radius:4px; flex:none;
+  display:flex; align-items:center; justify-content:center;
+  background: var(--gold-tint-soft); border:1px solid var(--border-soft);
+}
+/* segnaposto in attesa di una foto vera: basta sostituire il contenuto
+   di .teaser-figura con un <img src="assets/img/..."> quando disponibile */
+.teaser-figura svg{ width:46px; height:46px; color: var(--ink-muted); opacity:.6; }
+.teaser-corpo{ min-width:0; }
 .teaser h3{ font-size:13.5px; letter-spacing:0.08em; margin-bottom:9px; color: var(--ink); text-transform:uppercase; }
 .teaser p{ font-style:italic; color: var(--ink-muted); margin:0; }
 .teaser .more{ display:inline-block; margin-top:10px; font-style:normal; font-family:"Cinzel", serif; font-size:11.5px; letter-spacing:0.08em; text-transform:uppercase; }
+@media (max-width:600px){
+  .teaser, .teaser--inversa{ grid-template-columns: 1fr; text-align:center; }
+  .teaser--inversa .teaser-figura{ order:0; }
+  .teaser-figura{ width:100%; height:110px; margin:0 auto; }
+}
 
 /* ---------- dividers ---------- */
 .divider{ display:flex; align-items:center; gap:16px; margin: 46px 0 26px; }
