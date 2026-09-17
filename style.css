@@ -25,6 +25,82 @@
   --verde-tint: rgba(129,82,42,0.18);
   /* bandana (oliva) — eyebrow, breadcrumb, etichette */
   --bandana:#82864d;
+  /* colori che nel tema chiaro cambiano ruolo (testo su pulsanti pieni,
+     intestazione, campi modulo): qui i valori per la taverna in notturna */
+  --ink-strong:#f7f1de;
+  --on-accent:#1a1005;
+  --campo-bg:#1b2a20;
+  --placeholder:#7f8d80;
+  --header-bg: rgba(36,42,27,0.92);
+  --header-bg-solid:#1b2a20;
+  --menu-bg:#16241b;
+}
+
+/* ==================================================================
+   TEMA CHIARO — la stessa taverna, vista di giorno (pergamena).
+   Si attiva da solo se il sistema è impostato chiaro (a meno che
+   l'utente non forzi lo scuro dall'interruttore in testata), oppure
+   sempre quando l'utente lo forza esplicitamente.
+   ================================================================== */
+@media (prefers-color-scheme: light){
+  :root:not([data-tema="scuro"]){
+    color-scheme: light;
+    --bg:#f2e6c4;
+    --bg-radial: radial-gradient(ellipse 1100px 620px at 50% -12%, #fbf3de 0%, #f2e6c4 55%);
+    --surface:#fdf6e6;
+    --surface-soft: rgba(253,246,230,0.7);
+    --border: rgba(59,42,26,0.28);
+    --border-soft: rgba(59,42,26,0.14);
+    --ink:#2e2013;
+    --ink-muted:#6b5843;
+    --gold:#8a4f1d;
+    --gold-tint: rgba(138,79,29,0.16);
+    --gold-tint-soft: rgba(138,79,29,0.09);
+    --bordeaux:#7d5b12;
+    --bordeaux-tint: rgba(125,91,18,0.16);
+    --bordeaux-tint-soft: rgba(125,91,18,0.09);
+    --terracotta:#8a4f1d;
+    --verde:#6b3d1c;
+    --verde-light:#5a3a1f;
+    --verde-tint: rgba(107,68,35,0.16);
+    --bandana:#5b5e28;
+    --ink-strong:#1c1309;
+    --on-accent:#fbf3de;
+    --campo-bg:#fffdf6;
+    --placeholder:#9c8a6e;
+    --header-bg: rgba(253,246,230,0.92);
+    --header-bg-solid:#fdf6e6;
+    --menu-bg:#fbf1da;
+  }
+}
+:root[data-tema="chiaro"]{
+  color-scheme: light;
+  --bg:#f2e6c4;
+  --bg-radial: radial-gradient(ellipse 1100px 620px at 50% -12%, #fbf3de 0%, #f2e6c4 55%);
+  --surface:#fdf6e6;
+  --surface-soft: rgba(253,246,230,0.7);
+  --border: rgba(59,42,26,0.28);
+  --border-soft: rgba(59,42,26,0.14);
+  --ink:#2e2013;
+  --ink-muted:#6b5843;
+  --gold:#8a4f1d;
+  --gold-tint: rgba(138,79,29,0.16);
+  --gold-tint-soft: rgba(138,79,29,0.09);
+  --bordeaux:#7d5b12;
+  --bordeaux-tint: rgba(125,91,18,0.16);
+  --bordeaux-tint-soft: rgba(125,91,18,0.09);
+  --terracotta:#8a4f1d;
+  --verde:#6b3d1c;
+  --verde-light:#5a3a1f;
+  --verde-tint: rgba(107,68,35,0.16);
+  --bandana:#5b5e28;
+  --ink-strong:#1c1309;
+  --on-accent:#fbf3de;
+  --campo-bg:#fffdf6;
+  --placeholder:#9c8a6e;
+  --header-bg: rgba(253,246,230,0.92);
+  --header-bg-solid:#fdf6e6;
+  --menu-bg:#fbf1da;
 }
 *{box-sizing:border-box;}
 html,body{margin:0;padding:0;}
@@ -42,13 +118,13 @@ a{ color: var(--terracotta); text-decoration: none; }
 a:hover{ color: var(--gold); }
 a:focus-visible, button:focus-visible{ outline: 2px solid var(--gold); outline-offset: 2px; }
 img{ max-width:100%; }
-h1,h2,h3{ font-family:"Cinzel", Georgia, serif; font-weight:700; color:#f7f1de; margin:0; text-wrap:balance; }
+h1,h2,h3{ font-family:"Cinzel", Georgia, serif; font-weight:700; color:var(--ink-strong); margin:0; text-wrap:balance; }
 .wrap{ max-width: 780px; margin:0 auto; padding: 0 28px 90px; }
 
 /* ---------- header / nav ---------- */
 .site-header{
   position: sticky; top:0; z-index: 20;
-  background: rgba(36,42,27,0.92);
+  background: var(--header-bg);
   backdrop-filter: blur(6px);
   border-bottom: 1px solid var(--border-soft);
 }
@@ -79,6 +155,30 @@ h1,h2,h3{ font-family:"Cinzel", Georgia, serif; font-weight:700; color:#f7f1de; 
 }
 .nav-links a:hover{ color: var(--gold); }
 .nav-links a.active{ color: var(--gold); border-bottom-color: var(--gold); }
+
+/* ---------- interruttore tema chiaro/scuro ---------- */
+.tema-toggle{
+  display:flex; align-items:center; justify-content:center;
+  width:38px; height:38px; flex:none; padding:0; cursor:pointer;
+  background:transparent; border:1px solid var(--border-soft); border-radius:4px;
+  color: var(--ink-muted); transition: color .15s ease, border-color .15s ease;
+  -webkit-tap-highlight-color: transparent;
+}
+.tema-toggle:hover{ color: var(--gold); border-color: var(--gold); }
+.tema-toggle svg{ width:18px; height:18px; display:block; }
+.tema-toggle .icona-sole{ display:none; fill:none; stroke:currentColor; }
+.tema-toggle .icona-luna{ display:block; fill:currentColor; }
+/* di sistema chiaro (a meno che l'utente non forzi lo scuro): sole visibile */
+@media (prefers-color-scheme: light){
+  :root:not([data-tema="scuro"]) .tema-toggle .icona-sole{ display:block; }
+  :root:not([data-tema="scuro"]) .tema-toggle .icona-luna{ display:none; }
+}
+/* forzato chiaro dall'interruttore, a prescindere dal sistema */
+:root[data-tema="chiaro"] .tema-toggle .icona-sole{ display:block; }
+:root[data-tema="chiaro"] .tema-toggle .icona-luna{ display:none; }
+@media (prefers-reduced-motion: reduce){
+  .tema-toggle{ transition:none; }
+}
 
 /* ---------- hero / kicker ---------- */
 .kicker{
@@ -264,7 +364,7 @@ main section h2{
 main section p{ margin: 0 0 11px; }
 main section ul, main section ol{ margin: 0 0 11px; padding-left:20px; color: var(--ink); }
 main section li{ margin-bottom:6px; }
-main section b{ color:#f7f1de; }
+main section b{ color:var(--ink-strong); }
 .riquadro{
   border:1px solid var(--border-soft); border-left:3px solid var(--gold);
   background: var(--gold-tint-soft); border-radius:4px;
@@ -282,8 +382,8 @@ main section b{ color:#f7f1de; }
   cursor:pointer; text-align:center;
   background: var(--gold-tint); color: var(--gold);
 }
-.bottone-pieno{ background: var(--gold); color:#1a1005; border-color: var(--gold); }
-.bottone-pieno:hover{ background: var(--verde-light); border-color: var(--verde-light); color:#1a1005; }
+.bottone-pieno{ background: var(--gold); color:var(--on-accent); border-color: var(--gold); }
+.bottone-pieno:hover{ background: var(--verde-light); border-color: var(--verde-light); color:var(--on-accent); }
 .bottone-vuoto{ background: transparent; color: var(--gold); }
 .bottone-vuoto:hover{ background: var(--gold-tint); color: var(--gold); }
 
@@ -317,7 +417,7 @@ main section b{ color:#f7f1de; }
 }
 .campo input, .campo select, .campo textarea{
   width:100%; padding: 11px 12px;
-  background:#1b2a20; color: var(--ink);
+  background:var(--campo-bg); color: var(--ink);
   border:1px solid var(--border); border-radius:4px;
   font-family:"EB Garamond", Georgia, serif; font-size:16px; line-height:1.4;
 }
@@ -325,7 +425,7 @@ main section b{ color:#f7f1de; }
 .campo input:focus, .campo select:focus, .campo textarea:focus{
   outline:none; border-color: var(--gold); box-shadow:0 0 0 2px var(--gold-tint);
 }
-.campo input::placeholder, .campo textarea::placeholder{ color:#7f8d80; }
+.campo input::placeholder, .campo textarea::placeholder{ color:var(--placeholder); }
 /* i tre pannelli data/soggiorno: ne resta visibile solo quello del
    servizio scelto — lo script del modulo mette e toglie .attivo */
 [data-blocco]{ display:none; }
@@ -346,7 +446,7 @@ main section b{ color:#f7f1de; }
 /* l'invio del modulo è l'azione principale della pagina: pieno */
 #modulo-prenotazione .bottone{
   width:100%; padding: 17px 30px; font-size:15px;
-  background: var(--gold); color:#1a1005; border-color: var(--gold);
+  background: var(--gold); color:var(--on-accent); border-color: var(--gold);
 }
 #modulo-prenotazione .bottone:hover{ background: var(--verde-light); border-color: var(--verde-light); }
 .info-invio{ font-size:14px; color: var(--ink-muted); text-align:center; margin-top:14px; font-style:italic; }
@@ -392,7 +492,7 @@ main section b{ color:#f7f1de; }
   /* --- intestazione: niente backdrop-filter, altrimenti il menu
          a tutto schermo verrebbe agganciato all'header e non al viewport --- */
   .site-header{
-    background:#1b2a20;
+    background:var(--header-bg-solid);
     backdrop-filter:none;
     -webkit-backdrop-filter:none;
   }
@@ -402,6 +502,7 @@ main section b{ color:#f7f1de; }
     min-height: var(--testata);
   }
   .logo-nav{ height: 40px; }
+  .tema-toggle{ width:44px; height:44px; }
 
   /* --- pulsante hamburger --- */
   .nav-toggle{
@@ -431,7 +532,7 @@ main section b{ color:#f7f1de; }
     z-index:30;
     display:block; overflow-x:hidden; overflow-y:auto;
     margin:0; padding: 6px 20px calc(28px + env(safe-area-inset-bottom));
-    background:#16241b;
+    background:var(--menu-bg);
     border-top:1px solid var(--border-soft);
     opacity:0; visibility:hidden; transform: translateY(-8px);
     transition: opacity .18s ease, transform .18s ease, visibility .18s;
@@ -483,13 +584,13 @@ main section b{ color:#f7f1de; }
     display:flex; align-items:center; justify-content:center; gap:.5rem;
     min-height: var(--barra);
     padding: .6rem 1rem calc(.6rem + env(safe-area-inset-bottom));
-    background: var(--gold); color:#1a1005;
+    background: var(--gold); color:var(--on-accent);
     font-family:"Cinzel", serif; font-weight:600;
     font-size: 14.5px; letter-spacing:0.1em; text-transform:uppercase;
     text-decoration:none;
     box-shadow: 0 -8px 20px rgba(0,0,0,.38);
   }
-  .barra-azione:hover, .barra-azione:focus{ color:#1a1005; }
+  .barra-azione:hover, .barra-azione:focus{ color:var(--on-accent); }
   body.menu-aperto .barra-azione{ display:none; }
 }
 
