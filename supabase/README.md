@@ -63,23 +63,19 @@ Due Edge Function, già distribuite al progetto live:
   service role segna il pagamento "pagato" e la prenotazione "confermata"
   (acconto) o aggiorna `saldo_pagato_il` (saldo).
 
-### Due secret da impostare (una tantum, Dashboard Supabase → Edge
-Functions → Secrets) — nessun redeploy necessario dopo averli salvati:
+L'endpoint webhook su Stripe (modalità test, account sandbox
+`acct_1UGlfoBh7RgvyMiF`) è già creato via connettore Stripe, puntato su
+`https://gcjxhgvghncjjvcnacbv.supabase.co/functions/v1/stripe-webhook`,
+evento `checkout.session.completed`.
+
+### Due secret restano da impostare a mano (Supabase non espone questa
+scrittura via API/MCP): Dashboard Supabase → Project Settings → Edge
+Functions → Secrets — nessun redeploy necessario dopo averli salvati:
 
 | Secret | Valore |
 |---|---|
-| `STRIPE_SECRET_KEY` | la chiave `sk_test_...` che mi hai già dato |
-| `STRIPE_WEBHOOK_SECRET` | vedi sotto — arriva da Stripe, non da me |
-
-### Un passaggio manuale su Stripe (non posso farlo io: il proxy di rete di
-questo ambiente blocca le chiamate dirette a api.stripe.com)
-
-Stripe Dashboard (modalità **test**, dato che le chiavi sono `pk_test_`/
-`sk_test_`) → **Developer → Webhooks → Add endpoint**:
-- Endpoint URL: `https://gcjxhgvghncjjvcnacbv.supabase.co/functions/v1/stripe-webhook`
-- Evento da inviare: `checkout.session.completed`
-- Dopo la creazione, copia il "Signing secret" (`whsec_...`) e mettilo come
-  `STRIPE_WEBHOOK_SECRET` nel punto sopra.
+| `STRIPE_SECRET_KEY` | la chiave `sk_test_...` già data in chat |
+| `STRIPE_WEBHOOK_SECRET` | il valore `whsec_...` dato in chat quando l'endpoint è stato creato (mai scritto qui: è un segreto, non appartiene al repository) |
 
 Per testare i pagamenti in modalità test si usano le carte di prova di
 Stripe (es. `4242 4242 4242 4242`, qualsiasi data futura e CVC), nessun
