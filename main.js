@@ -78,3 +78,29 @@
     aggiorna();
   });
 })();
+
+/* comparsa allo scroll: gli elementi con classe .reveal partono
+   trasparenti (in CSS) e prendono .is-visible la prima volta che
+   entrano nello schermo. Un <noscript> nella pagina neutralizza .reveal
+   se lo script non parte, così il contenuto non resta mai invisibile. */
+(function(){
+  var elementi = document.querySelectorAll('.reveal');
+  if(!elementi.length) return;
+
+  var riduciMovimento = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  if(riduciMovimento || !('IntersectionObserver' in window)){
+    for(var i=0; i<elementi.length; i++) elementi[i].classList.add('is-visible');
+    return;
+  }
+
+  var osservatore = new IntersectionObserver(function(entries){
+    entries.forEach(function(entry){
+      if(entry.isIntersecting){
+        entry.target.classList.add('is-visible');
+        osservatore.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.15, rootMargin: '0px 0px -40px 0px' });
+
+  elementi.forEach(function(el){ osservatore.observe(el); });
+})();

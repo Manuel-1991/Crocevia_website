@@ -10,6 +10,7 @@
 <meta name="description" content="Educazione cinofila, asilo diurno e pensione: due percorsi, una sola filosofia.">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;600;700&family=EB+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&display=swap">
 <link rel="stylesheet" href="style.css">
+<noscript><style>.reveal{opacity:1!important;transform:none!important;}</style></noscript>
 <!-- TrustBox script -->
 <script type="text/javascript" src="//widget.trustpilot.com/bootstrap/v5/tp.widget.bootstrap.min.js" async></script>
 <!-- End TrustBox script -->
@@ -30,35 +31,45 @@
     <ul class="nav-links" id="menu-crocevia"><li><a href="index.html" class="nav active">Home</a></li><li><a href="educazione.html" class="nav">Educazione</a></li><li><a href="pensione-asilo.html" class="nav">Pensione & Asilo</a></li><li><a href="chi-siamo.html" class="nav">Chi siamo</a></li><li><a href="dove-operiamo.html" class="nav">Dove operiamo</a></li><li><a href="contatti.html" class="nav">Contatti</a></li><li><a href="prenota.html" class="nav">Prenota</a></li></ul>
   </nav>
 </header>
-<main class="wrap">
-
+<div class="hero-band">
 <div class="page-head" style="text-align:center;">
   <div class="hero-badge"><img class="logo-hero" src="assets/img/brand/logo-hero.webp" alt="Crocevia — asilo, pensione, passeggiate" width="900" height="900"></div>
   <h1>Il bivio tra te e il tuo cane</h1>
   <p class="page-sub">Crocevia è il punto in cui scegliere il percorso giusto: due strade distinte, una sola filosofia, pensate per non far confondere educazione e pensione.</p>
 </div>
+</div>
+
+<main class="wrap">
 
 <div class="cta-row">
-  <a class="cta-block edu" href="educazione.html">
+  <a class="cta-block edu reveal" href="educazione.html">
     <div class="t">Educazione &rarr;</div>
     <div class="s">Cane e proprietario insieme</div>
   </a>
-  <a class="cta-block pen" href="pensione-asilo.html">
+  <a class="cta-block pen reveal" href="pensione-asilo.html">
     <div class="t">Pensione &amp; Asilo &rarr;</div>
     <div class="s">Il cane resta con noi</div>
   </a>
 </div>
 
-<a class="teaser" href="chi-siamo.html">
-  <h3>Chi siamo</h3>
-  <p>Manuel, Educatore Cinofilo certificato FICSS, e Dingo, meticcio e vera anima di Crocevia. Metodo Cognitivo Zooantropologico, approccio Relazionale Sistemico.</p>
-  <span class="more">Scopri di pi&ugrave; &rarr;</span>
+<!-- .teaser-figura è un segnaposto (icona zampa): quando ci sono foto vere,
+     basta sostituire l'svg con <img src="assets/img/index/....jpg" alt="..."> -->
+<a class="teaser reveal" href="chi-siamo.html">
+  <span class="teaser-figura"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true" focusable="false"><ellipse cx="12" cy="16.2" rx="6.1" ry="5"/><circle cx="5.4" cy="8.6" r="2.3"/><circle cx="10.6" cy="5.4" r="2.3"/><circle cx="15.4" cy="5.4" r="2.3"/><circle cx="19" cy="9.4" r="2.1"/></svg></span>
+  <span class="teaser-corpo">
+    <h3>Chi siamo</h3>
+    <p>Manuel, Educatore Cinofilo certificato FICSS, e Dingo, meticcio e vera anima di Crocevia. Metodo Cognitivo Zooantropologico, approccio Relazionale Sistemico.</p>
+    <span class="more">Scopri di pi&ugrave; &rarr;</span>
+  </span>
 </a>
 
-<a class="teaser" href="dove-operiamo.html">
-  <h3>Dove operiamo</h3>
-  <p>Campo e bosco in zona campagnola, sul Lago Maggiore, per lezioni e passeggiate di gruppo. Asilo e pensione a Settimo Milanese, ambiente domestico, un solo cane alla volta.</p>
-  <span class="more">Scopri di pi&ugrave; &rarr;</span>
+<a class="teaser teaser--inversa reveal" href="dove-operiamo.html">
+  <span class="teaser-figura"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true" focusable="false"><ellipse cx="12" cy="16.2" rx="6.1" ry="5"/><circle cx="5.4" cy="8.6" r="2.3"/><circle cx="10.6" cy="5.4" r="2.3"/><circle cx="15.4" cy="5.4" r="2.3"/><circle cx="19" cy="9.4" r="2.1"/></svg></span>
+  <span class="teaser-corpo">
+    <h3>Dove operiamo</h3>
+    <p>Campo e bosco in zona campagnola, sul Lago Maggiore, per lezioni e passeggiate di gruppo. Asilo e pensione a Settimo Milanese, ambiente domestico, un solo cane alla volta.</p>
+    <span class="more">Scopri di pi&ugrave; &rarr;</span>
+  </span>
 </a>
 
 </main>
