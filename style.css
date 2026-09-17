@@ -461,12 +461,12 @@ main section tr:last-child td{ border-bottom:none; }
 
 /* modulo di prenotazione */
 #modulo-prenotazione{ margin-top: 6px; }
-#modulo-prenotazione fieldset{
+#modulo-prenotazione fieldset, #blocco-autenticazione fieldset, #area-cliente fieldset{
   border:1px solid var(--border-soft); border-left:3px solid var(--gold);
   background: var(--surface-soft); border-radius:4px;
   padding: 20px 22px 22px; margin: 0 0 20px;
 }
-#modulo-prenotazione legend{
+#modulo-prenotazione legend, #blocco-autenticazione legend, #area-cliente legend{
   font-family:"Cinzel", serif; font-weight:600; font-size:13px;
   letter-spacing:0.09em; text-transform:uppercase; color: var(--gold);
   padding: 0 9px;
@@ -769,3 +769,56 @@ main section tr:last-child td{ border-bottom:none; }
   .tp-badge .tp-mask .l1{ font-size:7.6px; line-height:1.25; white-space:normal; }
   .tp-badge .tp-mask .l2{ font-size:6.6px; }
 }
+
+/* area privata */
+.schede-conto{ display:flex; gap:10px; margin-bottom:22px; }
+.scheda-tab{
+  flex:1; padding:12px 16px; border-radius:4px; border:1px solid var(--border);
+  background:var(--surface-soft); color:var(--ink-muted); cursor:pointer;
+  font-family:"Cinzel", serif; font-weight:600; font-size:13px;
+  letter-spacing:0.06em; text-transform:uppercase;
+}
+.scheda-tab.attiva{ border-color:var(--gold); color:var(--gold); background:var(--gold-tint); }
+
+.avviso{
+  padding:12px 16px; border-radius:4px; margin: 0 0 18px;
+  font-size:15px; line-height:1.5; border:1px solid var(--border-soft);
+  background: var(--surface-soft); color: var(--ink);
+}
+.avviso-errore{ border-color:#a94438; background: rgba(169,68,56,0.12); }
+.avviso-ok{ border-color: var(--gold); background: var(--gold-tint-soft); }
+
+.sezione-conto{ margin: 0 0 34px; }
+.sezione-conto h2{
+  font-family:"Cinzel", serif; font-size:18px; letter-spacing:0.05em;
+  color: var(--ink-strong); margin: 0 0 14px;
+}
+
+.lista-animali, .lista-prenotazioni{ display:grid; gap:12px; margin-bottom:18px; }
+.card-animale, .card-prenotazione{
+  border:1px solid var(--border-soft); border-left:3px solid var(--gold);
+  background: var(--surface-soft); border-radius:4px; padding:14px 16px;
+  display:flex; justify-content:space-between; align-items:flex-start; gap:12px; flex-wrap:wrap;
+}
+.card-animale h3, .card-prenotazione h3{
+  font-family:"Cinzel", serif; font-size:15px; margin:0 0 4px; color:var(--ink-strong);
+}
+.card-animale p, .card-prenotazione p{ margin:0; color:var(--ink-muted); font-size:14.5px; }
+.card-azioni{ display:flex; gap:8px; flex:none; }
+.card-azioni button{
+  border:1px solid var(--border); background:transparent; color:var(--ink-muted);
+  border-radius:4px; padding:7px 12px; font-size:13px; cursor:pointer;
+}
+.card-azioni button:hover{ border-color:var(--gold); color:var(--gold); }
+
+.badge-stato{
+  display:inline-block; padding:3px 10px; border-radius:20px;
+  font-size:12px; letter-spacing:0.04em; text-transform:uppercase; font-weight:600;
+  flex:none;
+}
+.badge-in_attesa_pagamento{ background: rgba(195,131,69,0.18); color: var(--gold); }
+.badge-confermata{ background: rgba(129,82,42,0.22); color: var(--verde-light); }
+.badge-completata{ background: rgba(130,150,130,0.18); color: var(--ink-muted); }
+.badge-annullata{ background: rgba(169,68,56,0.16); color:#c98074; }
+
+.vuoto{ color: var(--ink-muted); font-style:italic; }

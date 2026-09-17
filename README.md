@@ -15,7 +15,8 @@ compone un messaggio e apre WhatsApp.
 | `index.html` | home: il bivio tra Educazione e Pensione & Asilo |
 | `educazione.html` | valutazione, lezioni, pacchetti, passeggiate di gruppo |
 | `pensione-asilo.html` | stallo/pensione, asilo diurno, giornata tipo |
-| `prenota.html` | modulo di prenotazione → messaggio WhatsApp precompilato |
+| `prenota.html` | modulo di prenotazione per educazione e passeggiate → messaggio WhatsApp precompilato |
+| `area-privata.html` | login/registrazione, profilo, animali e prenotazioni del cliente (Supabase) |
 | `chi-siamo.html` | Manuel e Dingo, metodo e filosofia |
 | `dove-operiamo.html` | campo e bosco, Settimo Milanese |
 | `contatti.html` | telefono, email, P.IVA |
@@ -27,6 +28,12 @@ Contorno: `style.css` (stile condiviso da tutte le pagine), `main.js`
 (script condiviso: menu mobile e altezza dell'intestazione), `robots.txt`,
 `sitemap.xml`, `.nojekyll` (dice a GitHub Pages di pubblicare i file così
 come sono).
+
+`supabase-client.js` inizializza il collegamento al database (Supabase) usato
+da `area-privata.html`: contiene solo la URL del progetto e la chiave
+"pubblicabile", pensata apposta per stare nel codice del sito. La cartella
+`supabase/` contiene lo schema del database e le istruzioni per crearlo —
+vedi `supabase/README.md`.
 
 `documenti/` contiene i moduli (privacy, liberatoria foto/video, scarico
 responsabilità, prenotazione) in formato `.docx`, non collegati dalle
