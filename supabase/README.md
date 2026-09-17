@@ -48,6 +48,9 @@ un'installazione pulita da zero.
   addetto/admin di creare una prenotazione per conto di un cliente già
   registrato (chi telefona invece di usare il sito)
 - `007_scadenza_15_minuti.sql` — accorcia la scadenza da 30 a 15 minuti
+- `008_integrazione_google_calendar.sql` — trigger che chiama
+  `crea-evento-calendario` ogni volta che una prenotazione diventa
+  confermata (vedi sezione dedicata sotto)
 
 Avvisi di sicurezza rivisti e lasciati come sono, perché non applicabili
 a questo progetto: l'estensione `btree_gist` nello schema `public`
@@ -83,6 +86,35 @@ conferma, tutto verificato in modalità test/sandbox.
 Per testare i pagamenti in modalità test si usano le carte di prova di
 Stripe (es. `4242 4242 4242 4242`, qualsiasi data futura e CVC), nessun
 addebito reale.
+
+## 5b. Google Calendar (functions/crea-evento-calendario)
+
+Quando una prenotazione diventa "confermata" (pagamento online, conferma
+manuale dello staff, o prenotazione manuale con acconto già ricevuto), un
+trigger nel database (`008_integrazione_google_calendar.sql`) chiama
+questa Edge Function, che crea un evento di un giorno intero sul
+calendario Google configurato. Autenticazione lato Google Calendar tramite
+service account (server-to-server, non dipende da nessuna sessione di
+chat collegata); autenticazione della chiamata trigger→funzione tramite
+un segreto condiviso salvato in Supabase Vault.
+
+Nel modulo "Aggiungi una prenotazione" del pannello staff, la casella
+"Non creare l'evento sul calendario" imposta `salta_calendario = true` e
+salta questa parte per quella prenotazione.
+
+### Tre secret da impostare (Dashboard Supabase → Project Settings → Edge
+Functions → Secrets):
+
+| Secret | Valore |
+|---|---|
+| `GOOGLE_SERVICE_ACCOUNT_JSON` | il contenuto intero del file JSON scaricato dal service account Google Cloud |
+| `GOOGLE_CALENDAR_ID` | l'ID del calendario Google su cui creare gli eventi |
+| `INTERNAL_WEBHOOK_SECRET` | il valore dato in chat quando è stato generato (salvato in Vault, non riscrivibile qui) |
+
+Il service account deve avere accesso "Apportare modifiche agli eventi"
+sul calendario scelto (Google Calendar → impostazioni del calendario →
+Condividi con persone specifiche → incolla l'email `client_email` del
+file JSON).
 
 ## 6. Prossimi passi
 

@@ -95,6 +95,9 @@
         <div class="campo">
           <label class="checkriga"><input type="checkbox" id="manuale-acconto-ricevuto"> Acconto già ricevuto (contanti/bonifico) — segna la prenotazione come confermata</label>
         </div>
+        <div class="campo">
+          <label class="checkriga"><input type="checkbox" id="manuale-salta-calendario"> Non creare l'evento sul calendario per questa prenotazione</label>
+        </div>
         <p id="manuale-riepilogo" class="premessa" style="margin:8px 0 0;"></p>
       </fieldset>
       <button type="submit" class="bottone bottone-pieno">Crea prenotazione</button>
@@ -384,6 +387,7 @@
     var dal = document.getElementById('manuale-dal').value;
     var al = document.getElementById('manuale-al').value;
     var accontoRicevuto = document.getElementById('manuale-acconto-ricevuto').checked;
+    var saltaCalendario = document.getElementById('manuale-salta-calendario').checked;
 
     if (!dal || !al || al < dal) { avviso(messaggioManuale, 'Scegli un intervallo di date valido.', 'errore'); return; }
 
@@ -398,7 +402,8 @@
       data_al: al,
       prezzo_totale: p.totale,
       acconto_importo: p.acconto,
-      saldo_importo: p.saldo
+      saldo_importo: p.saldo,
+      salta_calendario: saltaCalendario
     };
     if (accontoRicevuto) {
       dati.stato = 'confermata';
