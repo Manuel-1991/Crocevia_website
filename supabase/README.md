@@ -125,13 +125,16 @@ file JSON).
 5. ~~Edge Function `crea-pagamento` + `stripe-webhook`~~ ✓
 6. ~~Pagina staff (addetto/admin)~~ ✓
 7. ~~Scadenza automatica delle prenotazioni non pagate~~ ✓ (15 minuti)
-8. Provider email per Supabase Auth (Resend o simile) — bloccato: serve
-   un account esterno e una configurazione da dashboard che non è
-   raggiungibile dagli strumenti di questa sessione
+8. ~~Provider email per Supabase Auth~~ ✓ (SMTP custom con la casella
+   Aruba già esistente sul dominio — nessun account esterno nuovo
+   necessario; registrazione di prova fatta tramite l'API, accettata
+   senza errori di invio)
 9. ~~Termini e condizioni riconciliati col sistema di pagamento reale~~ ✓
 10. ~~Prenotazione manuale da parte dello staff~~ ✓
+11. ~~Evento su Google Calendar per ogni prenotazione confermata~~ ✓
+    (service account, verificato end-to-end)
 
-Restano, prima di andare live con pagamenti veri: cambiare le chiavi
-Stripe da test a live (con nuovo webhook in modalità live), verificare
-l'attivazione completa dell'account Stripe per gli incassi reali, e un
-vero test con carta reale a importo basso.
+Punti 1-11 completati. Prima di andare live con pagamenti veri restano
+solo: cambiare le chiavi Stripe da test a live (nuovo webhook in
+modalità live), verificare l'attivazione completa dell'account Stripe
+per gli incassi reali, e un vero test con carta reale a importo basso.
