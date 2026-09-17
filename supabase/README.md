@@ -20,9 +20,21 @@ Nota: la chiave secret di Supabase che hai incollato in chat non è quella
 setup è finito, di rigenerarla da Dashboard → Project Settings → API
 (così quella vista in questa conversazione smette di essere valida).
 
-## 3. Prossimi passi
+## 3. Aggiornamenti (migrations/)
 
-1. Eseguire `schema.sql` (sopra)
-2. Popolare la tabella `servizi` con il listino attuale
-3. Costruire login/registrazione + area privata cliente
-4. Edge Function `crea-prenotazione` + `stripe-webhook`
+Dopo il primo setup, ogni cambiamento allo schema già in produzione arriva
+come un file numerato in `migrations/`: si esegue una volta sola in SQL
+Editor, nell'ordine dei numeri. Non serve rieseguire `schema.sql` — resta
+aggiornato solo come riferimento di come deve apparire un'installazione
+pulita.
+
+- `002_capienza_5_cani.sql` — porta la capienza pensione/asilo da 1 a 5
+  cani al giorno (condivisa tra i due servizi)
+
+## 4. Prossimi passi
+
+1. ~~Eseguire `schema.sql`~~ ✓
+2. ~~Popolare la tabella `servizi`~~ ✓
+3. ~~Login/registrazione + area privata cliente~~ ✓
+4. ~~Calendario disponibilità pensione/asilo~~ ✓
+5. Edge Function `crea-prenotazione` + `stripe-webhook` (pagamento acconto)

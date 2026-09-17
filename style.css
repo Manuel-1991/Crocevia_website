@@ -822,3 +822,49 @@ main section tr:last-child td{ border-bottom:none; }
 .badge-annullata{ background: rgba(169,68,56,0.16); color:#c98074; }
 
 .vuoto{ color: var(--ink-muted); font-style:italic; }
+
+/* calendario disponibilità pensione/asilo */
+.calendario{ margin: 4px 0 22px; }
+.calendario-intestazione{
+  display:flex; align-items:center; justify-content:space-between; margin-bottom:12px;
+}
+.calendario-intestazione button{
+  border:1px solid var(--border); background:transparent; color:var(--ink-muted);
+  border-radius:4px; padding:7px 14px; cursor:pointer; font-size:15px;
+}
+.calendario-intestazione button:hover{ border-color:var(--gold); color:var(--gold); }
+.calendario-mese{
+  font-family:"Cinzel", serif; font-size:15px; letter-spacing:0.05em;
+  color:var(--ink-strong); text-transform:capitalize;
+}
+.calendario-griglia{ display:grid; grid-template-columns: repeat(7, 1fr); gap:5px; }
+.etichetta-giorno{
+  text-align:center; font-size:11px; letter-spacing:0.05em; text-transform:uppercase;
+  color:var(--ink-muted); padding-bottom:4px;
+}
+.giorno-cal{
+  aspect-ratio:1; display:flex; align-items:center; justify-content:center;
+  border-radius:4px; font-size:14px; border:2px solid transparent;
+  background: var(--surface-soft); color: var(--ink);
+}
+.giorno-cal.fuori-mese{ visibility:hidden; }
+.giorno-cal.passato{ opacity:.35; }
+.giorno-cal.rosso{ background: rgba(169,68,56,0.28); color:#e2a89e; cursor:not-allowed; }
+.giorno-cal.giallo{ background: rgba(195,131,69,0.28); color: var(--gold); cursor:pointer; }
+.giorno-cal.verde{ background: rgba(129,82,42,0.22); color: var(--verde-light); cursor:pointer; }
+.giorno-cal.selezionato{ border-color: var(--gold); font-weight:700; }
+.giorno-cal.in-intervallo{ border-color: var(--gold-tint); }
+
+.legenda-calendario{ display:flex; gap:18px; flex-wrap:wrap; margin: 10px 0 0; font-size:13px; color:var(--ink-muted); }
+.legenda-calendario span{ display:inline-flex; align-items:center; gap:6px; }
+.legenda-pallino{ width:12px; height:12px; border-radius:50%; display:inline-block; }
+.legenda-pallino.rosso{ background:#a94438; }
+.legenda-pallino.giallo{ background: var(--gold); }
+.legenda-pallino.verde{ background: var(--verde-light); }
+
+.riepilogo-prezzo{
+  border:1px solid var(--border-soft); border-left:3px solid var(--gold);
+  background: var(--surface-soft); border-radius:4px; padding:16px 18px; margin: 4px 0 20px;
+}
+.riepilogo-prezzo p{ margin:4px 0; }
+.riepilogo-prezzo .totale{ font-family:"Cinzel", serif; color:var(--gold); font-size:16px; }

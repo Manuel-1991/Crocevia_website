@@ -1,0 +1,390 @@
+<!doctype html>
+<html lang="it">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#0d2219">
+<script>(function(){try{var t=localStorage.getItem('crocevia-tema');if(t==='chiaro'||t==='scuro'){document.documentElement.setAttribute('data-tema',t);}}catch(e){}})();</script>
+<link rel="icon" type="image/png" href="assets/img/brand/favicon.png">
+<link rel="apple-touch-icon" href="assets/img/brand/apple-touch-icon.png">
+<title>Prenota pensione o asilo — Crocevia</title>
+<meta name="description" content="Calendario disponibilità e prenotazione online per pensione e asilo diurno con Crocevia, con acconto del 10% alla prenotazione.">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Crocevia">
+<meta property="og:locale" content="it_IT">
+<meta property="og:url" content="https://croceviacani.it/prenota-pensione-asilo.html">
+<meta property="og:title" content="Prenota pensione o asilo — Crocevia">
+<meta property="og:description" content="Calendario disponibilità e prenotazione online per pensione e asilo diurno con Crocevia, con acconto del 10% alla prenotazione.">
+<meta property="og:image" content="https://croceviacani.it/assets/img/brand/logo-nav.webp">
+<meta property="og:image:width" content="200">
+<meta property="og:image:height" content="201">
+<meta property="og:image:type" content="image/webp">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Prenota pensione o asilo — Crocevia">
+<meta name="twitter:description" content="Calendario disponibilità e prenotazione online per pensione e asilo diurno con Crocevia, con acconto del 10% alla prenotazione.">
+<meta name="twitter:image" content="https://croceviacani.it/assets/img/brand/logo-nav.webp">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;600;700&family=EB+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&display=swap">
+<link rel="stylesheet" href="style.css">
+<noscript><style>.reveal{opacity:1!important;transform:none!important;}</style></noscript>
+<header class="site-header">
+  <nav class="nav">
+    <a href="index.html" class="brand" aria-label="Crocevia — Home">
+      <img class="logo-nav" src="assets/img/brand/logo-nav.webp" alt="Crocevia" width="200" height="201">
+      <span class="brand-text">
+        <span class="brand-word">CROCEVIA</span>
+        <span class="brand-tagline">Asilo · Pensione · Passeggiate</span>
+      </span>
+    </a>
+    <button class="tema-toggle" id="cambia-tema" type="button" aria-label="Passa al tema chiaro" aria-pressed="false">
+      <svg class="icona-sole" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><circle cx="12" cy="12" r="4"></circle><path d="M12 2v3M12 19v3M4.2 4.2l2.1 2.1M17.7 17.7l2.1 2.1M2 12h3M19 12h3M4.2 19.8l2.1-2.1M17.7 6.3l2.1-2.1" stroke-width="1.8" stroke-linecap="round"></path></svg>
+      <svg class="icona-luna" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M20 14.5A8.5 8.5 0 1 1 9.5 4a7 7 0 0 0 10.5 10.5Z"></path></svg>
+    </button>
+    <button class="nav-toggle" id="apri-menu" type="button" aria-controls="menu-crocevia" aria-expanded="false" aria-label="Apri il menu"><span class="barre" aria-hidden="true"></span></button>
+    <ul class="nav-links" id="menu-crocevia"><li><a href="index.html" class="nav">Home</a></li><li><a href="educazione.html" class="nav">Educazione</a></li><li><a href="pensione-asilo.html" class="nav active">Pensione &amp; Asilo</a></li><li><a href="chi-siamo.html" class="nav">Chi siamo</a></li><li><a href="dove-operiamo.html" class="nav">Dove operiamo</a></li><li><a href="contatti.html" class="nav">Contatti</a></li><li><a href="prenota.html" class="nav">Prenota</a></li><li><a href="area-privata.html" class="nav">Area privata</a></li></ul>
+  </nav>
+</header>
+<main class="wrap">
+
+<div class="crumb"><a href="index.html">Home</a> / <a href="pensione-asilo.html">Pensione &amp; Asilo</a> / Prenota</div>
+<div class="page-head left"><h1 class="left">Prenota pensione o asilo</h1></div>
+
+<p class="premessa">Scegli l'animale, il servizio e le date: il calendario mostra la disponibilità in tempo reale. Pensione e asilo condividono lo stesso spazio, massimo 5 cani al giorno. Alla richiesta si paga il 10% di acconto (non rimborsabile), il saldo alla fine del soggiorno.</p>
+
+<div id="serve-accesso">
+  <p class="avviso">Devi prima <a href="area-privata.html">accedere o registrarti</a> per prenotare.</p>
+</div>
+
+<div id="corpo-prenotazione" hidden>
+
+  <p id="messaggio-prenotazione" class="avviso" hidden></p>
+
+  <form id="form-prenotazione">
+    <fieldset>
+      <legend>Cosa e per chi</legend>
+      <div class="riga riga-2">
+        <div class="campo">
+          <label for="select-animale">Animale *</label>
+          <select id="select-animale" required></select>
+        </div>
+        <div class="campo">
+          <label for="select-servizio">Servizio *</label>
+          <select id="select-servizio" required></select>
+        </div>
+      </div>
+    </fieldset>
+
+    <fieldset>
+      <legend>Date</legend>
+
+      <div class="calendario">
+        <div class="calendario-intestazione">
+          <button type="button" id="mese-prec" aria-label="Mese precedente">&larr;</button>
+          <span class="calendario-mese" id="calendario-mese"></span>
+          <button type="button" id="mese-succ" aria-label="Mese successivo">&rarr;</button>
+        </div>
+        <div class="calendario-griglia" id="calendario-griglia"></div>
+        <p class="legenda-calendario">
+          <span><i class="legenda-pallino verde"></i> 3+ posti liberi</span>
+          <span><i class="legenda-pallino giallo"></i> 1-2 posti liberi</span>
+          <span><i class="legenda-pallino rosso"></i> completo</span>
+        </p>
+        <p class="premessa" style="font-size:14.5px; margin:10px 0 0;">Clicca il giorno di inizio, poi quello di fine (due volte lo stesso giorno per un solo giorno).</p>
+      </div>
+
+      <div class="riga riga-2">
+        <div class="campo">
+          <label for="data-dal">Dal *</label>
+          <input type="date" id="data-dal" required>
+        </div>
+        <div class="campo">
+          <label for="data-al">Al *</label>
+          <input type="date" id="data-al" required>
+        </div>
+      </div>
+
+      <div id="riepilogo-prezzo" class="riepilogo-prezzo" hidden>
+        <p id="riepilogo-notti"></p>
+        <p class="totale" id="riepilogo-totale"></p>
+        <p id="riepilogo-acconto"></p>
+        <p id="riepilogo-saldo"></p>
+      </div>
+    </fieldset>
+
+    <button type="submit" class="bottone bottone-pieno bottone-full">Richiedi prenotazione</button>
+  </form>
+
+</div>
+
+</main>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="supabase-client.js"></script>
+<script>
+(function(){
+  var sb = window.CroceviaSupabase;
+  var utenteCorrente = null;
+  var servizi = []; // {id, categoria, nome, prezzo}
+  var meseVisibile = new Date(); meseVisibile.setDate(1);
+  var selDal = null, selAl = null; // stringhe 'YYYY-MM-DD'
+  var CAPIENZA = 5;
+
+  var blocAccesso = document.getElementById('serve-accesso');
+  var corpo = document.getElementById('corpo-prenotazione');
+  var messaggio = document.getElementById('messaggio-prenotazione');
+
+  function isoLocale(d){
+    var m = d.getMonth()+1, g = d.getDate();
+    return d.getFullYear() + '-' + (m<10?'0':'')+m + '-' + (g<10?'0':'')+g;
+  }
+  function dataLocale(s){ return new Date(s + 'T00:00:00'); }
+  function escapeHtml(s){
+    var d = document.createElement('div');
+    d.textContent = s == null ? '' : String(s);
+    return d.innerHTML;
+  }
+  function avviso(testo, tipo){
+    messaggio.textContent = testo;
+    messaggio.className = 'avviso ' + (tipo === 'errore' ? 'avviso-errore' : 'avviso-ok');
+    messaggio.hidden = false;
+  }
+
+  sb.auth.onAuthStateChange(function(evento, sessione){
+    if (sessione && sessione.user) {
+      utenteCorrente = sessione.user;
+      blocAccesso.hidden = true;
+      corpo.hidden = false;
+      init();
+    } else {
+      utenteCorrente = null;
+      blocAccesso.hidden = false;
+      corpo.hidden = true;
+    }
+  });
+
+  function init(){
+    Promise.all([
+      sb.from('animali').select('id,nome').eq('proprietario_id', utenteCorrente.id).order('creato_il'),
+      sb.from('servizi').select('id,categoria,nome,prezzo').in('categoria', ['pensione','asilo']).eq('attivo', true)
+    ]).then(function(r){
+      var animaliRes = r[0], serviziRes = r[1];
+      var selAnimale = document.getElementById('select-animale');
+      if (!animaliRes.data || !animaliRes.data.length) {
+        selAnimale.innerHTML = '<option value="">Nessun animale — aggiungine uno nell\'area privata</option>';
+      } else {
+        selAnimale.innerHTML = animaliRes.data.map(function(a){
+          return '<option value="' + a.id + '">' + escapeHtml(a.nome) + '</option>';
+        }).join('');
+      }
+
+      servizi = serviziRes.data || [];
+      var selServizio = document.getElementById('select-servizio');
+      selServizio.innerHTML = servizi.map(function(s){
+        return '<option value="' + s.id + '">' + s.nome + ' — ' + Number(s.prezzo).toLocaleString('it-IT', {style:'currency', currency:'EUR'}) + '/notte</option>';
+      }).join('');
+
+      renderCalendario();
+    });
+  }
+
+  // ---------- calendario ----------
+
+  var nomiMesi = ['gennaio','febbraio','marzo','aprile','maggio','giugno','luglio','agosto','settembre','ottobre','novembre','dicembre'];
+  var etichetteGiorni = ['Lun','Mar','Mer','Gio','Ven','Sab','Dom'];
+
+  document.getElementById('mese-prec').addEventListener('click', function(){
+    meseVisibile.setMonth(meseVisibile.getMonth() - 1);
+    renderCalendario();
+  });
+  document.getElementById('mese-succ').addEventListener('click', function(){
+    meseVisibile.setMonth(meseVisibile.getMonth() + 1);
+    renderCalendario();
+  });
+
+  function renderCalendario(){
+    document.getElementById('calendario-mese').textContent =
+      nomiMesi[meseVisibile.getMonth()] + ' ' + meseVisibile.getFullYear();
+
+    var primoGiorno = new Date(meseVisibile.getFullYear(), meseVisibile.getMonth(), 1);
+    var ultimoGiorno = new Date(meseVisibile.getFullYear(), meseVisibile.getMonth() + 1, 0);
+    var oggi = new Date(); oggi.setHours(0,0,0,0);
+
+    var inizioMeseStr = isoLocale(primoGiorno);
+    var fineMeseStr = isoLocale(ultimoGiorno);
+
+    sb.from('disponibilita_pensione_asilo')
+      .select('data_dal,data_al')
+      .lte('data_dal', fineMeseStr)
+      .gte('data_al', inizioMeseStr)
+      .then(function(r){
+        var occupazione = {};
+        (r.data || []).forEach(function(riga){
+          var cursore = dataLocale(riga.data_dal);
+          if (cursore < primoGiorno) cursore = new Date(primoGiorno);
+          var fine = dataLocale(riga.data_al);
+          if (fine > ultimoGiorno) fine = new Date(ultimoGiorno);
+          while (cursore <= fine) {
+            var chiave = isoLocale(cursore);
+            occupazione[chiave] = (occupazione[chiave] || 0) + 1;
+            cursore.setDate(cursore.getDate() + 1);
+          }
+        });
+
+        var griglia = document.getElementById('calendario-griglia');
+        griglia.innerHTML = '';
+        etichetteGiorni.forEach(function(et){
+          var e = document.createElement('div');
+          e.className = 'etichetta-giorno';
+          e.textContent = et;
+          griglia.appendChild(e);
+        });
+
+        var offset = (primoGiorno.getDay() + 6) % 7;
+        for (var i = 0; i < offset; i++) {
+          var vuoto = document.createElement('div');
+          vuoto.className = 'giorno-cal fuori-mese';
+          griglia.appendChild(vuoto);
+        }
+
+        for (var g = 1; g <= ultimoGiorno.getDate(); g++) {
+          var data = new Date(meseVisibile.getFullYear(), meseVisibile.getMonth(), g);
+          var chiave = isoLocale(data);
+          var cella = document.createElement('div');
+          cella.className = 'giorno-cal';
+          cella.textContent = g;
+
+          if (data < oggi) {
+            cella.classList.add('passato');
+          } else {
+            var occupati = occupazione[chiave] || 0;
+            var liberi = CAPIENZA - occupati;
+            cella.classList.add(liberi <= 0 ? 'rosso' : (liberi <= 2 ? 'giallo' : 'verde'));
+            if (liberi > 0) {
+              cella.addEventListener('click', function(chiave){
+                return function(){ selezionaGiorno(chiave); };
+              }(chiave));
+            }
+          }
+
+          if (selDal && chiave === selDal) cella.classList.add('selezionato');
+          if (selAl && chiave === selAl) cella.classList.add('selezionato');
+          if (selDal && selAl && chiave > selDal && chiave < selAl) cella.classList.add('in-intervallo');
+
+          griglia.appendChild(cella);
+        }
+      });
+  }
+
+  function selezionaGiorno(chiave){
+    if (!selDal || (selDal && selAl)) {
+      selDal = chiave; selAl = null;
+    } else if (chiave < selDal) {
+      selDal = chiave;
+    } else {
+      selAl = chiave;
+    }
+    document.getElementById('data-dal').value = selDal || '';
+    document.getElementById('data-al').value = selAl || selDal || '';
+    renderCalendario();
+    aggiornaRiepilogo();
+  }
+
+  document.getElementById('data-dal').addEventListener('change', function(){
+    selDal = this.value || null;
+    renderCalendario();
+    aggiornaRiepilogo();
+  });
+  document.getElementById('data-al').addEventListener('change', function(){
+    selAl = this.value || null;
+    renderCalendario();
+    aggiornaRiepilogo();
+  });
+
+  // ---------- prezzo ----------
+
+  function calcolaPrezzo(prezzoNotte, dal, al){
+    var notti = Math.round((dataLocale(al) - dataLocale(dal)) / 86400000) + 1;
+    var moltiplicatore = notti >= 30 ? 0.8 : (notti >= 7 ? 0.9 : 1);
+    var totale = Math.round(notti * prezzoNotte * moltiplicatore * 100) / 100;
+    var acconto = Math.round(totale * 10) / 100;
+    return { notti: notti, totale: totale, acconto: acconto, saldo: Math.round((totale - acconto) * 100) / 100 };
+  }
+
+  function euro(n){ return Number(n).toLocaleString('it-IT', { style: 'currency', currency: 'EUR' }); }
+
+  function aggiornaRiepilogo(){
+    var box = document.getElementById('riepilogo-prezzo');
+    var dal = document.getElementById('data-dal').value;
+    var al = document.getElementById('data-al').value;
+    var servizioId = document.getElementById('select-servizio').value;
+    var servizio = servizi.filter(function(s){ return s.id === servizioId; })[0];
+    if (!dal || !al || !servizio || al < dal) { box.hidden = true; return; }
+
+    var p = calcolaPrezzo(Number(servizio.prezzo), dal, al);
+    document.getElementById('riepilogo-notti').textContent = p.notti + (p.notti === 1 ? ' notte' : ' notti');
+    document.getElementById('riepilogo-totale').textContent = 'Totale: ' + euro(p.totale);
+    document.getElementById('riepilogo-acconto').textContent = 'Acconto ora (10%, non rimborsabile): ' + euro(p.acconto);
+    document.getElementById('riepilogo-saldo').textContent = 'Saldo alla fine del soggiorno: ' + euro(p.saldo);
+    box.hidden = false;
+  }
+
+  document.getElementById('select-servizio').addEventListener('change', aggiornaRiepilogo);
+
+  // ---------- invio ----------
+
+  document.getElementById('form-prenotazione').addEventListener('submit', function(e){
+    e.preventDefault();
+    messaggio.hidden = true;
+
+    var animaleId = document.getElementById('select-animale').value;
+    var servizioId = document.getElementById('select-servizio').value;
+    var dal = document.getElementById('data-dal').value;
+    var al = document.getElementById('data-al').value;
+
+    if (!animaleId) { avviso('Aggiungi prima un animale nella tua area privata.', 'errore'); return; }
+    if (!dal || !al || al < dal) { avviso('Scegli un intervallo di date valido.', 'errore'); return; }
+
+    var servizio = servizi.filter(function(s){ return s.id === servizioId; })[0];
+    var p = calcolaPrezzo(Number(servizio.prezzo), dal, al);
+
+    sb.from('prenotazioni').insert({
+      cliente_id: utenteCorrente.id,
+      animale_id: animaleId,
+      servizio_id: servizioId,
+      data_dal: dal,
+      data_al: al,
+      stato: 'in_attesa_pagamento',
+      prezzo_totale: p.totale,
+      acconto_importo: p.acconto,
+      saldo_importo: p.saldo
+    }).then(function(r){
+      if (r.error) { avviso(r.error.message, 'errore'); return; }
+      avviso('Richiesta inviata. Il pagamento online dell\'acconto arriva a breve: nel frattempo ti contattiamo noi per confermare. Trovi la richiesta nella tua area privata.', 'ok');
+      document.getElementById('form-prenotazione').reset();
+      selDal = null; selAl = null;
+      document.getElementById('riepilogo-prezzo').hidden = true;
+      renderCalendario();
+    });
+  });
+})();
+</script>
+<footer class="site-footer">
+  <div class="footer-inner">
+    <div class="footer-links">
+      <a href="chi-siamo.html">Chi siamo</a> &middot;
+      <a href="dove-operiamo.html">Dove operiamo</a> &middot;
+      <a href="contatti.html">Contatti</a> &middot;
+      <a href="prenota.html">Prenota</a> &middot;
+      <a href="privacy.html">Privacy</a> &middot;
+      <a href="termini.html">Termini</a> &middot;
+      <a href="#" id="gestisci-cookie">Gestisci cookie</a>
+    </div>
+    <div class="footer-contact">
+      <a href="tel:+393334325389">+39 333 432 5389</a> &middot;
+      <a href="mailto:info@croceviacani.it">info@croceviacani.it</a>
+    </div>
+    <div class="footer-piva">Crocevia &middot; Manuel &middot; P.IVA 14868890964</div>
+  </div>
+</footer>
+
+<script src="main.js"></script>
+<script src="cookie-consent.js"></script>
+</html>

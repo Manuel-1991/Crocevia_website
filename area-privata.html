@@ -188,6 +188,7 @@
 
   <section class="sezione-conto">
     <h2>Le tue prenotazioni</h2>
+    <p style="margin:0 0 16px;"><a href="prenota-pensione-asilo.html" class="bottone bottone-pieno">Prenota pensione o asilo &rarr;</a></p>
     <div id="lista-prenotazioni" class="lista-prenotazioni"></div>
   </section>
 
@@ -430,7 +431,7 @@
         if (r.error) return;
         listaPrenotazioni.innerHTML = '';
         if (!r.data.length) {
-          listaPrenotazioni.innerHTML = '<p class="vuoto">Nessuna prenotazione. Il calendario per pensione e asilo arriva a breve; per ora scrivi su WhatsApp dal modulo <a href="prenota.html">Prenota</a>.</p>';
+          listaPrenotazioni.innerHTML = '<p class="vuoto">Nessuna prenotazione ancora.</p>';
           return;
         }
         r.data.forEach(function(p){

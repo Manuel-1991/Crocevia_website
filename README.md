@@ -17,6 +17,7 @@ compone un messaggio e apre WhatsApp.
 | `pensione-asilo.html` | stallo/pensione, asilo diurno, giornata tipo |
 | `prenota.html` | modulo di prenotazione per educazione e passeggiate → messaggio WhatsApp precompilato |
 | `area-privata.html` | login/registrazione, profilo, animali e prenotazioni del cliente (Supabase) |
+| `prenota-pensione-asilo.html` | calendario disponibilità e richiesta di prenotazione per pensione/asilo (richiede accesso) |
 | `chi-siamo.html` | Manuel e Dingo, metodo e filosofia |
 | `dove-operiamo.html` | campo e bosco, Settimo Milanese |
 | `contatti.html` | telefono, email, P.IVA |
