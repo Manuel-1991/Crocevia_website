@@ -1,0 +1,260 @@
+<!doctype html>
+<html lang="it">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#0d2219">
+<script>(function(){try{var t=localStorage.getItem('crocevia-tema');if(t==='chiaro'||t==='scuro'){document.documentElement.setAttribute('data-tema',t);}}catch(e){}})();</script>
+<link rel="icon" type="image/png" href="assets/img/brand/favicon.png">
+<link rel="apple-touch-icon" href="assets/img/brand/apple-touch-icon.png">
+<title>Staff — Crocevia</title>
+<meta name="description" content="Pannello staff Crocevia: prenotazioni in arrivo, conferme e pagamenti.">
+<meta name="robots" content="noindex, nofollow">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;600;700&family=EB+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&display=swap">
+<link rel="stylesheet" href="style.css">
+<noscript><style>.reveal{opacity:1!important;transform:none!important;}</style></noscript>
+<header class="site-header">
+  <nav class="nav">
+    <a href="index.html" class="brand" aria-label="Crocevia — Home">
+      <img class="logo-nav" src="assets/img/brand/logo-nav.webp" alt="Crocevia" width="200" height="201">
+      <span class="brand-text">
+        <span class="brand-word">CROCEVIA</span>
+        <span class="brand-tagline">Asilo · Pensione · Passeggiate</span>
+      </span>
+    </a>
+    <button class="tema-toggle" id="cambia-tema" type="button" aria-label="Passa al tema chiaro" aria-pressed="false">
+      <svg class="icona-sole" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><circle cx="12" cy="12" r="4"></circle><path d="M12 2v3M12 19v3M4.2 4.2l2.1 2.1M17.7 17.7l2.1 2.1M2 12h3M19 12h3M4.2 19.8l2.1-2.1M17.7 6.3l2.1-2.1" stroke-width="1.8" stroke-linecap="round"></path></svg>
+      <svg class="icona-luna" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M20 14.5A8.5 8.5 0 1 1 9.5 4a7 7 0 0 0 10.5 10.5Z"></path></svg>
+    </button>
+    <button class="nav-toggle" id="apri-menu" type="button" aria-controls="menu-crocevia" aria-expanded="false" aria-label="Apri il menu"><span class="barre" aria-hidden="true"></span></button>
+    <ul class="nav-links" id="menu-crocevia"><li><a href="index.html" class="nav">Home</a></li><li><a href="educazione.html" class="nav">Educazione</a></li><li><a href="pensione-asilo.html" class="nav">Pensione &amp; Asilo</a></li><li><a href="chi-siamo.html" class="nav">Chi siamo</a></li><li><a href="dove-operiamo.html" class="nav">Dove operiamo</a></li><li><a href="contatti.html" class="nav">Contatti</a></li><li><a href="prenota.html" class="nav">Prenota</a></li><li><a href="area-privata.html" class="nav">Area privata</a></li></ul>
+  </nav>
+</header>
+<main class="wrap">
+
+<div class="crumb"><a href="index.html">Home</a> / Staff</div>
+<div class="page-head left"><h1 class="left">Pannello staff</h1></div>
+
+<div id="serve-accesso">
+  <p class="avviso">Devi prima <a href="area-privata.html">accedere</a>.</p>
+</div>
+
+<div id="serve-ruolo" hidden>
+  <p class="avviso avviso-errore">Questa pagina è riservata allo staff.</p>
+</div>
+
+<div id="corpo-staff" hidden>
+
+  <p id="messaggio-staff" class="avviso" hidden></p>
+
+  <section class="sezione-conto">
+    <h2>Prenotazioni</h2>
+    <div id="lista-prenotazioni-staff" class="lista-prenotazioni"></div>
+  </section>
+
+  <section class="sezione-conto" id="sezione-utenti" hidden>
+    <h2>Utenti</h2>
+    <p class="premessa" style="margin-bottom:16px;">Solo un admin può cambiare il ruolo di un utente. Il ruolo "addetto" è pensato per un futuro collaboratore.</p>
+    <div id="lista-utenti" class="lista-prenotazioni"></div>
+  </section>
+
+</div>
+
+</main>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="supabase-client.js"></script>
+<script>
+(function(){
+  var sb = window.CroceviaSupabase;
+  var utenteCorrente = null;
+  var ruoloCorrente = null;
+
+  var bloccoAccesso = document.getElementById('serve-accesso');
+  var bloccoRuolo = document.getElementById('serve-ruolo');
+  var corpo = document.getElementById('corpo-staff');
+  var messaggio = document.getElementById('messaggio-staff');
+
+  function avviso(el, testo, tipo){
+    el.textContent = testo;
+    el.className = 'avviso ' + (tipo === 'errore' ? 'avviso-errore' : 'avviso-ok');
+    el.hidden = false;
+  }
+  function euro(n){ return n == null ? '' : Number(n).toLocaleString('it-IT', { style: 'currency', currency: 'EUR' }); }
+  function escapeHtml(s){
+    var d = document.createElement('div');
+    d.textContent = s == null ? '' : String(s);
+    return d.innerHTML;
+  }
+
+  sb.auth.onAuthStateChange(function(evento, sessione){
+    if (sessione && sessione.user) {
+      utenteCorrente = sessione.user;
+      verificaRuolo();
+    } else {
+      utenteCorrente = null;
+      bloccoAccesso.hidden = false;
+      bloccoRuolo.hidden = true;
+      corpo.hidden = true;
+    }
+  });
+
+  function verificaRuolo(){
+    sb.from('profili').select('ruolo').eq('id', utenteCorrente.id).single().then(function(r){
+      ruoloCorrente = r.data ? r.data.ruolo : null;
+      bloccoAccesso.hidden = true;
+      if (ruoloCorrente !== 'addetto' && ruoloCorrente !== 'admin') {
+        bloccoRuolo.hidden = false;
+        corpo.hidden = true;
+        return;
+      }
+      bloccoRuolo.hidden = true;
+      corpo.hidden = false;
+      document.getElementById('sezione-utenti').hidden = (ruoloCorrente !== 'admin');
+      caricaPrenotazioniStaff();
+      if (ruoloCorrente === 'admin') caricaUtenti();
+    });
+  }
+
+  // ---------- prenotazioni ----------
+
+  var listaPrenotazioniStaff = document.getElementById('lista-prenotazioni-staff');
+  var etichetteStato = {
+    in_attesa_pagamento: 'In attesa di pagamento',
+    confermata: 'Confermata',
+    completata: 'Completata',
+    annullata: 'Annullata'
+  };
+  var prioritaStato = { in_attesa_pagamento: 0, confermata: 1, completata: 2, annullata: 3 };
+
+  function caricaPrenotazioniStaff(){
+    sb.from('prenotazioni')
+      .select('id, data_dal, data_al, stato, prezzo_totale, acconto_importo, acconto_pagato_il, saldo_importo, saldo_pagato_il, animali(nome), servizi(nome), profili(nome,cognome,telefono,email)')
+      .order('data_dal')
+      .then(function(r){
+        if (r.error) { avviso(messaggio, r.error.message, 'errore'); return; }
+        var righe = (r.data || []).slice().sort(function(a, b){
+          var pa = prioritaStato[a.stato], pb = prioritaStato[b.stato];
+          if (pa !== pb) return pa - pb;
+          return a.data_dal < b.data_dal ? -1 : (a.data_dal > b.data_dal ? 1 : 0);
+        });
+        listaPrenotazioniStaff.innerHTML = '';
+        if (!righe.length) {
+          listaPrenotazioniStaff.innerHTML = '<p class="vuoto">Nessuna prenotazione.</p>';
+          return;
+        }
+        righe.forEach(function(p){
+          var cliente = p.profili || {};
+          var contatto = [cliente.telefono, cliente.email].filter(Boolean).join(' · ');
+          var card = document.createElement('div');
+          card.className = 'card-prenotazione';
+
+          var azioni = [];
+          if (p.stato === 'in_attesa_pagamento') {
+            azioni.push('<button type="button" data-azione="conferma">Conferma manualmente</button>');
+          }
+          if (p.stato === 'confermata' && !p.saldo_pagato_il) {
+            azioni.push('<button type="button" data-azione="saldo">Segna saldo ricevuto</button>');
+          }
+          if (p.stato === 'confermata') {
+            azioni.push('<button type="button" data-azione="completa">Segna completata</button>');
+          }
+          if (p.stato !== 'annullata' && p.stato !== 'completata') {
+            azioni.push('<button type="button" data-azione="annulla">Annulla</button>');
+          }
+
+          card.innerHTML =
+            '<div><h3>' + escapeHtml(p.servizi ? p.servizi.nome : '') + ' — ' + escapeHtml(p.animali ? p.animali.nome : '') + '</h3>' +
+            '<p>' + escapeHtml(cliente.nome || '') + ' ' + escapeHtml(cliente.cognome || '') + (contatto ? ' · ' + escapeHtml(contatto) : '') + '</p>' +
+            '<p>' + escapeHtml(p.data_dal) + ' → ' + escapeHtml(p.data_al) + '</p>' +
+            '<p>Totale ' + euro(p.prezzo_totale) +
+              (p.acconto_importo ? ' · acconto ' + euro(p.acconto_importo) + (p.acconto_pagato_il ? ' (pagato)' : ' (da pagare)') : '') +
+              (p.saldo_importo ? ' · saldo ' + euro(p.saldo_importo) + (p.saldo_pagato_il ? ' (pagato)' : ' (da pagare)') : '') +
+            '</p>' +
+            (azioni.length ? '<p class="card-azioni" style="margin-top:10px;">' + azioni.join('') + '</p>' : '') +
+            '</div>' +
+            '<span class="badge-stato badge-' + p.stato + '">' + (etichetteStato[p.stato] || p.stato) + '</span>';
+
+          card.querySelectorAll('[data-azione]').forEach(function(bottone){
+            bottone.addEventListener('click', function(){ eseguiAzionePrenotazione(p.id, bottone.getAttribute('data-azione')); });
+          });
+
+          listaPrenotazioniStaff.appendChild(card);
+        });
+      });
+  }
+
+  function eseguiAzionePrenotazione(id, azione){
+    var campi = null;
+    if (azione === 'conferma') campi = { stato: 'confermata', acconto_pagato_il: new Date().toISOString() };
+    if (azione === 'saldo') campi = { saldo_pagato_il: new Date().toISOString() };
+    if (azione === 'completa') campi = { stato: 'completata' };
+    if (azione === 'annulla') {
+      if (!window.confirm('Annullare questa prenotazione?')) return;
+      campi = { stato: 'annullata' };
+    }
+    if (!campi) return;
+    sb.from('prenotazioni').update(campi).eq('id', id).then(function(r){
+      if (r.error) { avviso(messaggio, r.error.message, 'errore'); return; }
+      caricaPrenotazioniStaff();
+    });
+  }
+
+  // ---------- utenti (solo admin) ----------
+
+  var listaUtenti = document.getElementById('lista-utenti');
+
+  function caricaUtenti(){
+    sb.from('profili').select('id,nome,cognome,email,telefono,ruolo').order('creato_il').then(function(r){
+      if (r.error) { avviso(messaggio, r.error.message, 'errore'); return; }
+      listaUtenti.innerHTML = '';
+      (r.data || []).forEach(function(u){
+        var card = document.createElement('div');
+        card.className = 'card-prenotazione';
+        card.innerHTML =
+          '<div><h3>' + escapeHtml((u.nome || '') + ' ' + (u.cognome || '')).trim() + '</h3>' +
+          '<p>' + escapeHtml(u.email || '') + (u.telefono ? ' · ' + escapeHtml(u.telefono) : '') + '</p>' +
+          '</div>' +
+          '<div class="campo" style="margin:0;max-width:170px;">' +
+          '<select data-ruolo-per="' + u.id + '">' +
+          ['cliente', 'addetto', 'admin'].map(function(r2){
+            return '<option value="' + r2 + '"' + (r2 === u.ruolo ? ' selected' : '') + '>' + r2 + '</option>';
+          }).join('') +
+          '</select></div>';
+        card.querySelector('[data-ruolo-per]').addEventListener('change', function(){
+          var nuovoRuolo = this.value;
+          if (u.id === utenteCorrente.id) {
+            if (!window.confirm('Stai per cambiare il tuo stesso ruolo. Continuare?')) { this.value = u.ruolo; return; }
+          }
+          sb.from('profili').update({ ruolo: nuovoRuolo }).eq('id', u.id).then(function(r){
+            if (r.error) { avviso(messaggio, r.error.message, 'errore'); caricaUtenti(); return; }
+            u.ruolo = nuovoRuolo;
+          });
+        });
+        listaUtenti.appendChild(card);
+      });
+    });
+  }
+})();
+</script>
+<footer class="site-footer">
+  <div class="footer-inner">
+    <div class="footer-links">
+      <a href="chi-siamo.html">Chi siamo</a> &middot;
+      <a href="dove-operiamo.html">Dove operiamo</a> &middot;
+      <a href="contatti.html">Contatti</a> &middot;
+      <a href="prenota.html">Prenota</a> &middot;
+      <a href="privacy.html">Privacy</a> &middot;
+      <a href="termini.html">Termini</a> &middot;
+      <a href="#" id="gestisci-cookie">Gestisci cookie</a>
+    </div>
+    <div class="footer-contact">
+      <a href="tel:+393334325389">+39 333 432 5389</a> &middot;
+      <a href="mailto:info@croceviacani.it">info@croceviacani.it</a>
+    </div>
+    <div class="footer-piva">Crocevia &middot; Manuel &middot; P.IVA 14868890964</div>
+  </div>
+</footer>
+
+<script src="main.js"></script>
+<script src="cookie-consent.js"></script>
+</html>

@@ -99,6 +99,8 @@
 
   <p class="premessa">Ciao <strong id="benvenuto-email"></strong>. <button type="button" id="bottone-esci" class="bottone bottone-vuoto">Esci</button></p>
 
+  <p id="link-staff" hidden><a href="area-staff.html" class="bottone bottone-vuoto">Pannello staff &rarr;</a></p>
+
   <p id="messaggio-pagamento" class="avviso" hidden></p>
 
   <section class="sezione-conto">
@@ -324,6 +326,7 @@
       document.getElementById('profilo-email').value = utenteCorrente.email;
       document.getElementById('profilo-indirizzo').value = p.indirizzo || '';
       document.getElementById('profilo-codice-fiscale').value = p.codice_fiscale || '';
+      document.getElementById('link-staff').hidden = (p.ruolo !== 'addetto' && p.ruolo !== 'admin');
     });
   }
 
