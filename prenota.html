@@ -50,7 +50,7 @@
 <div class="crumb"><a href="index.html">Home</a> / Prenota</div>
 <div class="page-head left"><h1 class="left">Prenota il tuo posto</h1></div>
 
-<p class="premessa">Compila il modulo: alla fine si apre WhatsApp con il messaggio già pronto da inviarmi. La prenotazione diventa definitiva quando la confermo io e ricevo il pagamento anticipato — prima di quel momento la data non è bloccata. Prezzi su <a href="educazione.html">Educazione</a> e <a href="pensione-asilo.html">Pensione &amp; Asilo</a>, condizioni nei <a href="termini.html">termini e condizioni</a>.</p>
+<p class="premessa">Questo modulo è per valutazione, lezioni e passeggiate di gruppo: compilalo e alla fine si apre WhatsApp con il messaggio già pronto da inviarmi. La prenotazione diventa definitiva quando la confermo io e ricevo il pagamento anticipato — prima di quel momento la data non è bloccata. Per <b>pensione o asilo</b> prenota invece con calendario e pagamento online dalla tua <a href="area-privata.html">area privata</a>. Prezzi su <a href="educazione.html">Educazione</a> e <a href="pensione-asilo.html">Pensione &amp; Asilo</a>, condizioni nei <a href="termini.html">termini e condizioni</a>.</p>
 
   <form id="modulo-prenotazione">
 
@@ -108,16 +108,8 @@
             <option value="Pacchetto 5 passeggiate — 62,50 € (-17%)" data-tipo="pacchetto">Pacchetto 5 passeggiate — 62,50 € (-17%)</option>
             <option value="Pacchetto 10 passeggiate — 100 € (-33%)" data-tipo="pacchetto">Pacchetto 10 passeggiate — 100 € (-33%)</option>
           </optgroup>
-          <optgroup label="Pensione &amp; Asilo — Settimo Milanese, un solo cane alla volta">
-            <option value="Stallo / Pensione — 1 giorno" data-tipo="soggiorno">Stallo / Pensione, 1 giorno — 35 €</option>
-            <option value="Stallo / Pensione — 7 giorni" data-tipo="soggiorno">Stallo / Pensione, 7 giorni — 220 € (−10%)</option>
-            <option value="Stallo / Pensione — 30 giorni" data-tipo="soggiorno">Stallo / Pensione, 30 giorni — 840 € (28 €/gg, −20%)</option>
-            <option value="Asilo diurno — 1 giorno" data-tipo="soggiorno">Asilo diurno, 1 giorno — 25 €</option>
-            <option value="Asilo diurno — 7 giorni" data-tipo="soggiorno">Asilo diurno, 7 giorni — 157,50 € (22,50 €/gg, −10%)</option>
-            <option value="Asilo diurno — 30 giorni" data-tipo="soggiorno">Asilo diurno, 30 giorni — 600 € (20 €/gg, −20%)</option>
-          </optgroup>
         </select>
-        <p class="prezzo-nota">Formule e sconti per più incontri o giorni: vedi <a href="educazione.html">Educazione</a> o <a href="pensione-asilo.html">Pensione &amp; Asilo</a>.</p>
+        <p class="prezzo-nota">Formule e sconti per più incontri: vedi <a href="educazione.html">Educazione</a>. Per pensione o asilo vai alla <a href="area-privata.html">tua area privata</a>.</p>
       </div>
 
       <div data-blocco="singola" class="campo">
@@ -128,22 +120,6 @@
       <div data-blocco="pacchetto" class="campo">
         <label for="data-inizio-pacchetto">Data di inizio preferita</label>
         <input type="date" id="data-inizio-pacchetto" name="data-inizio-pacchetto">
-      </div>
-
-      <div data-blocco="soggiorno">
-        <div class="riga riga-2">
-          <div class="campo">
-            <label for="data-dal">Dal</label>
-            <input type="date" id="data-dal" name="data-dal">
-          </div>
-          <div class="campo">
-            <label for="data-al">Al</label>
-            <input type="date" id="data-al" name="data-al">
-          </div>
-        </div>
-        <div class="campo">
-          <label class="checkriga"><input type="checkbox" id="pappa" name="pappa"> Pappa fornita dall'educatore (+5 €/giorno)</label>
-        </div>
       </div>
     </fieldset>
 
@@ -195,11 +171,6 @@
     var tipo = select.options[select.selectedIndex] ? select.options[select.selectedIndex].getAttribute('data-tipo') : null;
     if (tipo === 'singola' && v('data-singola')) righe.push('Data desiderata: ' + v('data-singola'));
     if (tipo === 'pacchetto' && v('data-inizio-pacchetto')) righe.push('Inizio preferito: ' + v('data-inizio-pacchetto'));
-    if (tipo === 'soggiorno') {
-      if (v('data-dal')) righe.push('Dal: ' + v('data-dal'));
-      if (v('data-al')) righe.push('Al: ' + v('data-al'));
-      if (document.getElementById('pappa').checked) righe.push('Pappa fornita: sì (+5 €/giorno)');
-    }
     if (v('note')) { righe.push(''); righe.push('Note: ' + v('note')); }
 
     var testo = encodeURIComponent(righe.join('\n'));

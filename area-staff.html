@@ -48,7 +48,57 @@
 
   <section class="sezione-conto">
     <h2>Prenotazioni</h2>
+    <p id="banner-nuove" class="avviso avviso-ok" hidden></p>
     <div id="lista-prenotazioni-staff" class="lista-prenotazioni"></div>
+  </section>
+
+  <section class="sezione-conto">
+    <h2>Aggiungi una prenotazione</h2>
+    <p class="premessa" style="margin-bottom:16px;">Per chi prenota pensione o asilo telefonando invece di usare il sito. Il cliente deve essersi già registrato almeno una volta nell'area privata.</p>
+    <p id="messaggio-manuale" class="avviso" hidden></p>
+
+    <form id="form-cerca-cliente">
+      <div class="riga riga-2">
+        <div class="campo">
+          <label for="cerca-email">Email del cliente registrato</label>
+          <input type="email" id="cerca-email" required>
+        </div>
+        <div class="campo" style="align-self:end;">
+          <button type="submit" class="bottone bottone-vuoto">Cerca</button>
+        </div>
+      </div>
+    </form>
+
+    <form id="form-prenotazione-manuale" hidden>
+      <fieldset>
+        <legend id="legenda-cliente-trovato">Cliente</legend>
+        <div class="riga riga-2">
+          <div class="campo">
+            <label for="manuale-animale">Animale *</label>
+            <select id="manuale-animale" required></select>
+          </div>
+          <div class="campo">
+            <label for="manuale-servizio">Servizio *</label>
+            <select id="manuale-servizio" required></select>
+          </div>
+        </div>
+        <div class="riga riga-2">
+          <div class="campo">
+            <label for="manuale-dal">Dal *</label>
+            <input type="date" id="manuale-dal" required>
+          </div>
+          <div class="campo">
+            <label for="manuale-al">Al *</label>
+            <input type="date" id="manuale-al" required>
+          </div>
+        </div>
+        <div class="campo">
+          <label class="checkriga"><input type="checkbox" id="manuale-acconto-ricevuto"> Acconto già ricevuto (contanti/bonifico) — segna la prenotazione come confermata</label>
+        </div>
+        <p id="manuale-riepilogo" class="premessa" style="margin:8px 0 0;"></p>
+      </fieldset>
+      <button type="submit" class="bottone bottone-pieno">Crea prenotazione</button>
+    </form>
   </section>
 
   <section class="sezione-conto" id="sezione-utenti" hidden>
@@ -111,6 +161,7 @@
       corpo.hidden = false;
       document.getElementById('sezione-utenti').hidden = (ruoloCorrente !== 'admin');
       caricaPrenotazioniStaff();
+      caricaServiziManuale();
       if (ruoloCorrente === 'admin') caricaUtenti();
     });
   }
@@ -126,12 +177,29 @@
   };
   var prioritaStato = { in_attesa_pagamento: 0, confermata: 1, completata: 2, annullata: 3 };
 
+  var CHIAVE_ULTIMA_VISITA = 'crocevia-staff-ultima-visita';
+
   function caricaPrenotazioniStaff(){
     sb.from('prenotazioni')
-      .select('id, data_dal, data_al, stato, prezzo_totale, acconto_importo, acconto_pagato_il, saldo_importo, saldo_pagato_il, animali(nome), servizi(nome), profili(nome,cognome,telefono,email)')
+      .select('id, data_dal, data_al, stato, prezzo_totale, acconto_importo, acconto_pagato_il, saldo_importo, saldo_pagato_il, creato_il, animali(nome), servizi(nome), profili(nome,cognome,telefono,email)')
       .order('data_dal')
       .then(function(r){
         if (r.error) { avviso(messaggio, r.error.message, 'errore'); return; }
+
+        var ultimaVisita = null;
+        try { ultimaVisita = localStorage.getItem(CHIAVE_ULTIMA_VISITA); } catch (e) {}
+        var nuove = (r.data || []).filter(function(p){ return !ultimaVisita || p.creato_il > ultimaVisita; });
+        var banner = document.getElementById('banner-nuove');
+        if (ultimaVisita && nuove.length) {
+          banner.textContent = nuove.length === 1 ? '1 nuova richiesta dall\'ultima visita.' : nuove.length + ' nuove richieste dall\'ultima visita.';
+          banner.hidden = false;
+        } else {
+          banner.hidden = true;
+        }
+        var idNuove = {};
+        nuove.forEach(function(p){ idNuove[p.id] = true; });
+        try { localStorage.setItem(CHIAVE_ULTIMA_VISITA, new Date().toISOString()); } catch (e) {}
+
         var righe = (r.data || []).slice().sort(function(a, b){
           var pa = prioritaStato[a.stato], pb = prioritaStato[b.stato];
           if (pa !== pb) return pa - pb;
@@ -163,7 +231,7 @@
           }
 
           card.innerHTML =
-            '<div><h3>' + escapeHtml(p.servizi ? p.servizi.nome : '') + ' — ' + escapeHtml(p.animali ? p.animali.nome : '') + '</h3>' +
+            '<div><h3>' + (idNuove[p.id] ? '<span class="badge-stato badge-nuova" style="margin-right:6px;">Nuova</span>' : '') + escapeHtml(p.servizi ? p.servizi.nome : '') + ' — ' + escapeHtml(p.animali ? p.animali.nome : '') + '</h3>' +
             '<p>' + escapeHtml(cliente.nome || '') + ' ' + escapeHtml(cliente.cognome || '') + (contatto ? ' · ' + escapeHtml(contatto) : '') + '</p>' +
             '<p>' + escapeHtml(p.data_dal) + ' → ' + escapeHtml(p.data_al) + '</p>' +
             '<p>Totale ' + euro(p.prezzo_totale) +
@@ -234,6 +302,121 @@
       });
     });
   }
+
+  // ---------- aggiungi prenotazione manuale ----------
+
+  var serviziManuale = [];
+  var clienteTrovato = null;
+  var formCercaCliente = document.getElementById('form-cerca-cliente');
+  var formPrenotazioneManuale = document.getElementById('form-prenotazione-manuale');
+  var messaggioManuale = document.getElementById('messaggio-manuale');
+
+  function dataLocale(s){ return new Date(s + 'T00:00:00'); }
+
+  function calcolaPrezzoManuale(prezzoNotte, dal, al){
+    var notti = Math.round((dataLocale(al) - dataLocale(dal)) / 86400000) + 1;
+    var moltiplicatore = notti >= 30 ? 0.8 : (notti >= 7 ? 0.9 : 1);
+    var totale = Math.round(notti * prezzoNotte * moltiplicatore * 100) / 100;
+    var acconto = Math.round(totale * 10) / 100;
+    return { notti: notti, totale: totale, acconto: acconto, saldo: Math.round((totale - acconto) * 100) / 100 };
+  }
+
+  function caricaServiziManuale(){
+    sb.from('servizi').select('id,categoria,nome,prezzo').in('categoria', ['pensione', 'asilo']).eq('attivo', true).then(function(r){
+      serviziManuale = r.data || [];
+      document.getElementById('manuale-servizio').innerHTML = serviziManuale.map(function(s){
+        return '<option value="' + s.id + '">' + escapeHtml(s.nome) + ' — ' + euro(s.prezzo) + '/notte</option>';
+      }).join('');
+    });
+  }
+
+  function aggiornaRiepilogoManuale(){
+    var dal = document.getElementById('manuale-dal').value;
+    var al = document.getElementById('manuale-al').value;
+    var servizioId = document.getElementById('manuale-servizio').value;
+    var servizio = serviziManuale.filter(function(s){ return s.id === servizioId; })[0];
+    var box = document.getElementById('manuale-riepilogo');
+    if (!dal || !al || !servizio || al < dal) { box.textContent = ''; return; }
+    var p = calcolaPrezzoManuale(Number(servizio.prezzo), dal, al);
+    box.textContent = p.notti + (p.notti === 1 ? ' notte' : ' notti') + ' · totale ' + euro(p.totale) + ' · acconto ' + euro(p.acconto) + ' · saldo ' + euro(p.saldo);
+  }
+  ['manuale-dal', 'manuale-al', 'manuale-servizio'].forEach(function(id){
+    document.getElementById(id).addEventListener('change', aggiornaRiepilogoManuale);
+  });
+
+  formCercaCliente.addEventListener('submit', function(e){
+    e.preventDefault();
+    messaggioManuale.hidden = true;
+    formPrenotazioneManuale.hidden = true;
+    var email = document.getElementById('cerca-email').value.trim();
+
+    sb.from('profili').select('id,nome,cognome,email').eq('email', email).maybeSingle().then(function(r){
+      if (r.error || !r.data) {
+        avviso(messaggioManuale, 'Nessun cliente registrato con questa email. Deve prima registrarsi lui stesso nell\'area privata.', 'errore');
+        return;
+      }
+      clienteTrovato = r.data;
+      return sb.from('animali').select('id,nome').eq('proprietario_id', clienteTrovato.id);
+    }).then(function(r){
+      if (!r) return;
+      if (r.error) { avviso(messaggioManuale, r.error.message, 'errore'); return; }
+      if (!r.data.length) {
+        avviso(messaggioManuale, 'Il cliente non ha ancora animali registrati.', 'errore');
+        return;
+      }
+      document.getElementById('manuale-animale').innerHTML = r.data.map(function(a){
+        return '<option value="' + a.id + '">' + escapeHtml(a.nome) + '</option>';
+      }).join('');
+      document.getElementById('legenda-cliente-trovato').textContent =
+        'Cliente: ' + clienteTrovato.nome + ' ' + clienteTrovato.cognome + ' (' + clienteTrovato.email + ')';
+      formPrenotazioneManuale.hidden = false;
+      aggiornaRiepilogoManuale();
+    });
+  });
+
+  formPrenotazioneManuale.addEventListener('submit', function(e){
+    e.preventDefault();
+    messaggioManuale.hidden = true;
+    if (!clienteTrovato) return;
+
+    var animaleId = document.getElementById('manuale-animale').value;
+    var servizioId = document.getElementById('manuale-servizio').value;
+    var dal = document.getElementById('manuale-dal').value;
+    var al = document.getElementById('manuale-al').value;
+    var accontoRicevuto = document.getElementById('manuale-acconto-ricevuto').checked;
+
+    if (!dal || !al || al < dal) { avviso(messaggioManuale, 'Scegli un intervallo di date valido.', 'errore'); return; }
+
+    var servizio = serviziManuale.filter(function(s){ return s.id === servizioId; })[0];
+    var p = calcolaPrezzoManuale(Number(servizio.prezzo), dal, al);
+
+    var dati = {
+      cliente_id: clienteTrovato.id,
+      animale_id: animaleId,
+      servizio_id: servizioId,
+      data_dal: dal,
+      data_al: al,
+      prezzo_totale: p.totale,
+      acconto_importo: p.acconto,
+      saldo_importo: p.saldo
+    };
+    if (accontoRicevuto) {
+      dati.stato = 'confermata';
+      dati.acconto_pagato_il = new Date().toISOString();
+    } else {
+      dati.stato = 'in_attesa_pagamento';
+    }
+
+    sb.from('prenotazioni').insert(dati).then(function(r){
+      if (r.error) { avviso(messaggioManuale, r.error.message, 'errore'); return; }
+      avviso(messaggioManuale, 'Prenotazione creata.', 'ok');
+      formPrenotazioneManuale.hidden = true;
+      formPrenotazioneManuale.reset();
+      formCercaCliente.reset();
+      clienteTrovato = null;
+      caricaPrenotazioniStaff();
+    });
+  });
 })();
 </script>
 <footer class="site-footer">

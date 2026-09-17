@@ -820,6 +820,7 @@ main section tr:last-child td{ border-bottom:none; }
 .badge-confermata{ background: rgba(129,82,42,0.22); color: var(--verde-light); }
 .badge-completata{ background: rgba(130,150,130,0.18); color: var(--ink-muted); }
 .badge-annullata{ background: rgba(169,68,56,0.16); color:#c98074; }
+.badge-nuova{ background: rgba(169,68,56,0.22); color:#e2a89e; }
 
 .vuoto{ color: var(--ink-muted); font-style:italic; }
 
