@@ -202,6 +202,8 @@ h1,h2,h3{ font-family:"Cinzel", Georgia, serif; font-weight:700; color:var(--ink
   border-bottom:1px solid var(--border-soft);
   padding: 50px 24px 54px;
 }
+/* senza questo spazio le card sotto toccavano subito il bordo della fascia */
+.hero-band + .wrap{ padding-top: 48px; }
 .hero-badge{ display:inline-block; margin:0 0 20px; }
 .logo-hero{ display:block; width:220px; height:auto; margin:0 auto; }
 .page-head{ text-align:center; max-width:600px; margin:0 auto 42px; }
@@ -275,7 +277,8 @@ h1.left{ text-align:left; }
 .section.edu, .section.pen{ border-left-color: var(--bordeaux); }
 .section.verde{ border-left-color: var(--verde); }
 .section h3{
-  font-size:14.5px; letter-spacing:0.08em; margin-bottom:10px; text-transform:uppercase;
+  font-family:"EB Garamond", Georgia, serif; font-weight:600;
+  font-size:20px; margin-bottom:9px;
 }
 .section.edu h3, .section.pen h3{ color: var(--bordeaux); }
 .section.verde h3{ color: var(--verde-light); }
@@ -304,7 +307,7 @@ h1.left{ text-align:left; }
    di .teaser-figura con un <img src="assets/img/..."> quando disponibile */
 .teaser-figura svg{ width:46px; height:46px; color: var(--ink-muted); opacity:.6; }
 .teaser-corpo{ min-width:0; }
-.teaser h3{ font-size:13.5px; letter-spacing:0.08em; margin-bottom:9px; color: var(--ink); text-transform:uppercase; }
+.teaser h3{ font-family:"EB Garamond", Georgia, serif; font-weight:600; font-size:19px; margin-bottom:8px; color: var(--ink); }
 .teaser p{ font-style:italic; color: var(--ink-muted); margin:0; }
 .teaser .more{ display:inline-block; margin-top:10px; font-style:normal; font-family:"Cinzel", serif; font-size:11.5px; letter-spacing:0.08em; text-transform:uppercase; }
 @media (max-width:600px){
@@ -324,7 +327,7 @@ h1.left{ text-align:left; }
 /* ---------- location cards (dove operiamo) ---------- */
 .loc-row{ display:flex; gap:22px; margin-bottom: 10px; }
 .loc-card{ flex:1; border:1px solid var(--border-soft); background: var(--surface-soft); border-radius:4px; padding:24px 22px; }
-.loc-card h3{ font-size:14px; letter-spacing:0.07em; color: var(--bandana); text-transform:uppercase; margin-bottom:8px; }
+.loc-card h3{ font-family:"EB Garamond", Georgia, serif; font-weight:600; font-size:19px; color: var(--bandana); margin-bottom:8px; }
 .loc-card ul{ margin:12px 0 0; padding-left:18px; color: var(--ink-muted); font-size:15px; }
 .loc-card li{ margin-bottom:4px; }
 .note{ font-style:italic; color: var(--ink-muted); font-size:15px; text-align:center; margin-top:22px; }
