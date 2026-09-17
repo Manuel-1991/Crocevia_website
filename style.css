@@ -695,7 +695,7 @@ main section tr:last-child td{ border-bottom:none; }
   gap:2px; padding:0 8px;
   background:#00b67a; color:#fff; text-decoration:none; text-align:center;
 }
-.tp-badge .tp-mask:hover{ background:rgba(0,0,0,.08); }
+.tp-badge .tp-mask:hover{ filter:brightness(.9); }
 .tp-badge .tp-mask:focus-visible{ outline:2px solid #fff; outline-offset:-3px; }
 .tp-badge .tp-mask .stars{ display:flex; gap:1px; }
 .tp-badge .tp-mask .stars svg{ display:block; width:7px; height:7px; fill:#fff; }
