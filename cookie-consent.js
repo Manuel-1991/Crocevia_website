@@ -1,9 +1,12 @@
-/* Crocevia — banner di consenso cookie + Google Analytics 4 (Consent Mode v2).
-   File unico incluso in tutte le pagine: un solo punto da aggiornare. */
+/* Crocevia — banner di consenso cookie + Google Analytics 4, Google Ads
+   e Meta Pixel (Consent Mode v2). File unico incluso in tutte le pagine:
+   un solo punto da aggiornare. */
 (function () {
   "use strict";
 
   var GA_MEASUREMENT_ID = "G-423CC11GJD";
+  var GOOGLE_ADS_ID = ""; // TODO: AW-XXXXXXXXX (Google Ads → Strumenti → Conversioni)
+  var META_PIXEL_ID = ""; // TODO: ID numerico del Meta Pixel (Meta Events Manager → Origini dati)
   var STORAGE_KEY = "cc_consent_v1";
 
   function readConsent() {
