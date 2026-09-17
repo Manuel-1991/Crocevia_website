@@ -4,9 +4,14 @@ Sito di **Crocevia** — educazione cinofila, asilo diurno, pensione e passeggia
 di gruppo. Manuel, educatore cinofilo FICSS.
 Settimo Milanese (MI) · campo e bosco sul Lago Maggiore.
 
-Dieci pagine HTML statiche, senza framework e senza backend: si aprono anche
-facendo doppio clic sul file. La prenotazione non passa da un server, il modulo
-compone un messaggio e apre WhatsApp.
+Le pagine di presentazione sono HTML statico senza framework, come all'inizio.
+Da qui però il sito ha anche un vero backend: un database Supabase con account
+utente, animali e prenotazioni, pagamento online (Stripe) per stallo/pensione
+e asilo con acconto e saldo separati, evento automatico su Google Calendar a
+ogni prenotazione confermata. Educazione, valutazione e passeggiate restano
+invece sul modulo che compone un messaggio e apre WhatsApp — nessun account
+richiesto per quei servizi. Dettagli tecnici, schema del database ed Edge
+Function in `supabase/README.md`.
 
 ## Le pagine
 
@@ -18,6 +23,7 @@ compone un messaggio e apre WhatsApp.
 | `prenota.html` | modulo di prenotazione per educazione e passeggiate → messaggio WhatsApp precompilato |
 | `area-privata.html` | login/registrazione, profilo, animali e prenotazioni del cliente (Supabase) |
 | `prenota-pensione-asilo.html` | calendario disponibilità e richiesta di prenotazione per pensione/asilo (richiede accesso) |
+| `area-staff.html` | riservata ad addetto/admin: prenotazioni in arrivo, conferme, prenotazione manuale, ruoli utenti |
 | `chi-siamo.html` | Manuel e Dingo, metodo e filosofia |
 | `dove-operiamo.html` | campo e bosco, Settimo Milanese |
 | `contatti.html` | telefono, email, P.IVA |
@@ -77,8 +83,9 @@ La vista orizzontale guarda larghezza **e** altezza: un telefono girato è largo
 - I campi del modulo stanno a 16px: sotto quella misura iOS zooma da solo quando
   li tocchi.
 - In `prenota.html` la regola `[data-blocco]{display:none}` / `.attivo` governa
-  le tre schede data (lezione singola, pacchetto, soggiorno). Se sparisce,
-  compaiono tutte e tre insieme.
+  le due schede data (lezione singola, pacchetto). Se sparisce, compaiono
+  entrambe insieme. Pensione e asilo non sono più su questa pagina: hanno il
+  loro calendario in `prenota-pensione-asilo.html`.
 
 ## Caricare gli aggiornamenti su GitHub
 
@@ -105,15 +112,6 @@ GitHub Pages, ramo `main`, cartella radice (`/`).
 `https://manuel-1991.github.io/Crocevia_website/`: se in futuro colleghi un
 dominio tuo, cambia quell'indirizzo in tutti e due i file e aggiungi un file
 `CNAME` con il dominio dentro.
-
-## Ancora da compilare
-
-Testi lasciati come sono, sono decisioni da prendere:
-
-- `privacy.html` — la data in "In vigore dal [data]"
-- `termini.html` — la stessa data, i metodi di pagamento, rimborso
-  `[integrale / parziale]`, la regola sui ritardi, `[48 ore]`, `[7 giorni]`,
-  `[20 minuti]`, validità pacchetti `[X mesi]`, recesso `[X giorni]`
 
 ---
 
