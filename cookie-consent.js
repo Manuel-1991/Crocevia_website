@@ -3,7 +3,7 @@
 (function () {
   "use strict";
 
-  var GA_MEASUREMENT_ID = "G-XXXXXXXXXX"; // TODO: sostituire con il Measurement ID reale (GA4 → Amministrazione → Flussi di dati)
+  var GA_MEASUREMENT_ID = "G-423CC11GJD";
   var STORAGE_KEY = "cc_consent_v1";
 
   function readConsent() {
@@ -37,7 +37,7 @@
   var gaLoaded = false;
   function loadGA() {
     if (gaLoaded) return;
-    if (!GA_MEASUREMENT_ID || GA_MEASUREMENT_ID.indexOf("XXXX") !== -1) return;
+    if (!GA_MEASUREMENT_ID) return;
     gaLoaded = true;
     var s = document.createElement("script");
     s.async = true;
