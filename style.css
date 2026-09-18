@@ -557,7 +557,7 @@ main section tr:last-child td{ border-bottom:none; }
 .bottone-pieno:hover{ background: var(--verde-light); border-color: var(--verde-light); color:var(--on-accent); }
 .bottone-vuoto{ background: transparent; color: var(--gold); }
 .bottone-vuoto:hover{ background: var(--gold-tint); color: var(--gold); }
-/* stessa dimensione del tastone finale del modulo di prenotazione (#modulo-prenotazione .bottone),
+/* stessa dimensione del tastone finale del modulo di contatto (#modulo-contatto .bottone),
    per i pulsanti "Prenota" a piena larghezza fuori dal modulo */
 .bottone-full{ display:flex; width:100%; padding: 17px 30px; font-size:15px; }
 
@@ -567,15 +567,15 @@ main section tr:last-child td{ border-bottom:none; }
   line-height:1; color: var(--gold); opacity:.85; margin: 0 0 10px; letter-spacing:0.04em;
 }
 
-/* modulo di prenotazione */
-#modulo-prenotazione{ margin-top: 6px; }
-#modulo-prenotazione fieldset, #blocco-autenticazione fieldset, #area-cliente fieldset,
+/* modulo di contatto */
+#modulo-contatto{ margin-top: 6px; }
+#modulo-contatto fieldset, #blocco-autenticazione fieldset, #area-cliente fieldset,
 #corpo-prenotazione fieldset, #corpo-staff fieldset{
   border:1px solid var(--border-soft); border-left:3px solid var(--gold);
   background: var(--surface-soft); border-radius:4px;
   padding: 20px 22px 22px; margin: 0 0 20px;
 }
-#modulo-prenotazione legend, #blocco-autenticazione legend, #area-cliente legend,
+#modulo-contatto legend, #blocco-autenticazione legend, #area-cliente legend,
 #corpo-prenotazione legend, #corpo-staff legend{
   font-family:"Cinzel", serif; font-weight:600; font-size:13px;
   letter-spacing:0.09em; text-transform:uppercase; color: var(--gold);
@@ -631,18 +631,18 @@ main section tr:last-child td{ border-bottom:none; }
   accent-color: var(--gold);
 }
 /* l'invio del modulo è l'azione principale della pagina: pieno */
-#modulo-prenotazione .bottone{
+#modulo-contatto .bottone{
   width:100%; padding: 17px 30px; font-size:15px;
   background: var(--gold); color:var(--on-accent); border-color: var(--gold);
 }
-#modulo-prenotazione .bottone:hover{ background: var(--verde-light); border-color: var(--verde-light); }
+#modulo-contatto .bottone:hover{ background: var(--verde-light); border-color: var(--verde-light); }
 .info-invio{ font-size:14px; color: var(--ink-muted); text-align:center; margin-top:14px; font-style:italic; }
 .prezzo-nota{ font-size:14px; color: var(--ink-muted); margin-top:8px; }
 
 @media (max-width: 999px){
   .indice{ columns:1; padding: 16px 18px 16px 34px; margin-bottom:30px; }
   .riga-2, .riga-3{ grid-template-columns: 1fr; }
-  #modulo-prenotazione fieldset, #blocco-autenticazione fieldset, #area-cliente fieldset,
+  #modulo-contatto fieldset, #blocco-autenticazione fieldset, #area-cliente fieldset,
   #corpo-prenotazione fieldset, #corpo-staff fieldset{ padding: 16px 16px 18px; }
   .azioni{ flex-direction:column; }
   .bottone{ width:100%; }
