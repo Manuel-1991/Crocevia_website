@@ -30,6 +30,7 @@ Dettagli tecnici, schema del database ed Edge Function in
 | `area-staff.html` | riservata ad addetto/admin: prenotazioni in arrivo, conferme, prenotazione manuale, ruoli utenti, calendario e iscritti delle passeggiate, prenotazione passeggiata per un cliente che telefona |
 | `chi-siamo.html` | Manuel e Dingo, metodo e filosofia |
 | `dove-operiamo.html` | campo e bosco, Settimo Milanese |
+| `faq.html` | domande frequenti su prenotazioni, pensione/asilo ed educazione, in accordion (con dati strutturati FAQPage) |
 | `contatti.html` | telefono, email, P.IVA |
 | `privacy.html` | informativa privacy |
 | `termini.html` | termini e condizioni |
