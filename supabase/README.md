@@ -73,19 +73,24 @@ Due Edge Function, già distribuite al progetto live:
   service role segna il pagamento "pagato" e la prenotazione "confermata"
   (acconto) o aggiorna `saldo_pagato_il` (saldo).
 
-L'endpoint webhook su Stripe (modalità test, account sandbox
-`acct_1UGlfoBh7RgvyMiF`) è già creato via connettore Stripe, puntato su
-`https://gcjxhgvghncjjvcnacbv.supabase.co/functions/v1/stripe-webhook`,
-evento `checkout.session.completed`.
+**In produzione dal 18 settembre 2026: chiavi e webhook live.** Conto Stripe
+"Crocevia Cani" (`acct_1UGlf4BP3z1Napez`) verificato e attivo —
+`charges_enabled`/`payouts_enabled` true, IBAN collegato, nessun
+requisito in sospeso. Il webhook live è creato via connettore Stripe,
+puntato su `https://gcjxhgvghncjjvcnacbv.supabase.co/functions/v1/stripe-webhook`,
+evento `checkout.session.completed`. I secret `STRIPE_SECRET_KEY`
+(`sk_live_...`) e `STRIPE_WEBHOOK_SECRET` sono impostati su Supabase con
+i valori live. Da questo momento ogni pagamento sul sito è vero.
 
-I due secret (`STRIPE_SECRET_KEY`, `STRIPE_WEBHOOK_SECRET`) sono già
-impostati su Supabase. Flusso testato end-to-end (vedi cronologia della
-conversazione): registrazione, prenotazione, pagamento, webhook di
-conferma, tutto verificato in modalità test/sandbox.
+Il flusso era già stato verificato end-to-end in modalità test/sandbox
+(registrazione, prenotazione, pagamento, webhook di conferma, evento
+calendario). **Manca ancora un test con una carta vera in produzione** —
+non fatto di proposito per ora, da fare quando si vuole con una
+prenotazione a importo basso.
 
-Per testare i pagamenti in modalità test si usano le carte di prova di
-Stripe (es. `4242 4242 4242 4242`, qualsiasi data futura e CVC), nessun
-addebito reale.
+L'endpoint di test resta attivo separatamente sull'account sandbox
+(`acct_1UGlfoBh7RgvyMiF`), utile se un domani serve provare qualcosa
+senza toccare i dati veri.
 
 ## 5b. Google Calendar (functions/crea-evento-calendario)
 
@@ -134,7 +139,9 @@ file JSON).
 11. ~~Evento su Google Calendar per ogni prenotazione confermata~~ ✓
     (service account, verificato end-to-end)
 
-Punti 1-11 completati. Prima di andare live con pagamenti veri restano
-solo: cambiare le chiavi Stripe da test a live (nuovo webhook in
-modalità live), verificare l'attivazione completa dell'account Stripe
-per gli incassi reali, e un vero test con carta reale a importo basso.
+12. ~~Chiavi e webhook Stripe passati da test a live~~ ✓ (18 settembre
+    2026 — conto verificato attivo, IBAN collegato)
+
+**Il sito è live.** Resta solo, quando si vuole: un vero test con una
+carta reale a importo basso, per chiudere il cerchio anche sul lato mai
+verificabile da qui (la pagina di pagamento ospitata da Stripe).
