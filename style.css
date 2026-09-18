@@ -151,9 +151,9 @@ h1,h2,h3{ font-family:"Cinzel", Georgia, serif; font-weight:700; color:var(--ink
   border-bottom: 1px solid var(--border-soft);
 }
 .nav{
-  /* 1080px, non 960px: con 9 voci in menu ci vuole questo margine perché
-     tutte stiano su una riga senza dover scorrere, dai 1100px in su. */
-  max-width: 1080px; margin: 0 auto; padding: 16px 28px;
+  /* 1200px, non 960px: con 10 voci in menu ci vuole questo margine perché
+     tutte stiano su una riga senza dover scorrere, dai 1200px in su. */
+  max-width: 1200px; margin: 0 auto; padding: 16px 28px;
   display:flex; align-items:center; justify-content:space-between; gap: 14px;
   flex-wrap: nowrap;
 }
@@ -315,6 +315,7 @@ h1.left{ text-align:left; }
 .section p + p{ margin-top:10px; }
 .price{ font-style:normal; font-weight:600; }
 .section.edu .price, .section.pen .price{ color: var(--bordeaux); }
+.section.verde .price{ color: var(--verde-light); }
 
 /* ---------- teaser (media + testo) ---------- */
 .teaser{
@@ -584,7 +585,7 @@ main section tr:last-child td{ border-bottom:none; }
   letter-spacing:0; text-transform:none; color: var(--ink);
   margin:0; cursor:pointer;
 }
-.checkriga input[type="checkbox"]{
+.checkriga input[type="checkbox"], .checkriga input[type="radio"]{
   width:19px; height:19px; flex:none; margin:0;
   accent-color: var(--gold);
 }

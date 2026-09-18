@@ -1,0 +1,272 @@
+<!doctype html>
+<html lang="it">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#0d2219">
+<script>(function(){try{var t=localStorage.getItem('crocevia-tema');if(t==='chiaro'||t==='scuro'){document.documentElement.setAttribute('data-tema',t);}}catch(e){}})();</script>
+<link rel="icon" type="image/png" href="assets/img/brand/favicon.png">
+<link rel="apple-touch-icon" href="assets/img/brand/apple-touch-icon.png">
+<title>Prenota una passeggiata — Crocevia</title>
+<meta name="description" content="Prenota la tua passeggiata di gruppo: scegli l'uscita e i cani, nessun anticipo, saldo il giorno stesso.">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Crocevia">
+<meta property="og:locale" content="it_IT">
+<meta property="og:url" content="https://croceviacani.it/prenota-passeggiata.html">
+<meta property="og:title" content="Prenota una passeggiata — Crocevia">
+<meta property="og:description" content="Prenota la tua passeggiata di gruppo: scegli l'uscita e i cani, nessun anticipo, saldo il giorno stesso.">
+<meta property="og:image" content="https://croceviacani.it/assets/img/brand/logo-nav.webp">
+<meta property="og:image:width" content="200">
+<meta property="og:image:height" content="201">
+<meta property="og:image:type" content="image/webp">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Prenota una passeggiata — Crocevia">
+<meta name="twitter:description" content="Prenota la tua passeggiata di gruppo: scegli l'uscita e i cani, nessun anticipo, saldo il giorno stesso.">
+<meta name="twitter:image" content="https://croceviacani.it/assets/img/brand/logo-nav.webp">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;600;700&family=EB+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&display=swap">
+<link rel="stylesheet" href="style.css?v=20260918">
+<noscript><style>.reveal{opacity:1!important;transform:none!important;}</style></noscript>
+<header class="site-header">
+  <nav class="nav">
+    <a href="index.html" class="brand" aria-label="Crocevia — Home">
+      <img class="logo-nav" src="assets/img/brand/logo-nav.webp" alt="Crocevia" width="200" height="201">
+      <span class="brand-text">
+        <span class="brand-word">CROCEVIA</span>
+        <span class="brand-tagline">Asilo · Pensione · Passeggiate</span>
+      </span>
+    </a>
+    <button class="tema-toggle" id="cambia-tema" type="button" aria-label="Passa al tema chiaro" aria-pressed="false">
+      <svg class="icona-sole" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><circle cx="12" cy="12" r="4"></circle><path d="M12 2v3M12 19v3M4.2 4.2l2.1 2.1M17.7 17.7l2.1 2.1M2 12h3M19 12h3M4.2 19.8l2.1-2.1M17.7 6.3l2.1-2.1" stroke-width="1.8" stroke-linecap="round"></path></svg>
+      <svg class="icona-luna" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M20 14.5A8.5 8.5 0 1 1 9.5 4a7 7 0 0 0 10.5 10.5Z"></path></svg>
+    </button>
+    <button class="nav-toggle" id="apri-menu" type="button" aria-controls="menu-crocevia" aria-expanded="false" aria-label="Apri il menu"><span class="barre" aria-hidden="true"></span></button>
+    <ul class="nav-links" id="menu-crocevia"><li><a href="index.html" class="nav">Home</a></li><li><a href="educazione.html" class="nav">Educazione</a></li><li><a href="pensione-asilo.html" class="nav">Pensione &amp; Asilo</a></li><li><a href="passeggiate.html" class="nav active">Passeggiate</a></li><li><a href="chi-siamo.html" class="nav">Chi siamo</a></li><li><a href="dove-operiamo.html" class="nav">Dove operiamo</a></li><li><a href="faq.html" class="nav">FAQ</a></li><li><a href="contatti.html" class="nav">Contatti</a></li><li><a href="prenota.html" class="nav">Prenota</a></li><li><a href="area-privata.html" class="nav">Area privata</a></li></ul>
+  </nav>
+</header>
+<main class="wrap">
+
+<div class="crumb"><a href="index.html">Home</a> / <a href="passeggiate.html">Passeggiate</a> / Prenota</div>
+<div class="page-head left"><h1 class="left">Prenota la tua passeggiata</h1></div>
+
+<p class="premessa">Scegli l'uscita e i cani che partecipano: la prenotazione è confermata subito, senza anticipo. Il saldo di 50&nbsp;€ a persona si paga il giorno stesso. Puoi avere una sola prenotazione attiva alla volta, e la gestisci sempre dalla tua <a href="area-privata.html">area privata</a>.</p>
+
+<div id="serve-accesso">
+  <p class="avviso">Devi prima <a href="area-privata.html">accedere o registrarti</a> per prenotare.</p>
+</div>
+
+<div id="corpo-prenotazione" hidden>
+
+  <p id="messaggio-prenotazione" class="avviso" hidden></p>
+
+  <div id="blocco-gia-iscritto" class="sezione-conto" hidden>
+    <div class="card-prenotazione" id="card-gia-iscritto"></div>
+    <p style="margin-top:16px;"><a href="area-privata.html" class="bottone bottone-pieno">Gestisci la tua prenotazione nell'area privata &rarr;</a></p>
+  </div>
+
+  <div id="serve-telefono" hidden>
+    <p class="avviso avviso-errore">Per iscriverti serve un numero di telefono nel tuo profilo: è l'unico modo per avvisarti se una passeggiata salta per maltempo. <a href="area-privata.html">Aggiungilo nella tua area privata</a>, poi torna qui.</p>
+  </div>
+
+  <form id="form-prenotazione">
+    <fieldset>
+      <legend>Scegli l'uscita</legend>
+      <div id="lista-uscite" class="lista-prenotazioni"></div>
+    </fieldset>
+
+    <fieldset>
+      <legend>I tuoi cani</legend>
+      <div id="lista-cani"></div>
+    </fieldset>
+
+    <button type="submit" class="bottone bottone-pieno bottone-full">Conferma la prenotazione</button>
+  </form>
+
+</div>
+
+</main>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="supabase-client.js"></script>
+<script>
+(function(){
+  var sb = window.CroceviaSupabase;
+  var utenteCorrente = null;
+  var animali = [];
+  var uscite = [];
+
+  var blocAccesso = document.getElementById('serve-accesso');
+  var corpo = document.getElementById('corpo-prenotazione');
+  var messaggio = document.getElementById('messaggio-prenotazione');
+  var form = document.getElementById('form-prenotazione');
+  var bloccoGiaIscritto = document.getElementById('blocco-gia-iscritto');
+  var bloccoServeTelefono = document.getElementById('serve-telefono');
+  var bottoneInvia = form.querySelector('button[type="submit"]');
+
+  var nomiGiorni = ['domenica','lunedì','martedì','mercoledì','giovedì','venerdì','sabato'];
+  var nomiMesi = ['gennaio','febbraio','marzo','aprile','maggio','giugno','luglio','agosto','settembre','ottobre','novembre','dicembre'];
+
+  function formattaData(iso){
+    var d = new Date(iso + 'T00:00:00');
+    return nomiGiorni[d.getDay()] + ' ' + d.getDate() + ' ' + nomiMesi[d.getMonth()];
+  }
+  function escapeHtml(s){
+    var d = document.createElement('div');
+    d.textContent = s == null ? '' : String(s);
+    return d.innerHTML;
+  }
+  function avviso(testo, tipo){
+    messaggio.textContent = testo;
+    messaggio.className = 'avviso ' + (tipo === 'errore' ? 'avviso-errore' : 'avviso-ok');
+    messaggio.hidden = false;
+  }
+
+  sb.auth.onAuthStateChange(function(evento, sessione){
+    if (sessione && sessione.user) {
+      utenteCorrente = sessione.user;
+      blocAccesso.hidden = true;
+      corpo.hidden = false;
+      messaggio.hidden = true;
+      init();
+    } else {
+      utenteCorrente = null;
+      blocAccesso.hidden = false;
+      corpo.hidden = true;
+    }
+  });
+
+  function init(){
+    bloccoServeTelefono.hidden = true;
+    Promise.all([
+      sb.from('animali').select('id,nome').eq('proprietario_id', utenteCorrente.id).order('creato_il'),
+      sb.from('passeggiate_disponibilita').select('*'),
+      sb.from('iscrizioni_passeggiata')
+        .select('id, passeggiate(data,ora,argomento,luogo), iscrizione_passeggiata_animali(animali(nome))')
+        .eq('cliente_id', utenteCorrente.id)
+        .eq('stato', 'confermata')
+        .maybeSingle(),
+      sb.from('profili').select('telefono').eq('id', utenteCorrente.id).single()
+    ]).then(function(r){
+      var animaliRes = r[0], usciteRes = r[1], iscrizioneRes = r[2], profiloRes = r[3];
+      animali = animaliRes.data || [];
+      uscite = usciteRes.data || [];
+
+      if (iscrizioneRes.data) {
+        mostraGiaIscritto(iscrizioneRes.data);
+        return;
+      }
+
+      bloccoGiaIscritto.hidden = true;
+
+      if (!profiloRes.data || !profiloRes.data.telefono) {
+        form.hidden = true;
+        bloccoServeTelefono.hidden = false;
+        return;
+      }
+
+      form.hidden = false;
+      renderUscite();
+      renderCani();
+    });
+  }
+
+  function mostraGiaIscritto(iscrizione){
+    form.hidden = true;
+    bloccoGiaIscritto.hidden = false;
+    var p = iscrizione.passeggiate;
+    var cani = (iscrizione.iscrizione_passeggiata_animali || []).map(function(r){ return r.animali ? r.animali.nome : ''; }).filter(Boolean);
+    document.getElementById('card-gia-iscritto').innerHTML =
+      '<div><h3>Sei già iscritto</h3>' +
+      '<p>' + escapeHtml(p ? formattaData(p.data) + ', ore ' + p.ora.slice(0,5) : '') + '</p>' +
+      '<p>' + escapeHtml(p ? p.argomento : '') + ' &middot; ' + escapeHtml(p ? p.luogo : '') + '</p>' +
+      (cani.length ? '<p>Cani: ' + escapeHtml(cani.join(', ')) + '</p>' : '') +
+      '</div>';
+  }
+
+  function renderUscite(){
+    var lista = document.getElementById('lista-uscite');
+    if (!uscite.length) {
+      lista.innerHTML = '<p class="vuoto">Nessuna passeggiata in programma al momento: torna a trovarci presto.</p>';
+      return;
+    }
+    lista.innerHTML = uscite.map(function(u){
+      var posti = Math.max(u.posti_liberi, 0);
+      var completa = posti <= 0;
+      return '<label class="checkriga card-prenotazione" style="justify-content:flex-start;align-items:flex-start;cursor:' + (completa ? 'not-allowed' : 'pointer') + ';opacity:' + (completa ? '0.55' : '1') + ';">' +
+        '<input type="radio" name="uscita" value="' + u.id + '"' + (completa ? ' disabled' : '') + '>' +
+        '<span><b>' + escapeHtml(formattaData(u.data)) + ', ore ' + escapeHtml(u.ora.slice(0,5)) + '</b><br>' +
+        escapeHtml(u.argomento) + ' &middot; ' + escapeHtml(u.luogo) + '<br>' +
+        (completa ? 'Al completo' : posti + ' post' + (posti === 1 ? 'o libero' : 'i liberi') + ' su 10') +
+        '</span></label>';
+    }).join('');
+  }
+
+  function renderCani(){
+    var lista = document.getElementById('lista-cani');
+    if (!animali.length) {
+      lista.innerHTML = '<p class="vuoto">Non hai ancora aggiunto un cane: aggiungine uno nella tua <a href="area-privata.html">area privata</a> prima di prenotare.</p>';
+      return;
+    }
+    lista.innerHTML = animali.map(function(a){
+      return '<label class="checkriga"><input type="checkbox" name="cane" value="' + a.id + '"> ' + escapeHtml(a.nome) + '</label>';
+    }).join('');
+  }
+
+  form.addEventListener('submit', function(e){
+    e.preventDefault();
+    messaggio.hidden = true;
+
+    var uscitaId = (form.querySelector('input[name="uscita"]:checked') || {}).value;
+    var caniId = Array.prototype.map.call(form.querySelectorAll('input[name="cane"]:checked'), function(el){ return el.value; });
+
+    if (!animali.length) { avviso('Aggiungi prima un cane nella tua area privata.', 'errore'); return; }
+    if (!uscitaId) { avviso('Scegli una passeggiata.', 'errore'); return; }
+    if (!caniId.length) { avviso('Scegli almeno un cane.', 'errore'); return; }
+
+    bottoneInvia.disabled = true;
+
+    sb.from('iscrizioni_passeggiata').insert({
+      cliente_id: utenteCorrente.id,
+      passeggiata_id: uscitaId,
+      stato: 'confermata'
+    }).select().single().then(function(r){
+      if (r.error) {
+        bottoneInvia.disabled = false;
+        if (r.error.code === '23505') avviso('Hai già una prenotazione attiva: aggiorna la pagina per vederla.', 'errore');
+        else avviso(r.error.message, 'errore');
+        return;
+      }
+      var iscrizioneId = r.data.id;
+      sb.from('iscrizione_passeggiata_animali').insert(
+        caniId.map(function(id){ return { iscrizione_id: iscrizioneId, animale_id: id }; })
+      ).then(function(r2){
+        bottoneInvia.disabled = false;
+        if (r2.error) { avviso('Prenotazione creata ma non è stato possibile salvare i cani: ' + r2.error.message, 'errore'); return; }
+        avviso('Prenotazione confermata! Ci vediamo alla passeggiata — il saldo di 50 € a persona si paga in loco.', 'ok');
+        init();
+      });
+    });
+  });
+})();
+</script>
+<footer class="site-footer">
+  <div class="footer-inner">
+    <div class="footer-links">
+      <a href="chi-siamo.html">Chi siamo</a> &middot;
+      <a href="dove-operiamo.html">Dove operiamo</a> &middot;
+      <a href="faq.html">FAQ</a> &middot;
+      <a href="contatti.html">Contatti</a> &middot;
+      <a href="prenota.html">Prenota</a> &middot;
+      <a href="privacy.html">Privacy</a> &middot;
+      <a href="termini.html">Termini</a> &middot;
+      <a href="#" id="gestisci-cookie">Gestisci cookie</a>
+    </div>
+    <div class="footer-contact">
+      <a href="tel:+393334325389">+39 333 432 5389</a> &middot;
+      <a href="mailto:info@croceviacani.it">info@croceviacani.it</a>
+    </div>
+    <div class="footer-piva">Crocevia &middot; Manuel &middot; P.IVA 14868890964</div>
+  </div>
+</footer>
+
+<script src="main.js?v=20260918"></script>
+<script src="cookie-consent.js"></script>
+</html>
