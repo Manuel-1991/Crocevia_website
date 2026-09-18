@@ -155,7 +155,12 @@ h1,h2,h3{ font-family:"Cinzel", Georgia, serif; font-weight:700; color:var(--ink
   display:flex; align-items:center; justify-content:space-between; gap: 14px;
   flex-wrap: nowrap;
 }
-.brand{ display:flex; align-items:center; gap:10px; }
+/* flex-shrink:0 — logo e nome non devono mai essere compressi: in alcuni
+   browser il calcolo della larghezza minima di un flex annidato (brand
+   dentro nav) può sbagliare e far sovrapporre il testo al pulsante
+   accanto (tema-toggle). Il "sacrificio" in caso di spazio stretto lo fa
+   .nav-links, che ha già lo scroll orizzontale proprio per questo. */
+.brand{ display:flex; align-items:center; gap:10px; flex-shrink:0; }
 .brand-text{ display:flex; flex-direction:column; justify-content:center; align-items:center; gap:2px; text-align:center; }
 .brand-word{
   font-family:"Cinzel", serif; font-weight:700; font-size:15px; line-height:1;
@@ -168,7 +173,7 @@ h1,h2,h3{ font-family:"Cinzel", Georgia, serif; font-weight:700; color:var(--ink
 .crest{ width:34px; height:34px; flex:none; }
 .nav-links{
   display:flex; flex-wrap:nowrap; gap: 4px 15px; list-style:none; margin:0; padding:0;
-  overflow-x:auto;
+  overflow-x:auto; min-width:0;
 }
 .nav-links a{
   font-family:"Cinzel", serif; font-size:10.5px; letter-spacing:0.06em;
