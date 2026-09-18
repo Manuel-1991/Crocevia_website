@@ -114,8 +114,9 @@
     <div id="lista-passeggiate-staff" class="lista-prenotazioni"></div>
 
     <form id="form-nuova-passeggiata" style="margin-top:8px;">
+      <input type="hidden" id="passeggiata-id">
       <fieldset>
-        <legend>Aggiungi una passeggiata</legend>
+        <legend id="legenda-passeggiata">Aggiungi una passeggiata</legend>
         <div class="riga riga-3">
           <div class="campo">
             <label for="nuova-passeggiata-data">Data *</label>
@@ -139,7 +140,8 @@
           <textarea id="nuova-passeggiata-note"></textarea>
         </div>
       </fieldset>
-      <button type="submit" class="bottone bottone-pieno">Aggiungi passeggiata</button>
+      <button type="submit" class="bottone bottone-pieno" id="bottone-salva-passeggiata">Aggiungi passeggiata</button>
+      <button type="button" class="bottone bottone-vuoto" id="bottone-annulla-passeggiata" hidden>Annulla modifica</button>
     </form>
   </section>
 
@@ -488,7 +490,7 @@
 
   function caricaPasseggiateStaff(){
     sb.from('passeggiate')
-      .select('id, data, ora, argomento, luogo, stato, iscrizioni_passeggiata(id, stato, profili(nome,cognome,telefono,email), iscrizione_passeggiata_animali(animali(nome)))')
+      .select('id, data, ora, argomento, luogo, stato, note, iscrizioni_passeggiata(id, stato, profili(nome,cognome,telefono,email), iscrizione_passeggiata_animali(animali(nome)))')
       .order('data', { ascending: false })
       .then(function(r){
         if (r.error) { avviso(messaggioPasseggiateStaff, r.error.message, 'errore'); return; }
@@ -512,12 +514,17 @@
             azioni.push('<button type="button" data-azione="meteo">Annulla per maltempo</button>');
             azioni.push('<button type="button" data-azione="svolta">Segna svolta</button>');
           }
+          azioni.push('<button type="button" data-azione="modifica">Modifica</button>');
+          if (!iscritti.length) {
+            azioni.push('<button type="button" data-azione="elimina">Elimina</button>');
+          }
 
           var card = document.createElement('div');
           card.className = 'card-prenotazione';
           card.innerHTML =
             '<div><h3>' + escapeHtml(p.argomento) + '</h3>' +
             '<p>' + escapeHtml(formattaData(p.data) + ', ore ' + p.ora.slice(0,5)) + ' &middot; ' + escapeHtml(p.luogo) + '</p>' +
+            (p.note ? '<p><em>' + escapeHtml(p.note) + '</em></p>' : '') +
             '<p>' + iscritti.length + '/10 iscritti</p>' +
             (listaIscritti ? '<ul style="margin:8px 0 0;padding-left:18px;">' + listaIscritti + '</ul>' : '<p class="vuoto">Nessun iscritto.</p>') +
             (azioni.length ? '<p class="card-azioni" style="margin-top:10px;">' + azioni.join('') + '</p>' : '') +
@@ -525,7 +532,12 @@
             '<span class="badge-stato ' + classeBadgePasseggiata[p.stato] + '">' + etichettePasseggiata[p.stato] + '</span>';
 
           card.querySelectorAll('[data-azione]').forEach(function(bottone){
-            bottone.addEventListener('click', function(){ eseguiAzionePasseggiata(p.id, bottone.getAttribute('data-azione')); });
+            var azione = bottone.getAttribute('data-azione');
+            if (azione === 'modifica') {
+              bottone.addEventListener('click', function(){ modificaPasseggiata(p); });
+            } else {
+              bottone.addEventListener('click', function(){ eseguiAzionePasseggiata(p.id, azione); });
+            }
           });
 
           listaPasseggiateStaff.appendChild(card);
@@ -534,6 +546,15 @@
   }
 
   function eseguiAzionePasseggiata(id, azione){
+    if (azione === 'elimina') {
+      if (!window.confirm('Eliminare questa passeggiata? Non ha iscritti, quindi non libera nessuno.')) return;
+      sb.from('passeggiate').delete().eq('id', id).then(function(r){
+        if (r.error) { avviso(messaggioPasseggiateStaff, r.error.message, 'errore'); return; }
+        if (document.getElementById('passeggiata-id').value === id) resetFormPasseggiata();
+        caricaPasseggiateStaff();
+      });
+      return;
+    }
     var campi = null;
     if (azione === 'meteo') {
       if (!window.confirm('Annullare questa passeggiata per maltempo? Gli iscritti verranno liberati in automatico.')) return;
@@ -547,9 +568,54 @@
     });
   }
 
+  // ---------- aggiungi / modifica passeggiata (stesso modulo per entrambe) ----------
+
+  var bottoneSalvaPasseggiata = document.getElementById('bottone-salva-passeggiata');
+  var bottoneAnnullaPasseggiata = document.getElementById('bottone-annulla-passeggiata');
+
+  function isoLocale(d){
+    var m = d.getMonth() + 1, g = d.getDate();
+    return d.getFullYear() + '-' + (m < 10 ? '0' : '') + m + '-' + (g < 10 ? '0' : '') + g;
+  }
+
+  function prossimoMartedi(){
+    var d = new Date(); d.setHours(0, 0, 0, 0);
+    var diff = (2 - d.getDay() + 7) % 7 || 7; // martedì prossimo, mai oggi anche se oggi è martedì
+    d.setDate(d.getDate() + diff);
+    return isoLocale(d);
+  }
+
+  function resetFormPasseggiata(){
+    formNuovaPasseggiata.reset();
+    document.getElementById('passeggiata-id').value = '';
+    document.getElementById('nuova-passeggiata-data').value = prossimoMartedi();
+    document.getElementById('nuova-passeggiata-ora').value = '18:00';
+    document.getElementById('nuova-passeggiata-luogo').value = 'Bosco di Campagnola';
+    document.getElementById('legenda-passeggiata').textContent = 'Aggiungi una passeggiata';
+    bottoneSalvaPasseggiata.textContent = 'Aggiungi passeggiata';
+    bottoneAnnullaPasseggiata.hidden = true;
+  }
+  document.getElementById('nuova-passeggiata-data').min = isoLocale(new Date());
+  resetFormPasseggiata();
+  bottoneAnnullaPasseggiata.addEventListener('click', resetFormPasseggiata);
+
+  function modificaPasseggiata(p){
+    document.getElementById('passeggiata-id').value = p.id;
+    document.getElementById('nuova-passeggiata-data').value = p.data;
+    document.getElementById('nuova-passeggiata-ora').value = p.ora.slice(0, 5);
+    document.getElementById('nuova-passeggiata-luogo').value = p.luogo || '';
+    document.getElementById('nuova-passeggiata-argomento').value = p.argomento || '';
+    document.getElementById('nuova-passeggiata-note').value = p.note || '';
+    document.getElementById('legenda-passeggiata').textContent = 'Modifica passeggiata del ' + formattaData(p.data);
+    bottoneSalvaPasseggiata.textContent = 'Salva modifiche';
+    bottoneAnnullaPasseggiata.hidden = false;
+    formNuovaPasseggiata.scrollIntoView({ behavior: 'smooth', block: 'center' });
+  }
+
   formNuovaPasseggiata.addEventListener('submit', function(e){
     e.preventDefault();
     messaggioPasseggiateStaff.hidden = true;
+    var id = document.getElementById('passeggiata-id').value;
     var dati = {
       data: document.getElementById('nuova-passeggiata-data').value,
       ora: document.getElementById('nuova-passeggiata-ora').value,
@@ -557,12 +623,13 @@
       argomento: document.getElementById('nuova-passeggiata-argomento').value.trim(),
       note: document.getElementById('nuova-passeggiata-note').value.trim() || null
     };
-    sb.from('passeggiate').insert(dati).then(function(r){
+    var richiesta = id
+      ? sb.from('passeggiate').update(dati).eq('id', id)
+      : sb.from('passeggiate').insert(dati);
+    richiesta.then(function(r){
       if (r.error) { avviso(messaggioPasseggiateStaff, r.error.message, 'errore'); return; }
-      avviso(messaggioPasseggiateStaff, 'Passeggiata aggiunta.', 'ok');
-      formNuovaPasseggiata.reset();
-      document.getElementById('nuova-passeggiata-ora').value = '18:00';
-      document.getElementById('nuova-passeggiata-luogo').value = 'Bosco di Campagnola';
+      avviso(messaggioPasseggiateStaff, id ? 'Passeggiata aggiornata.' : 'Passeggiata aggiunta.', 'ok');
+      resetFormPasseggiata();
       caricaPasseggiateStaff();
     });
   });

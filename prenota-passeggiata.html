@@ -62,6 +62,10 @@
     <p style="margin-top:16px;"><a href="area-privata.html" class="bottone bottone-pieno">Gestisci la tua prenotazione nell'area privata &rarr;</a></p>
   </div>
 
+  <div id="serve-telefono" hidden>
+    <p class="avviso avviso-errore">Per iscriverti serve un numero di telefono nel tuo profilo: è l'unico modo per avvisarti se una passeggiata salta per maltempo. <a href="area-privata.html">Aggiungilo nella tua area privata</a>, poi torna qui.</p>
+  </div>
+
   <form id="form-prenotazione">
     <fieldset>
       <legend>Scegli l'uscita</legend>
@@ -94,6 +98,8 @@
   var messaggio = document.getElementById('messaggio-prenotazione');
   var form = document.getElementById('form-prenotazione');
   var bloccoGiaIscritto = document.getElementById('blocco-gia-iscritto');
+  var bloccoServeTelefono = document.getElementById('serve-telefono');
+  var bottoneInvia = form.querySelector('button[type="submit"]');
 
   var nomiGiorni = ['domenica','lunedì','martedì','mercoledì','giovedì','venerdì','sabato'];
   var nomiMesi = ['gennaio','febbraio','marzo','aprile','maggio','giugno','luglio','agosto','settembre','ottobre','novembre','dicembre'];
@@ -128,6 +134,7 @@
   });
 
   function init(){
+    bloccoServeTelefono.hidden = true;
     Promise.all([
       sb.from('animali').select('id,nome').eq('proprietario_id', utenteCorrente.id).order('creato_il'),
       sb.from('passeggiate_disponibilita').select('*'),
@@ -135,9 +142,10 @@
         .select('id, passeggiate(data,ora,argomento,luogo), iscrizione_passeggiata_animali(animali(nome))')
         .eq('cliente_id', utenteCorrente.id)
         .eq('stato', 'confermata')
-        .maybeSingle()
+        .maybeSingle(),
+      sb.from('profili').select('telefono').eq('id', utenteCorrente.id).single()
     ]).then(function(r){
-      var animaliRes = r[0], usciteRes = r[1], iscrizioneRes = r[2];
+      var animaliRes = r[0], usciteRes = r[1], iscrizioneRes = r[2], profiloRes = r[3];
       animali = animaliRes.data || [];
       uscite = usciteRes.data || [];
 
@@ -147,6 +155,13 @@
       }
 
       bloccoGiaIscritto.hidden = true;
+
+      if (!profiloRes.data || !profiloRes.data.telefono) {
+        form.hidden = true;
+        bloccoServeTelefono.hidden = false;
+        return;
+      }
+
       form.hidden = false;
       renderUscite();
       renderCani();
@@ -206,12 +221,15 @@
     if (!uscitaId) { avviso('Scegli una passeggiata.', 'errore'); return; }
     if (!caniId.length) { avviso('Scegli almeno un cane.', 'errore'); return; }
 
+    bottoneInvia.disabled = true;
+
     sb.from('iscrizioni_passeggiata').insert({
       cliente_id: utenteCorrente.id,
       passeggiata_id: uscitaId,
       stato: 'confermata'
     }).select().single().then(function(r){
       if (r.error) {
+        bottoneInvia.disabled = false;
         if (r.error.code === '23505') avviso('Hai già una prenotazione attiva: aggiorna la pagina per vederla.', 'errore');
         else avviso(r.error.message, 'errore');
         return;
@@ -220,6 +238,7 @@
       sb.from('iscrizione_passeggiata_animali').insert(
         caniId.map(function(id){ return { iscrizione_id: iscrizioneId, animale_id: id }; })
       ).then(function(r2){
+        bottoneInvia.disabled = false;
         if (r2.error) { avviso('Prenotazione creata ma non è stato possibile salvare i cani: ' + r2.error.message, 'errore'); return; }
         avviso('Prenotazione confermata! Ci vediamo alla passeggiata — il saldo di 50 € a persona si paga in loco.', 'ok');
         init();

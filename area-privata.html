@@ -140,7 +140,7 @@
 
   <section class="sezione-conto">
     <h2>Il tuo profilo</h2>
-    <p class="premessa" style="margin-bottom:16px;">Servono tutti questi dati prima di poter prenotare pensione o asilo.</p>
+    <p class="premessa" style="margin-bottom:16px;">Servono tutti questi dati prima di poter prenotare pensione o asilo. Il telefono serve anche per le passeggiate: senza, non puoi iscriverti, perché è l'unico modo per avvisarti se una passeggiata salta per maltempo.</p>
     <p id="messaggio-profilo" class="avviso" hidden></p>
     <form id="form-profilo">
       <div class="riga riga-2">
@@ -547,7 +547,7 @@
     sb.from('animali').delete().eq('id', id).then(function(r){
       if (r.error) {
         var testo = r.error.code === '23503'
-          ? 'Non puoi eliminare un animale che ha prenotazioni collegate.'
+          ? 'Non puoi eliminare un animale che ha prenotazioni o una passeggiata collegate.'
           : r.error.message;
         avviso(messaggioAnimale, testo, 'errore');
         return;
@@ -684,6 +684,7 @@
         '<div class="card-prenotazione">' +
         '<div><h3>' + escapeHtml(p ? p.argomento : '') + '</h3>' +
         '<p>' + escapeHtml(p ? (formattaData(p.data) + ', ore ' + p.ora.slice(0,5)) : '') + ' &middot; ' + escapeHtml(p ? p.luogo : '') + statoTesto + '</p>' +
+        '<p>Saldo 50&nbsp;€ a persona, si paga in loco &mdash; nessun anticipo dovuto.</p>' +
         '<div style="margin-top:10px;">' + (checkboxCani || '<p class="vuoto">Non hai altri cani nel profilo.</p>') + '</div>' +
         '<p class="card-azioni" style="margin-top:14px;">' +
         '<button type="button" id="salva-cani-passeggiata">Salva i cani</button> ' +

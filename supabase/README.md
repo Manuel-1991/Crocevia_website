@@ -61,6 +61,13 @@ un'installazione pulita da zero.
   `search_path` fisso su `capienza_passeggiata()` e commento sul perché
   `passeggiate_disponibilita` è volutamente SECURITY DEFINER, stesso
   trattamento già fatto per pensione/asilo in `003`/`004`
+- `015_chiude_buchi_passeggiate.sql` — trovati rileggendo 013/014 prima
+  dell'uso reale: `iscrizione_passeggiata_animali.animale_id` non è più
+  ON DELETE CASCADE (altrimenti si poteva svuotare un'iscrizione attiva
+  eliminando l'ultimo cane, lasciando un posto occupato da nessuno);
+  l'iscrizione ora richiede un telefono in `profili` (RLS), non solo lato
+  sito; `passeggiate_disponibilita` non mostra più un'uscita di oggi il
+  cui orario è già passato
 
 Avvisi di sicurezza rivisti e lasciati come sono, perché non applicabili
 a questo progetto: l'estensione `btree_gist` nello schema `public`
