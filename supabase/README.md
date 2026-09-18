@@ -68,6 +68,11 @@ un'installazione pulita da zero.
   l'iscrizione ora richiede un telefono in `profili` (RLS), non solo lato
   sito; `passeggiate_disponibilita` non mostra più un'uscita di oggi il
   cui orario è già passato
+- `016_staff_prenota_passeggiata_per_cliente.sql` — stesso schema di
+  `006` ma per le passeggiate: permette a addetto/admin di creare
+  un'iscrizione per conto di un cliente già registrato (chi telefona),
+  mantenendo comunque il requisito del telefono introdotto in `015` e
+  verificando che i cani aggiunti siano davvero del cliente giusto
 
 Avvisi di sicurezza rivisti e lasciati come sono, perché non applicabili
 a questo progetto: l'estensione `btree_gist` nello schema `public`

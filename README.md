@@ -27,7 +27,7 @@ Dettagli tecnici, schema del database ed Edge Function in
 | `area-privata.html` | login/registrazione, profilo, animali e prenotazioni del cliente (Supabase), inclusa la gestione della propria passeggiata |
 | `prenota-pensione-asilo.html` | calendario disponibilità e richiesta di prenotazione per pensione/asilo (richiede accesso) |
 | `prenota-passeggiata.html` | scelta dell'uscita e dei cani per la passeggiata di gruppo (richiede accesso) |
-| `area-staff.html` | riservata ad addetto/admin: prenotazioni in arrivo, conferme, prenotazione manuale, ruoli utenti, calendario e iscritti delle passeggiate |
+| `area-staff.html` | riservata ad addetto/admin: prenotazioni in arrivo, conferme, prenotazione manuale, ruoli utenti, calendario e iscritti delle passeggiate, prenotazione passeggiata per un cliente che telefona |
 | `chi-siamo.html` | Manuel e Dingo, metodo e filosofia |
 | `dove-operiamo.html` | campo e bosco, Settimo Milanese |
 | `contatti.html` | telefono, email, P.IVA |
