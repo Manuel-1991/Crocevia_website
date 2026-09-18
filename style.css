@@ -34,6 +34,14 @@
   --header-bg: rgba(36,42,27,0.92);
   --header-bg-solid:#1b2a20;
   --menu-bg:#16241b;
+  /* rosso (avvisi, stati annullati/in scadenza, area privata e staff) */
+  --rosso:#a94438;
+  --rosso-testo:#e2a89e;
+  --rosso-testo-muto:#c98074;
+  --rosso-tint-avviso: rgba(169,68,56,0.12);
+  --rosso-tint-badge: rgba(169,68,56,0.16);
+  --rosso-tint-nuova: rgba(169,68,56,0.22);
+  --rosso-tint-cal: rgba(169,68,56,0.28);
 }
 
 /* ==================================================================
@@ -71,6 +79,13 @@
     --header-bg: rgba(253,246,230,0.92);
     --header-bg-solid:#fdf6e6;
     --menu-bg:#fbf1da;
+    --rosso:#82291f;
+    --rosso-testo:#6b1f16;
+    --rosso-testo-muto:#7a3a30;
+    --rosso-tint-avviso: rgba(130,41,31,0.12);
+    --rosso-tint-badge: rgba(130,41,31,0.14);
+    --rosso-tint-nuova: rgba(130,41,31,0.18);
+    --rosso-tint-cal: rgba(130,41,31,0.22);
   }
 }
 :root[data-tema="chiaro"]{
@@ -101,6 +116,13 @@
   --header-bg: rgba(253,246,230,0.92);
   --header-bg-solid:#fdf6e6;
   --menu-bg:#fbf1da;
+  --rosso:#82291f;
+  --rosso-testo:#6b1f16;
+  --rosso-testo-muto:#7a3a30;
+  --rosso-tint-avviso: rgba(130,41,31,0.12);
+  --rosso-tint-badge: rgba(130,41,31,0.14);
+  --rosso-tint-nuova: rgba(130,41,31,0.18);
+  --rosso-tint-cal: rgba(130,41,31,0.22);
 }
 *{box-sizing:border-box;}
 html,body{margin:0;padding:0;}
@@ -785,7 +807,7 @@ main section tr:last-child td{ border-bottom:none; }
   font-size:15px; line-height:1.5; border:1px solid var(--border-soft);
   background: var(--surface-soft); color: var(--ink);
 }
-.avviso-errore{ border-color:#a94438; background: rgba(169,68,56,0.12); }
+.avviso-errore{ border-color:var(--rosso); background: var(--rosso-tint-avviso); }
 .avviso-ok{ border-color: var(--gold); background: var(--gold-tint-soft); }
 
 .sezione-conto{ margin: 0 0 34px; }
@@ -819,8 +841,8 @@ main section tr:last-child td{ border-bottom:none; }
 .badge-in_attesa_pagamento{ background: rgba(195,131,69,0.18); color: var(--gold); }
 .badge-confermata{ background: rgba(129,82,42,0.22); color: var(--verde-light); }
 .badge-completata{ background: rgba(130,150,130,0.18); color: var(--ink-muted); }
-.badge-annullata{ background: rgba(169,68,56,0.16); color:#c98074; }
-.badge-nuova{ background: rgba(169,68,56,0.22); color:#e2a89e; }
+.badge-annullata{ background: var(--rosso-tint-badge); color:var(--rosso-testo-muto); }
+.badge-nuova{ background: var(--rosso-tint-nuova); color:var(--rosso-testo); }
 
 .vuoto{ color: var(--ink-muted); font-style:italic; }
 
@@ -850,7 +872,7 @@ main section tr:last-child td{ border-bottom:none; }
 }
 .giorno-cal.fuori-mese{ visibility:hidden; }
 .giorno-cal.passato{ opacity:.35; }
-.giorno-cal.rosso{ background: rgba(169,68,56,0.28); color:#e2a89e; cursor:not-allowed; }
+.giorno-cal.rosso{ background: var(--rosso-tint-cal); color:var(--rosso-testo); cursor:not-allowed; }
 .giorno-cal.giallo{ background: rgba(195,131,69,0.28); color: var(--gold); cursor:pointer; }
 .giorno-cal.verde{ background: rgba(129,82,42,0.22); color: var(--verde-light); cursor:pointer; }
 .giorno-cal.selezionato{ border-color: var(--gold); font-weight:700; }
@@ -859,7 +881,7 @@ main section tr:last-child td{ border-bottom:none; }
 .legenda-calendario{ display:flex; gap:18px; flex-wrap:wrap; margin: 10px 0 0; font-size:13px; color:var(--ink-muted); }
 .legenda-calendario span{ display:inline-flex; align-items:center; gap:6px; }
 .legenda-pallino{ width:12px; height:12px; border-radius:50%; display:inline-block; }
-.legenda-pallino.rosso{ background:#a94438; }
+.legenda-pallino.rosso{ background:var(--rosso); }
 .legenda-pallino.giallo{ background: var(--gold); }
 .legenda-pallino.verde{ background: var(--verde-light); }
 
