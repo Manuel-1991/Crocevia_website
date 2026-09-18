@@ -151,7 +151,9 @@ h1,h2,h3{ font-family:"Cinzel", Georgia, serif; font-weight:700; color:var(--ink
   border-bottom: 1px solid var(--border-soft);
 }
 .nav{
-  max-width: 960px; margin: 0 auto; padding: 16px 28px;
+  /* 1080px, non 960px: con 9 voci in menu ci vuole questo margine perché
+     tutte stiano su una riga senza dover scorrere, dai 1100px in su. */
+  max-width: 1080px; margin: 0 auto; padding: 16px 28px;
   display:flex; align-items:center; justify-content:space-between; gap: 14px;
   flex-wrap: nowrap;
 }
@@ -793,7 +795,7 @@ main section tr:last-child td{ border-bottom:none; }
   .nav-links{
     position:static; opacity:1; visibility:visible; transform:none;
     display:flex; background:none; border-top:none;
-    overflow:visible; padding:0;
+    overflow-x:auto; overflow-y:visible; padding:0;
   }
   .nav-links a{ font-size:11px; letter-spacing:0.07em; }
 }
