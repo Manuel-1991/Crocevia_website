@@ -351,6 +351,36 @@ h1.left{ text-align:left; }
   color: var(--ink-muted); white-space:nowrap; text-transform:uppercase;
 }
 
+/* ---------- FAQ (accordion) ---------- */
+.faq-list{ display:grid; gap:12px; margin-bottom: 8px; }
+.faq-item{
+  border:1px solid var(--border-soft); background: var(--surface-soft);
+  border-radius:4px; border-left:3px solid var(--bandana);
+  overflow:hidden;
+}
+.faq-item summary{
+  list-style:none; cursor:pointer; position:relative;
+  padding: 18px 46px 18px 22px;
+  font-family:"EB Garamond", Georgia, serif; font-weight:600; font-size:17px;
+  color: var(--ink-strong);
+}
+.faq-item summary:hover{ color: var(--gold); }
+.faq-item summary:focus-visible{ outline: 2px solid var(--gold); outline-offset: -2px; }
+.faq-item summary::-webkit-details-marker{ display:none; }
+.faq-item summary::after{
+  content:"+"; position:absolute; right:20px; top:50%; transform:translateY(-50%);
+  font-family:"Cinzel", serif; font-size:18px; line-height:1; color: var(--bandana);
+}
+.faq-item[open] summary::after{ content:"\2212"; }
+.faq-item[open] summary{ border-bottom:1px solid var(--border-soft); }
+.faq-risposta{ padding: 16px 22px 20px; color: var(--ink); }
+.faq-risposta p{ margin:0; }
+.faq-risposta p + p{ margin-top:10px; }
+@media (max-width:600px){
+  .faq-item summary{ padding: 16px 40px 16px 18px; font-size:16px; }
+  .faq-risposta{ padding: 14px 18px 18px; }
+}
+
 /* ---------- location cards (dove operiamo) ---------- */
 .loc-row{ display:flex; gap:22px; margin-bottom: 10px; }
 .loc-card{ flex:1; border:1px solid var(--border-soft); background: var(--surface-soft); border-radius:4px; padding:24px 22px; }
