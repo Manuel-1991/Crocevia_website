@@ -151,8 +151,9 @@ h1,h2,h3{ font-family:"Cinzel", Georgia, serif; font-weight:700; color:var(--ink
   border-bottom: 1px solid var(--border-soft);
 }
 .nav{
-  /* 1200px, non 960px: con 10 voci in menu ci vuole questo margine perché
-     tutte stiano su una riga senza dover scorrere, dai 1200px in su. */
+  /* Prenota e Area privata sul desktop sono un bottone e un'icona a parte
+     (vedi sotto), fuori dall'elenco che scorre: restano sempre raggiungibili
+     anche quando le 8 voci informative devono stringersi o scorrere. */
   max-width: 1200px; margin: 0 auto; padding: 16px 28px;
   display:flex; align-items:center; justify-content:space-between; gap: 14px;
   flex-wrap: nowrap;
@@ -184,6 +185,46 @@ h1,h2,h3{ font-family:"Cinzel", Georgia, serif; font-weight:700; color:var(--ink
 }
 .nav-links a:hover{ color: var(--gold); }
 .nav-links a.active{ color: var(--gold); border-bottom-color: var(--gold); }
+
+/* Voci "Prenota" / "Area privata" duplicate dentro l'elenco: servono solo
+   al pannello mobile a comparsa (dove sono link di testo come gli altri).
+   Sul desktop il bottone e l'icona qui sotto le sostituiscono, e queste
+   restano nascoste: cosi' non compaiono due volte nello stesso menu. */
+@media (min-width: 1000px){
+  .nav-item-mobile-only{ display:none; }
+}
+
+/* Prenota e Area privata sul desktop: un bottone pieno e un'icona, fuori
+   dall'elenco .nav-links che scorre in orizzontale quando lo spazio si
+   stringe — cosi' restano sempre visibili e cliccabili, a differenza
+   delle voci informative che possono finire fuori vista nello scroll.
+   Nascosti di default: il pannello mobile li mostra gia' (vedi sopra). */
+.nav-divider, .nav-cta, .nav-account{ display:none; }
+@media (min-width: 1000px){
+  .nav-divider{
+    display:block; width:1px; height:20px; flex:none;
+    background: var(--border-soft); order:2;
+  }
+  .nav-cta{
+    display:inline-flex; align-items:center; justify-content:center; flex:none;
+    order:3; font-family:"Cinzel", serif; font-weight:600; font-size:11px;
+    letter-spacing:0.06em; text-transform:uppercase; white-space:nowrap;
+    padding: 8px 16px; border-radius:4px; border:1px solid var(--gold);
+    background: var(--gold); color:var(--on-accent);
+    transition: background .15s ease, border-color .15s ease;
+  }
+  .nav-cta:hover{ background: var(--verde-light); border-color: var(--verde-light); color:var(--on-accent); }
+  .nav-account{
+    display:flex; align-items:center; justify-content:center; flex:none;
+    order:4; width:38px; height:38px; padding:0; border-radius:4px;
+    border:1px solid var(--border-soft); color: var(--ink-muted);
+    transition: color .15s ease, border-color .15s ease;
+  }
+  .nav-account:hover, .nav-account.active{ color: var(--gold); border-color: var(--gold); }
+  .nav-account svg{ width:18px; height:18px; display:block; fill:none; stroke:currentColor; stroke-width:1.8; }
+  .nav-links{ order:1; }
+  .tema-toggle{ order:5; }
+}
 
 /* ---------- interruttore tema chiaro/scuro ---------- */
 .tema-toggle{
