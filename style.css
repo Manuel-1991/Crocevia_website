@@ -416,6 +416,13 @@ h1.left{ text-align:left; }
 .data{ font-size:13px; color: var(--ink-muted); letter-spacing:0.04em; margin: 0 0 18px; }
 .premessa{ font-style:italic; font-size:17.5px; color: var(--ink-muted); line-height:1.55; margin: 0 0 30px; }
 .premessa a{ font-style:normal; }
+/* saluto + pulsante "Esci" in area privata: testo a sinistra, pulsante
+   sempre ancorato a destra, sulla stessa riga finché c'è spazio */
+.riga-benvenuto{
+  display:flex; align-items:center; justify-content:space-between; gap:16px;
+  flex-wrap:wrap; margin-bottom:30px;
+}
+.riga-benvenuto .premessa{ margin-bottom:0; }
 
 /* indice in cima alle pagine legali */
 .indice{
@@ -488,17 +495,24 @@ main section tr:last-child td{ border-bottom:none; }
 
 /* modulo di prenotazione */
 #modulo-prenotazione{ margin-top: 6px; }
-#modulo-prenotazione fieldset, #blocco-autenticazione fieldset, #area-cliente fieldset{
+#modulo-prenotazione fieldset, #blocco-autenticazione fieldset, #area-cliente fieldset,
+#corpo-prenotazione fieldset, #corpo-staff fieldset{
   border:1px solid var(--border-soft); border-left:3px solid var(--gold);
   background: var(--surface-soft); border-radius:4px;
   padding: 20px 22px 22px; margin: 0 0 20px;
 }
-#modulo-prenotazione legend, #blocco-autenticazione legend, #area-cliente legend{
+#modulo-prenotazione legend, #blocco-autenticazione legend, #area-cliente legend,
+#corpo-prenotazione legend, #corpo-staff legend{
   font-family:"Cinzel", serif; font-weight:600; font-size:13px;
   letter-spacing:0.09em; text-transform:uppercase; color: var(--gold);
   padding: 0 9px;
 }
 .riga{ display:grid; gap:16px; }
+/* fuori da un fieldset (dove il padding già dà respiro), una riga
+   seguita da altro contenuto — un'altra riga, un campo, un pulsante —
+   ha bisogno del suo margine: senza, quel contenuto le si appiccica
+   sopra */
+.riga:not(:last-child){ margin-bottom:16px; }
 .riga-2{ grid-template-columns: 1fr 1fr; }
 .riga-3{ grid-template-columns: 1fr 1fr 1fr; }
 .campo{ margin-bottom:16px; }
@@ -507,6 +521,12 @@ main section tr:last-child td{ border-bottom:none; }
   display:block; margin-bottom:6px;
   font-family:"Cinzel", serif; font-size:11.5px; letter-spacing:0.08em;
   text-transform:uppercase; color: var(--ink-muted);
+}
+/* segnaposto invisibile della stessa altezza di .campo label: senza,
+   una checkriga (senza etichetta sopra) risulta più in alto degli altri
+   campi della stessa riga, che invece hanno etichetta + campo */
+.campo-etichetta-vuota{
+  display:block; margin-bottom:6px; font-size:11.5px; line-height:1.6;
 }
 .campo input, .campo select, .campo textarea{
   width:100%; padding: 11px 12px;
@@ -548,7 +568,8 @@ main section tr:last-child td{ border-bottom:none; }
 @media (max-width: 999px){
   .indice{ columns:1; padding: 16px 18px 16px 34px; margin-bottom:30px; }
   .riga-2, .riga-3{ grid-template-columns: 1fr; }
-  #modulo-prenotazione fieldset{ padding: 16px 16px 18px; }
+  #modulo-prenotazione fieldset, #blocco-autenticazione fieldset, #area-cliente fieldset,
+  #corpo-prenotazione fieldset, #corpo-staff fieldset{ padding: 16px 16px 18px; }
   .azioni{ flex-direction:column; }
   .bottone{ width:100%; }
   .premessa{ font-size:16.5px; }
