@@ -23,7 +23,7 @@ Dettagli tecnici, schema del database ed Edge Function in
 | `educazione.html` | valutazione, lezioni, pacchetti |
 | `pensione-asilo.html` | stallo/pensione, asilo diurno, giornata tipo |
 | `passeggiate.html` | presentazione delle passeggiate di gruppo: format, temi, quando, prezzo |
-| `prenota.html` | modulo di prenotazione per educazione → messaggio WhatsApp precompilato |
+| `contattami.html` | modulo di contatto per educazione (valutazione, lezioni, pacchetti) → messaggio WhatsApp precompilato, nessun account richiesto |
 | `area-privata.html` | login/registrazione, profilo, animali e prenotazioni del cliente (Supabase), inclusa la gestione della propria passeggiata |
 | `prenota-pensione-asilo.html` | calendario disponibilità e richiesta di prenotazione per pensione/asilo (richiede accesso) |
 | `prenota-passeggiata.html` | scelta dell'uscita e dei cani per la passeggiata di gruppo (richiede accesso) |
@@ -62,7 +62,7 @@ Ogni pagina si comporta in tre modi:
 
 | vista | quando | cosa cambia |
 |---|---|---|
-| telefono in verticale | fino a 999px | menu hamburger a tutto schermo, una colonna, barra "Prenota" fissa in basso |
+| telefono in verticale | fino a 999px | menu hamburger a tutto schermo, una colonna, barra di azione fissa in basso (link diverso a seconda della pagina) |
 | telefono in orizzontale | `orientation:landscape`, larghezza ≤999px **e** altezza ≤560px | intestazione più bassa, menu su due colonne, meno spazi vuoti |
 | computer | da 1000px | menu in linea, niente hamburger, niente barra |
 
@@ -74,7 +74,7 @@ La vista orizzontale guarda larghezza **e** altezza: un telefono girato è largo
 - Lo stile è tutto in `style.css`, condiviso da tutte le pagine: modificalo
   lì, non serve più ripetere le modifiche su dieci file. Stesso discorso per
   `main.js` (menu mobile e altezza dell'intestazione) — lo script del
-  modulo di prenotazione resta invece dentro `prenota.html`, è specifico
+  modulo di contatto resta invece dentro `contattami.html`, è specifico
   di quella pagina.
 - **Non togliere `<meta name="viewport">`.** Senza, il telefono disegna la
   pagina larga 980px e la rimpicciolisce: testo minuscolo e nessuna regola
@@ -87,11 +87,13 @@ La vista orizzontale guarda larghezza **e** altezza: un telefono girato è largo
   schermo.
 - I campi del modulo stanno a 16px: sotto quella misura iOS zooma da solo quando
   li tocchi.
-- In `prenota.html` la regola `[data-blocco]{display:none}` / `.attivo` governa
-  le due schede data (lezione singola, pacchetto). Se sparisce, compaiono
-  entrambe insieme. Pensione, asilo e passeggiate non sono più su questa
-  pagina: hanno le loro pagine dedicate, `prenota-pensione-asilo.html` e
-  `prenota-passeggiata.html`.
+- `contattami.html` non chiede date: è volutamente solo un modulo di
+  contatto (dati, cane, servizio, messaggio libero) che apre WhatsApp —
+  giorno e orario si concordano dopo, via chat. `prenota.html` resta come
+  semplice redirect verso `contattami.html`, per non rompere link salvati o
+  indicizzati sul vecchio indirizzo. Pensione, asilo e passeggiate hanno le
+  loro pagine dedicate con calendario e pagamento vero,
+  `prenota-pensione-asilo.html` e `prenota-passeggiata.html`.
 
 ## Caricare gli aggiornamenti su GitHub
 
