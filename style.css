@@ -313,6 +313,7 @@ h1.left{ text-align:left; }
 .section p + p{ margin-top:10px; }
 .price{ font-style:normal; font-weight:600; }
 .section.edu .price, .section.pen .price{ color: var(--bordeaux); }
+.section.verde .price{ color: var(--verde-light); }
 
 /* ---------- teaser (media + testo) ---------- */
 .teaser{
@@ -552,7 +553,7 @@ main section tr:last-child td{ border-bottom:none; }
   letter-spacing:0; text-transform:none; color: var(--ink);
   margin:0; cursor:pointer;
 }
-.checkriga input[type="checkbox"]{
+.checkriga input[type="checkbox"], .checkriga input[type="radio"]{
   width:19px; height:19px; flex:none; margin:0;
   accent-color: var(--gold);
 }

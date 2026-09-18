@@ -8,22 +8,26 @@ Le pagine di presentazione sono HTML statico senza framework, come all'inizio.
 Da qui però il sito ha anche un vero backend: un database Supabase con account
 utente, animali e prenotazioni, pagamento online (Stripe) per stallo/pensione
 e asilo con acconto e saldo separati, evento automatico su Google Calendar a
-ogni prenotazione confermata. Educazione, valutazione e passeggiate restano
-invece sul modulo che compone un messaggio e apre WhatsApp — nessun account
-richiesto per quei servizi. Dettagli tecnici, schema del database ed Edge
-Function in `supabase/README.md`.
+ogni prenotazione confermata. Le passeggiate di gruppo usano lo stesso
+account ma senza pagamento online: si prenota l'uscita in programma, si salda
+in loco. Educazione e valutazione restano invece sul modulo che compone un
+messaggio e apre WhatsApp — nessun account richiesto per quei servizi.
+Dettagli tecnici, schema del database ed Edge Function in
+`supabase/README.md`.
 
 ## Le pagine
 
 | file | cosa contiene |
 |---|---|
 | `index.html` | home: il bivio tra Educazione e Pensione & Asilo |
-| `educazione.html` | valutazione, lezioni, pacchetti, passeggiate di gruppo |
+| `educazione.html` | valutazione, lezioni, pacchetti |
 | `pensione-asilo.html` | stallo/pensione, asilo diurno, giornata tipo |
-| `prenota.html` | modulo di prenotazione per educazione e passeggiate → messaggio WhatsApp precompilato |
-| `area-privata.html` | login/registrazione, profilo, animali e prenotazioni del cliente (Supabase) |
+| `passeggiate.html` | presentazione delle passeggiate di gruppo: format, temi, quando, prezzo |
+| `prenota.html` | modulo di prenotazione per educazione → messaggio WhatsApp precompilato |
+| `area-privata.html` | login/registrazione, profilo, animali e prenotazioni del cliente (Supabase), inclusa la gestione della propria passeggiata |
 | `prenota-pensione-asilo.html` | calendario disponibilità e richiesta di prenotazione per pensione/asilo (richiede accesso) |
-| `area-staff.html` | riservata ad addetto/admin: prenotazioni in arrivo, conferme, prenotazione manuale, ruoli utenti |
+| `prenota-passeggiata.html` | scelta dell'uscita e dei cani per la passeggiata di gruppo (richiede accesso) |
+| `area-staff.html` | riservata ad addetto/admin: prenotazioni in arrivo, conferme, prenotazione manuale, ruoli utenti, calendario e iscritti delle passeggiate |
 | `chi-siamo.html` | Manuel e Dingo, metodo e filosofia |
 | `dove-operiamo.html` | campo e bosco, Settimo Milanese |
 | `contatti.html` | telefono, email, P.IVA |
@@ -84,8 +88,9 @@ La vista orizzontale guarda larghezza **e** altezza: un telefono girato è largo
   li tocchi.
 - In `prenota.html` la regola `[data-blocco]{display:none}` / `.attivo` governa
   le due schede data (lezione singola, pacchetto). Se sparisce, compaiono
-  entrambe insieme. Pensione e asilo non sono più su questa pagina: hanno il
-  loro calendario in `prenota-pensione-asilo.html`.
+  entrambe insieme. Pensione, asilo e passeggiate non sono più su questa
+  pagina: hanno le loro pagine dedicate, `prenota-pensione-asilo.html` e
+  `prenota-passeggiata.html`.
 
 ## Caricare gli aggiornamenti su GitHub
 

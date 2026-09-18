@@ -51,6 +51,16 @@ un'installazione pulita da zero.
 - `008_integrazione_google_calendar.sql` — trigger che chiama
   `crea-evento-calendario` ogni volta che una prenotazione diventa
   confermata (vedi sezione dedicata sotto)
+- `013_passeggiate.sql` — nuove tabelle `passeggiate` (le uscite
+  programmate), `iscrizioni_passeggiata` (una sola attiva per cliente,
+  capienza 10 per uscita) e `iscrizione_passeggiata_animali` (più cani
+  per iscrizione); vista pubblica `passeggiate_disponibilita`; disattiva
+  il vecchio servizio `passeggiate` a listino (venduto a pacchetto via
+  WhatsApp, non più in uso)
+- `014_irrobustisce_capienza_passeggiata_e_commento_vista.sql` —
+  `search_path` fisso su `capienza_passeggiata()` e commento sul perché
+  `passeggiate_disponibilita` è volutamente SECURITY DEFINER, stesso
+  trattamento già fatto per pensione/asilo in `003`/`004`
 
 Avvisi di sicurezza rivisti e lasciati come sono, perché non applicabili
 a questo progetto: l'estensione `btree_gist` nello schema `public`
@@ -120,6 +130,19 @@ Il service account deve avere accesso "Apportare modifiche agli eventi"
 sul calendario scelto (Google Calendar → impostazioni del calendario →
 Condividi con persone specifiche → incolla l'email `client_email` del
 file JSON).
+
+## 5c. Passeggiate di gruppo: niente Stripe, niente Google Calendar
+
+A differenza di pensione/asilo, le passeggiate non passano né da
+`crea-pagamento`/`stripe-webhook` né dal trigger di
+`008_integrazione_google_calendar.sql`: non c'è acconto da pagare online
+(si salda in loco) e le uscite sono righe che lo staff crea a mano in
+`passeggiate` dal pannello staff, non prenotazioni con data libera da
+confermare. Se in futuro si vuole un evento automatico su Google Calendar
+anche per le passeggiate, va scritto un trigger a parte (stessa idea di
+quello per `prenotazioni`, ma agganciato a
+`passeggiate`/`iscrizioni_passeggiata`): non l'ho fatto ora per non
+allargare la modifica oltre a quanto richiesto.
 
 ## 6. Prossimi passi
 

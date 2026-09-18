@@ -7,20 +7,20 @@
 <link rel="icon" type="image/png" href="assets/img/brand/favicon.png">
 <link rel="apple-touch-icon" href="assets/img/brand/apple-touch-icon.png">
 <title>Area privata — Crocevia</title>
-<meta name="description" content="Accedi o registrati per gestire i tuoi animali e le prenotazioni di pensione e asilo con Crocevia.">
+<meta name="description" content="Accedi o registrati per gestire i tuoi animali e le prenotazioni di pensione, asilo e passeggiate con Crocevia.">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="Crocevia">
 <meta property="og:locale" content="it_IT">
 <meta property="og:url" content="https://croceviacani.it/area-privata.html">
 <meta property="og:title" content="Area privata — Crocevia">
-<meta property="og:description" content="Accedi o registrati per gestire i tuoi animali e le prenotazioni di pensione e asilo con Crocevia.">
+<meta property="og:description" content="Accedi o registrati per gestire i tuoi animali e le prenotazioni di pensione, asilo e passeggiate con Crocevia.">
 <meta property="og:image" content="https://croceviacani.it/assets/img/brand/logo-nav.webp">
 <meta property="og:image:width" content="200">
 <meta property="og:image:height" content="201">
 <meta property="og:image:type" content="image/webp">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Area privata — Crocevia">
-<meta name="twitter:description" content="Accedi o registrati per gestire i tuoi animali e le prenotazioni di pensione e asilo con Crocevia.">
+<meta name="twitter:description" content="Accedi o registrati per gestire i tuoi animali e le prenotazioni di pensione, asilo e passeggiate con Crocevia.">
 <meta name="twitter:image" content="https://croceviacani.it/assets/img/brand/logo-nav.webp">
 <meta name="robots" content="noindex">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;600;700&family=EB+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&display=swap">
@@ -40,7 +40,7 @@
       <svg class="icona-luna" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M20 14.5A8.5 8.5 0 1 1 9.5 4a7 7 0 0 0 10.5 10.5Z"></path></svg>
     </button>
     <button class="nav-toggle" id="apri-menu" type="button" aria-controls="menu-crocevia" aria-expanded="false" aria-label="Apri il menu"><span class="barre" aria-hidden="true"></span></button>
-    <ul class="nav-links" id="menu-crocevia"><li><a href="index.html" class="nav">Home</a></li><li><a href="educazione.html" class="nav">Educazione</a></li><li><a href="pensione-asilo.html" class="nav">Pensione &amp; Asilo</a></li><li><a href="chi-siamo.html" class="nav">Chi siamo</a></li><li><a href="dove-operiamo.html" class="nav">Dove operiamo</a></li><li><a href="contatti.html" class="nav">Contatti</a></li><li><a href="prenota.html" class="nav">Prenota</a></li><li><a href="area-privata.html" class="nav active">Area privata</a></li></ul>
+    <ul class="nav-links" id="menu-crocevia"><li><a href="index.html" class="nav">Home</a></li><li><a href="educazione.html" class="nav">Educazione</a></li><li><a href="pensione-asilo.html" class="nav">Pensione &amp; Asilo</a></li><li><a href="passeggiate.html" class="nav">Passeggiate</a></li><li><a href="chi-siamo.html" class="nav">Chi siamo</a></li><li><a href="dove-operiamo.html" class="nav">Dove operiamo</a></li><li><a href="contatti.html" class="nav">Contatti</a></li><li><a href="prenota.html" class="nav">Prenota</a></li><li><a href="area-privata.html" class="nav active">Area privata</a></li></ul>
   </nav>
 </header>
 <main class="wrap">
@@ -48,7 +48,7 @@
 <div class="crumb"><a href="index.html">Home</a> / Area privata</div>
 <div class="page-head left"><h1 class="left">Area privata</h1></div>
 
-<p class="premessa">Accedi o registrati per gestire i tuoi animali e prenotare pensione o asilo con calendario e pagamento online. Per educazione e passeggiate continua a scrivere su WhatsApp dal modulo <a href="prenota.html">Prenota</a>.</p>
+<p class="premessa">Accedi o registrati per gestire i tuoi animali e prenotare pensione, asilo o le passeggiate di gruppo. Per l'educazione continua a scrivere su WhatsApp dal modulo <a href="prenota.html">Prenota</a>.</p>
 
 <div id="blocco-autenticazione">
 
@@ -250,6 +250,13 @@
     <div id="lista-prenotazioni" class="lista-prenotazioni"></div>
   </section>
 
+  <section class="sezione-conto">
+    <h2>La tua passeggiata</h2>
+    <p class="premessa" style="margin-bottom:16px;">Una sola prenotazione attiva alla volta: qui puoi cambiare i cani presenti o cancellarla.</p>
+    <p id="messaggio-passeggiata" class="avviso" hidden></p>
+    <div id="blocco-passeggiata"></div>
+  </section>
+
 </div>
 
 </main>
@@ -369,6 +376,8 @@
       caricaProfilo();
       caricaAnimali();
       caricaPrenotazioni();
+      nascondi(messaggioPasseggiata);
+      caricaPasseggiata();
     } else {
       utenteCorrente = null;
       mostra(blocco);
@@ -396,6 +405,8 @@
           caricaProfilo();
           caricaAnimali();
           caricaPrenotazioni();
+          nascondi(messaggioPasseggiata);
+          caricaPasseggiata();
         }
       });
     });
@@ -623,6 +634,91 @@
     var d = document.createElement('div');
     d.textContent = s == null ? '' : String(s);
     return d.innerHTML;
+  }
+
+  // ---------- la tua passeggiata ----------
+
+  var messaggioPasseggiata = document.getElementById('messaggio-passeggiata');
+  var bloccoPasseggiata = document.getElementById('blocco-passeggiata');
+  var nomiGiorni = ['domenica','lunedì','martedì','mercoledì','giovedì','venerdì','sabato'];
+  var nomiMesi = ['gennaio','febbraio','marzo','aprile','maggio','giugno','luglio','agosto','settembre','ottobre','novembre','dicembre'];
+
+  function formattaData(iso){
+    var d = new Date(iso + 'T00:00:00');
+    return nomiGiorni[d.getDay()] + ' ' + d.getDate() + ' ' + nomiMesi[d.getMonth()];
+  }
+
+  function caricaPasseggiata(){
+    Promise.all([
+      sb.from('iscrizioni_passeggiata')
+        .select('id, passeggiate(data,ora,argomento,luogo,stato), iscrizione_passeggiata_animali(animale_id, animali(nome))')
+        .eq('cliente_id', utenteCorrente.id)
+        .eq('stato', 'confermata')
+        .maybeSingle(),
+      sb.from('animali').select('id,nome').eq('proprietario_id', utenteCorrente.id).order('creato_il')
+    ]).then(function(r){
+      var iscrizioneRes = r[0], animaliRes = r[1];
+      if (iscrizioneRes.error) { avviso(messaggioPasseggiata, iscrizioneRes.error.message, 'errore'); return; }
+
+      var iscrizione = iscrizioneRes.data;
+      if (!iscrizione) {
+        bloccoPasseggiata.innerHTML =
+          '<p class="vuoto">Nessuna prenotazione attiva.</p>' +
+          '<p style="margin-top:12px;"><a href="prenota-passeggiata.html" class="bottone bottone-pieno">Prenota una passeggiata &rarr;</a></p>';
+        return;
+      }
+
+      var tuoiCani = animaliRes.data || [];
+      var p = iscrizione.passeggiate;
+      var caniIscrizione = (iscrizione.iscrizione_passeggiata_animali || []).map(function(r2){ return r2.animale_id; });
+      var stato = p ? p.stato : null;
+      var statoTesto = stato === 'annullata_meteo' ? ' — annullata per maltempo, ti ricontatto io'
+        : (stato === 'svolta' ? ' — svolta' : '');
+
+      var checkboxCani = tuoiCani.map(function(a){
+        var checked = caniIscrizione.indexOf(a.id) !== -1;
+        return '<label class="checkriga"><input type="checkbox" name="cane-passeggiata" value="' + a.id + '"' + (checked ? ' checked' : '') + '> ' + escapeHtml(a.nome) + '</label>';
+      }).join('');
+
+      bloccoPasseggiata.innerHTML =
+        '<div class="card-prenotazione">' +
+        '<div><h3>' + escapeHtml(p ? p.argomento : '') + '</h3>' +
+        '<p>' + escapeHtml(p ? (formattaData(p.data) + ', ore ' + p.ora.slice(0,5)) : '') + ' &middot; ' + escapeHtml(p ? p.luogo : '') + statoTesto + '</p>' +
+        '<div style="margin-top:10px;">' + (checkboxCani || '<p class="vuoto">Non hai altri cani nel profilo.</p>') + '</div>' +
+        '<p class="card-azioni" style="margin-top:14px;">' +
+        '<button type="button" id="salva-cani-passeggiata">Salva i cani</button> ' +
+        '<button type="button" id="annulla-passeggiata">Cancella la prenotazione</button>' +
+        '</p></div></div>';
+
+      document.getElementById('salva-cani-passeggiata').addEventListener('click', function(){
+        var selezionati = Array.prototype.map.call(bloccoPasseggiata.querySelectorAll('input[name="cane-passeggiata"]:checked'), function(el){ return el.value; });
+        if (!selezionati.length) { avviso(messaggioPasseggiata, 'Deve restare almeno un cane nella prenotazione.', 'errore'); return; }
+        salvaCaniPasseggiata(iscrizione.id, caniIscrizione, selezionati);
+      });
+      document.getElementById('annulla-passeggiata').addEventListener('click', function(){
+        if (!window.confirm('Cancellare la tua prenotazione per questa passeggiata?')) return;
+        sb.from('iscrizioni_passeggiata').update({ stato: 'annullata' }).eq('id', iscrizione.id).then(function(r2){
+          if (r2.error) { avviso(messaggioPasseggiata, r2.error.message, 'errore'); return; }
+          avviso(messaggioPasseggiata, 'Prenotazione cancellata.', 'ok');
+          caricaPasseggiata();
+        });
+      });
+    });
+  }
+
+  function salvaCaniPasseggiata(iscrizioneId, prima, dopo){
+    var daTogliere = prima.filter(function(id){ return dopo.indexOf(id) === -1; });
+    var daAggiungere = dopo.filter(function(id){ return prima.indexOf(id) === -1; });
+    var operazioni = [];
+    if (daTogliere.length) operazioni.push(sb.from('iscrizione_passeggiata_animali').delete().eq('iscrizione_id', iscrizioneId).in('animale_id', daTogliere));
+    if (daAggiungere.length) operazioni.push(sb.from('iscrizione_passeggiata_animali').insert(daAggiungere.map(function(id){ return { iscrizione_id: iscrizioneId, animale_id: id }; })));
+    if (!operazioni.length) { avviso(messaggioPasseggiata, 'Nessuna modifica da salvare.', 'ok'); return; }
+    Promise.all(operazioni).then(function(risultati){
+      var errore = risultati.filter(function(r){ return r.error; })[0];
+      if (errore) { avviso(messaggioPasseggiata, errore.error.message, 'errore'); return; }
+      avviso(messaggioPasseggiata, 'Cani aggiornati.', 'ok');
+      caricaPasseggiata();
+    });
   }
 })();
 </script>

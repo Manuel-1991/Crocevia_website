@@ -26,7 +26,7 @@
       <svg class="icona-luna" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M20 14.5A8.5 8.5 0 1 1 9.5 4a7 7 0 0 0 10.5 10.5Z"></path></svg>
     </button>
     <button class="nav-toggle" id="apri-menu" type="button" aria-controls="menu-crocevia" aria-expanded="false" aria-label="Apri il menu"><span class="barre" aria-hidden="true"></span></button>
-    <ul class="nav-links" id="menu-crocevia"><li><a href="index.html" class="nav">Home</a></li><li><a href="educazione.html" class="nav">Educazione</a></li><li><a href="pensione-asilo.html" class="nav">Pensione &amp; Asilo</a></li><li><a href="chi-siamo.html" class="nav">Chi siamo</a></li><li><a href="dove-operiamo.html" class="nav">Dove operiamo</a></li><li><a href="contatti.html" class="nav">Contatti</a></li><li><a href="prenota.html" class="nav">Prenota</a></li><li><a href="area-privata.html" class="nav">Area privata</a></li></ul>
+    <ul class="nav-links" id="menu-crocevia"><li><a href="index.html" class="nav">Home</a></li><li><a href="educazione.html" class="nav">Educazione</a></li><li><a href="pensione-asilo.html" class="nav">Pensione &amp; Asilo</a></li><li><a href="passeggiate.html" class="nav">Passeggiate</a></li><li><a href="chi-siamo.html" class="nav">Chi siamo</a></li><li><a href="dove-operiamo.html" class="nav">Dove operiamo</a></li><li><a href="contatti.html" class="nav">Contatti</a></li><li><a href="prenota.html" class="nav">Prenota</a></li><li><a href="area-privata.html" class="nav">Area privata</a></li></ul>
   </nav>
 </header>
 <main class="wrap">
@@ -107,6 +107,42 @@
     </form>
   </section>
 
+  <section class="sezione-conto">
+    <h2>Passeggiate</h2>
+    <p class="premessa" style="margin-bottom:16px;">Il numero di telefono di ogni iscritto serve per avvisarlo se la passeggiata salta per maltempo, anche all'ultimo momento.</p>
+    <p id="messaggio-passeggiate-staff" class="avviso" hidden></p>
+    <div id="lista-passeggiate-staff" class="lista-prenotazioni"></div>
+
+    <form id="form-nuova-passeggiata" style="margin-top:8px;">
+      <fieldset>
+        <legend>Aggiungi una passeggiata</legend>
+        <div class="riga riga-3">
+          <div class="campo">
+            <label for="nuova-passeggiata-data">Data *</label>
+            <input type="date" id="nuova-passeggiata-data" required>
+          </div>
+          <div class="campo">
+            <label for="nuova-passeggiata-ora">Ora *</label>
+            <input type="time" id="nuova-passeggiata-ora" value="18:00" required>
+          </div>
+          <div class="campo">
+            <label for="nuova-passeggiata-luogo">Luogo</label>
+            <input type="text" id="nuova-passeggiata-luogo" value="Bosco di Campagnola">
+          </div>
+        </div>
+        <div class="campo">
+          <label for="nuova-passeggiata-argomento">Argomento *</label>
+          <input type="text" id="nuova-passeggiata-argomento" placeholder="es. Il cane e il fiuto" required>
+        </div>
+        <div class="campo">
+          <label for="nuova-passeggiata-note">Note</label>
+          <textarea id="nuova-passeggiata-note"></textarea>
+        </div>
+      </fieldset>
+      <button type="submit" class="bottone bottone-pieno">Aggiungi passeggiata</button>
+    </form>
+  </section>
+
   <section class="sezione-conto" id="sezione-utenti" hidden>
     <h2>Utenti</h2>
     <p class="premessa" style="margin-bottom:16px;">Solo un admin può cambiare il ruolo di un utente. Il ruolo "addetto" è pensato per un futuro collaboratore.</p>
@@ -168,6 +204,7 @@
       document.getElementById('sezione-utenti').hidden = (ruoloCorrente !== 'admin');
       caricaPrenotazioniStaff();
       caricaServiziManuale();
+      caricaPasseggiateStaff();
       if (ruoloCorrente === 'admin') caricaUtenti();
     });
   }
@@ -431,6 +468,102 @@
       formCercaCliente.reset();
       clienteTrovato = null;
       caricaPrenotazioniStaff();
+    });
+  });
+
+  // ---------- passeggiate ----------
+
+  var listaPasseggiateStaff = document.getElementById('lista-passeggiate-staff');
+  var messaggioPasseggiateStaff = document.getElementById('messaggio-passeggiate-staff');
+  var formNuovaPasseggiata = document.getElementById('form-nuova-passeggiata');
+  var nomiGiorni = ['domenica','lunedì','martedì','mercoledì','giovedì','venerdì','sabato'];
+  var nomiMesi = ['gennaio','febbraio','marzo','aprile','maggio','giugno','luglio','agosto','settembre','ottobre','novembre','dicembre'];
+  var etichettePasseggiata = { programmata: 'Programmata', annullata_meteo: 'Annullata (maltempo)', svolta: 'Svolta' };
+  var classeBadgePasseggiata = { programmata: 'badge-confermata', annullata_meteo: 'badge-annullata', svolta: 'badge-completata' };
+
+  function formattaData(iso){
+    var d = new Date(iso + 'T00:00:00');
+    return nomiGiorni[d.getDay()] + ' ' + d.getDate() + ' ' + nomiMesi[d.getMonth()];
+  }
+
+  function caricaPasseggiateStaff(){
+    sb.from('passeggiate')
+      .select('id, data, ora, argomento, luogo, stato, iscrizioni_passeggiata(id, stato, profili(nome,cognome,telefono,email), iscrizione_passeggiata_animali(animali(nome)))')
+      .order('data', { ascending: false })
+      .then(function(r){
+        if (r.error) { avviso(messaggioPasseggiateStaff, r.error.message, 'errore'); return; }
+        listaPasseggiateStaff.innerHTML = '';
+        if (!r.data.length) {
+          listaPasseggiateStaff.innerHTML = '<p class="vuoto">Nessuna passeggiata ancora programmata.</p>';
+          return;
+        }
+        r.data.forEach(function(p){
+          var iscritti = (p.iscrizioni_passeggiata || []).filter(function(i){ return i.stato === 'confermata'; });
+          var listaIscritti = iscritti.map(function(i){
+            var cliente = i.profili || {};
+            var cani = (i.iscrizione_passeggiata_animali || []).map(function(r2){ return r2.animali ? r2.animali.nome : ''; }).filter(Boolean).join(', ');
+            var contatto = [cliente.telefono, cliente.email].filter(Boolean).join(' · ');
+            return '<li>' + escapeHtml(((cliente.nome || '') + ' ' + (cliente.cognome || '')).trim() || '(senza nome)') +
+              (contatto ? ' — ' + escapeHtml(contatto) : '') + (cani ? ' — cani: ' + escapeHtml(cani) : '') + '</li>';
+          }).join('');
+
+          var azioni = [];
+          if (p.stato === 'programmata') {
+            azioni.push('<button type="button" data-azione="meteo">Annulla per maltempo</button>');
+            azioni.push('<button type="button" data-azione="svolta">Segna svolta</button>');
+          }
+
+          var card = document.createElement('div');
+          card.className = 'card-prenotazione';
+          card.innerHTML =
+            '<div><h3>' + escapeHtml(p.argomento) + '</h3>' +
+            '<p>' + escapeHtml(formattaData(p.data) + ', ore ' + p.ora.slice(0,5)) + ' &middot; ' + escapeHtml(p.luogo) + '</p>' +
+            '<p>' + iscritti.length + '/10 iscritti</p>' +
+            (listaIscritti ? '<ul style="margin:8px 0 0;padding-left:18px;">' + listaIscritti + '</ul>' : '<p class="vuoto">Nessun iscritto.</p>') +
+            (azioni.length ? '<p class="card-azioni" style="margin-top:10px;">' + azioni.join('') + '</p>' : '') +
+            '</div>' +
+            '<span class="badge-stato ' + classeBadgePasseggiata[p.stato] + '">' + etichettePasseggiata[p.stato] + '</span>';
+
+          card.querySelectorAll('[data-azione]').forEach(function(bottone){
+            bottone.addEventListener('click', function(){ eseguiAzionePasseggiata(p.id, bottone.getAttribute('data-azione')); });
+          });
+
+          listaPasseggiateStaff.appendChild(card);
+        });
+      });
+  }
+
+  function eseguiAzionePasseggiata(id, azione){
+    var campi = null;
+    if (azione === 'meteo') {
+      if (!window.confirm('Annullare questa passeggiata per maltempo? Gli iscritti verranno liberati in automatico.')) return;
+      campi = { stato: 'annullata_meteo' };
+    }
+    if (azione === 'svolta') campi = { stato: 'svolta' };
+    if (!campi) return;
+    sb.from('passeggiate').update(campi).eq('id', id).then(function(r){
+      if (r.error) { avviso(messaggioPasseggiateStaff, r.error.message, 'errore'); return; }
+      caricaPasseggiateStaff();
+    });
+  }
+
+  formNuovaPasseggiata.addEventListener('submit', function(e){
+    e.preventDefault();
+    messaggioPasseggiateStaff.hidden = true;
+    var dati = {
+      data: document.getElementById('nuova-passeggiata-data').value,
+      ora: document.getElementById('nuova-passeggiata-ora').value,
+      luogo: document.getElementById('nuova-passeggiata-luogo').value.trim() || 'Bosco di Campagnola',
+      argomento: document.getElementById('nuova-passeggiata-argomento').value.trim(),
+      note: document.getElementById('nuova-passeggiata-note').value.trim() || null
+    };
+    sb.from('passeggiate').insert(dati).then(function(r){
+      if (r.error) { avviso(messaggioPasseggiateStaff, r.error.message, 'errore'); return; }
+      avviso(messaggioPasseggiateStaff, 'Passeggiata aggiunta.', 'ok');
+      formNuovaPasseggiata.reset();
+      document.getElementById('nuova-passeggiata-ora').value = '18:00';
+      document.getElementById('nuova-passeggiata-luogo').value = 'Bosco di Campagnola';
+      caricaPasseggiateStaff();
     });
   });
 })();
