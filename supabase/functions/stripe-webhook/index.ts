@@ -46,6 +46,12 @@ Deno.serve(async (req) => {
         .from("prenotazioni")
         .update({ saldo_pagato_il: new Date().toISOString() })
         .eq("id", prenotazioneId);
+    } else if (prenotazioneId && tipo === "completo") {
+      const adesso = new Date().toISOString();
+      await supabase
+        .from("prenotazioni")
+        .update({ stato: "confermata", acconto_pagato_il: adesso, saldo_pagato_il: adesso })
+        .eq("id", prenotazioneId);
     }
   }
 

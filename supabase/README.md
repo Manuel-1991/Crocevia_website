@@ -73,6 +73,11 @@ un'installazione pulita da zero.
   un'iscrizione per conto di un cliente già registrato (chi telefona),
   mantenendo comunque il requisito del telefono introdotto in `015` e
   verificando che i cani aggiunti siano davvero del cliente giusto
+- `017_pagamento_completo_alla_prenotazione.sql` — aggiunge il tipo
+  `completo` ai pagamenti: il cliente può scegliere di saldare acconto e
+  saldo insieme, in un'unica transazione, già alla prenotazione di
+  stallo/pensione/asilo, invece di pagare solo il 10% e il resto alla fine
+  del soggiorno
 
 Avvisi di sicurezza rivisti e lasciati come sono, perché non applicabili
 a questo progetto: l'estensione `btree_gist` nello schema `public`
@@ -86,14 +91,18 @@ direttamente, l'avviso è un falso positivo).
 Due Edge Function, già distribuite al progetto live:
 
 - **`crea-pagamento`** — chiamata dal sito (autenticata) quando un cliente
-  clicca "Paga acconto" o "Paga saldo": legge la prenotazione con il token
-  dell'utente stesso (le RLS impediscono di pagare prenotazioni altrui),
-  crea una sessione di pagamento Stripe Checkout e la registra in
-  `pagamenti` come "in attesa". Torna l'URL a cui il sito reindirizza.
+  clicca "Paga acconto" o "Paga saldo", oppure quando sceglie di saldare
+  per intero già alla prenotazione ("completo", somma di acconto e saldo
+  in un'unica transazione): legge la prenotazione con il token dell'utente
+  stesso (le RLS impediscono di pagare prenotazioni altrui), crea una
+  sessione di pagamento Stripe Checkout e la registra in `pagamenti` come
+  "in attesa". Torna l'URL a cui il sito reindirizza.
 - **`stripe-webhook`** — chiamata da Stripe quando il pagamento va a buon
   fine: verifica la firma con `STRIPE_WEBHOOK_SECRET`, poi con la chiave
   service role segna il pagamento "pagato" e la prenotazione "confermata"
-  (acconto) o aggiorna `saldo_pagato_il` (saldo).
+  (acconto), aggiorna `saldo_pagato_il` (saldo), oppure valorizza insieme
+  `acconto_pagato_il` e `saldo_pagato_il` e conferma la prenotazione
+  (pagamento completo).
 
 **In produzione dal 18 settembre 2026: chiavi e webhook live.** Conto Stripe
 "Crocevia Cani" (`acct_1UGlf4BP3z1Napez`) verificato e attivo —
