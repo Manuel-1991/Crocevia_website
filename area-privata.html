@@ -606,7 +606,8 @@
           card.className = 'card-prenotazione';
           var azione = '';
           if (p.stato === 'in_attesa_pagamento' && !p.acconto_pagato_il) {
-            azione = '<button type="button" class="bottone bottone-pieno" data-paga="acconto">Paga acconto ' + euro(p.acconto_importo) + '</button>';
+            azione = '<button type="button" class="bottone bottone-pieno" data-paga="acconto">Paga acconto ' + euro(p.acconto_importo) + '</button>' +
+              '<button type="button" class="bottone bottone-vuoto" data-paga="completo">Paga tutto subito ' + euro(p.prezzo_totale) + '</button>';
           } else if (p.stato === 'confermata' && !p.saldo_pagato_il) {
             azione = '<button type="button" class="bottone bottone-vuoto" data-paga="saldo">Paga saldo ' + euro(p.saldo_importo) + '</button>';
           }
@@ -617,12 +618,12 @@
               (p.acconto_importo ? ' · acconto ' + euro(p.acconto_importo) + (p.acconto_pagato_il ? ' (pagato)' : '') : '') +
               (p.saldo_importo ? ' · saldo ' + euro(p.saldo_importo) + (p.saldo_pagato_il ? ' (pagato)' : '') : '') +
             '</p>' +
-            (azione ? '<p style="margin-top:10px;">' + azione + '</p>' : '') +
+            (azione ? '<div style="display:flex; gap:10px; flex-wrap:wrap; margin-top:10px;">' + azione + '</div>' : '') +
             '</div>' +
             '<span class="badge-stato badge-' + p.stato + '">' + (etichetteStato[p.stato] || p.stato) + '</span>';
-          var bottonePaga = card.querySelector('[data-paga]');
-          if (bottonePaga) {
-            bottonePaga.addEventListener('click', function(){ avviaPagamento(p.id, bottonePaga.getAttribute('data-paga')); });
+          var bottoniPaga = card.querySelectorAll('[data-paga]');
+          for (var i = 0; i < bottoniPaga.length; i++) {
+            bottoniPaga[i].addEventListener('click', function(){ avviaPagamento(p.id, this.getAttribute('data-paga')); });
           }
           listaPrenotazioni.appendChild(card);
         });
