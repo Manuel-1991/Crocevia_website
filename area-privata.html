@@ -589,9 +589,28 @@
     annullata: 'Annullata'
   };
 
+  function giorniAllInizio(dataDal){
+    var oggi = new Date(); oggi.setHours(0, 0, 0, 0);
+    var inizio = dataLocale(dataDal);
+    return Math.round((inizio - oggi) / 86400000);
+  }
+  function dataLocale(s){ return new Date(s + 'T00:00:00'); }
+
+  function chiediDisdetta(prenotazioneId, dataDal){
+    var giorni = giorniAllInizio(dataDal);
+    var testo = giorni >= 7
+      ? 'Confermi la richiesta di disdetta? Mancano ' + giorni + ' giorni all\'inizio: secondo i termini ti verrà rimborsato quanto versato, meno le commissioni di pagamento. La richiesta va comunque confermata da me prima che il posto si liberi.'
+      : 'Confermi la richiesta di disdetta? Siamo a ' + giorni + ' giorni dall\'inizio: sotto i 7 giorni di preavviso, secondo i termini l\'importo versato non è rimborsabile. La richiesta verrà comunque inoltrata.';
+    if (!window.confirm(testo)) return;
+    sb.from('prenotazioni').update({ disdetta_richiesta: true, disdetta_richiesta_il: new Date().toISOString() }).eq('id', prenotazioneId).then(function(r){
+      if (r.error) { window.alert('Non è stato possibile inviare la richiesta: ' + r.error.message); return; }
+      caricaPrenotazioni();
+    });
+  }
+
   function caricaPrenotazioni(){
     sb.from('prenotazioni')
-      .select('id, data_dal, data_al, stato, prezzo_totale, acconto_importo, acconto_pagato_il, saldo_importo, saldo_pagato_il, pappa_fornita, animali(nome), servizi(nome)')
+      .select('id, data_dal, data_al, stato, prezzo_totale, acconto_importo, acconto_pagato_il, saldo_importo, saldo_pagato_il, pappa_fornita, disdetta_richiesta, disdetta_richiesta_il, animali(nome), servizi(nome)')
       .eq('cliente_id', utenteCorrente.id)
       .order('data_dal', { ascending: false })
       .then(function(r){
@@ -611,6 +630,10 @@
           } else if (p.stato === 'confermata' && !p.saldo_pagato_il) {
             azione = '<button type="button" class="bottone bottone-vuoto" data-paga="saldo">Paga saldo ' + euro(p.saldo_importo) + '</button>';
           }
+          var disdetta = '';
+          if (p.stato === 'confermata' && !p.disdetta_richiesta) {
+            disdetta = '<button type="button" class="bottone bottone-vuoto" data-disdici="1">Chiedi la disdetta</button>';
+          }
           card.innerHTML =
             '<div><h3>' + escapeHtml(p.servizi ? p.servizi.nome : '') + ' — ' + escapeHtml(p.animali ? p.animali.nome : '') + '</h3>' +
             '<p>' + escapeHtml(p.data_dal) + ' → ' + escapeHtml(p.data_al) + (p.pappa_fornita ? ' · pappa fornita' : '') + '</p>' +
@@ -618,12 +641,17 @@
               (p.acconto_importo ? ' · acconto ' + euro(p.acconto_importo) + (p.acconto_pagato_il ? ' (pagato)' : '') : '') +
               (p.saldo_importo ? ' · saldo ' + euro(p.saldo_importo) + (p.saldo_pagato_il ? ' (pagato)' : '') : '') +
             '</p>' +
-            (azione ? '<div style="display:flex; gap:10px; flex-wrap:wrap; margin-top:10px;">' + azione + '</div>' : '') +
+            (p.disdetta_richiesta ? '<p class="avviso avviso-errore" style="margin-top:10px;">Disdetta richiesta il ' + escapeHtml(new Date(p.disdetta_richiesta_il).toLocaleDateString('it-IT')) + ' — in attesa di conferma.</p>' : '') +
+            (azione || disdetta ? '<div style="display:flex; gap:10px; flex-wrap:wrap; margin-top:10px;">' + azione + disdetta + '</div>' : '') +
             '</div>' +
             '<span class="badge-stato badge-' + p.stato + '">' + (etichetteStato[p.stato] || p.stato) + '</span>';
           var bottoniPaga = card.querySelectorAll('[data-paga]');
           for (var i = 0; i < bottoniPaga.length; i++) {
             bottoniPaga[i].addEventListener('click', function(){ avviaPagamento(p.id, this.getAttribute('data-paga')); });
+          }
+          var bottoneDisdici = card.querySelector('[data-disdici]');
+          if (bottoneDisdici) {
+            bottoneDisdici.addEventListener('click', function(){ chiediDisdetta(p.id, p.data_dal); });
           }
           listaPrenotazioni.appendChild(card);
         });

@@ -257,7 +257,7 @@
 
   function caricaPrenotazioniStaff(){
     sb.from('prenotazioni')
-      .select('id, data_dal, data_al, stato, prezzo_totale, acconto_importo, acconto_pagato_il, saldo_importo, saldo_pagato_il, pappa_fornita, pappa_importo, creato_il, animali(nome), servizi(nome), profili(nome,cognome,telefono,email)')
+      .select('id, data_dal, data_al, stato, prezzo_totale, acconto_importo, acconto_pagato_il, saldo_importo, saldo_pagato_il, pappa_fornita, pappa_importo, creato_il, disdetta_richiesta, disdetta_richiesta_il, animali(nome), servizi(nome), profili(nome,cognome,telefono,email)')
       .order('data_dal')
       .then(function(r){
         if (r.error) { avviso(messaggio, r.error.message, 'errore'); return; }
@@ -277,7 +277,8 @@
         try { localStorage.setItem(CHIAVE_ULTIMA_VISITA, new Date().toISOString()); } catch (e) {}
 
         var righe = (r.data || []).slice().sort(function(a, b){
-          var pa = prioritaStato[a.stato], pb = prioritaStato[b.stato];
+          var pa = a.disdetta_richiesta ? -1 : prioritaStato[a.stato];
+          var pb = b.disdetta_richiesta ? -1 : prioritaStato[b.stato];
           if (pa !== pb) return pa - pb;
           return a.data_dal < b.data_dal ? -1 : (a.data_dal > b.data_dal ? 1 : 0);
         });
@@ -314,6 +315,7 @@
               (p.acconto_importo ? ' · acconto ' + euro(p.acconto_importo) + (p.acconto_pagato_il ? ' (pagato)' : ' (da pagare)') : '') +
               (p.saldo_importo ? ' · saldo ' + euro(p.saldo_importo) + (p.saldo_pagato_il ? ' (pagato)' : ' (da pagare)') : '') +
             '</p>' +
+            (p.disdetta_richiesta ? '<p class="avviso avviso-errore" style="margin-top:10px;"><b>Disdetta richiesta</b> il ' + escapeHtml(new Date(p.disdetta_richiesta_il).toLocaleString('it-IT')) + '</p>' : '') +
             (azioni.length ? '<p class="card-azioni" style="margin-top:10px;">' + azioni.join('') + '</p>' : '') +
             '</div>' +
             '<span class="badge-stato badge-' + p.stato + '">' + (etichetteStato[p.stato] || p.stato) + '</span>';
