@@ -47,7 +47,7 @@
 <div class="crumb"><a href="index.html">Home</a> / <a href="pensione-asilo.html">Pensione &amp; Asilo</a> / Prenota</div>
 <div class="page-head left"><h1 class="left">Prenota pensione o asilo</h1></div>
 
-<p class="premessa">Scegli l'animale, il servizio e le date: il calendario mostra la disponibilità in tempo reale. Pensione e asilo condividono lo stesso spazio, massimo 5 cani al giorno. Alla richiesta si paga il 10% di acconto (non rimborsabile), il saldo alla fine del soggiorno.</p>
+<p class="premessa">Scegli l'animale, il servizio e le date: il calendario mostra la disponibilità in tempo reale. Pensione e asilo condividono lo stesso spazio, massimo 5 cani al giorno. Alla richiesta scegli se pagare solo il 10% di acconto (saldo alla fine del soggiorno) o l'intero importo subito. Puoi disdire senza costi fino a 7 giorni prima dell'inizio: ti rimborso quanto versato, meno le commissioni di pagamento.</p>
 
 <div id="serve-accesso">
   <p class="avviso">Devi prima <a href="area-privata.html">accedere o registrarti</a> per prenotare.</p>
@@ -103,6 +103,13 @@
 
       <div class="campo">
         <label class="checkriga"><input type="checkbox" id="pappa-fornita"> Pappa fornita da me (+5 €/notte, per tutto il soggiorno) — si salda alla fine, non fa parte dell'acconto</label>
+      </div>
+
+      <div class="campo">
+        <label class="checkriga"><input type="radio" name="modalita-pagamento" id="paga-acconto" value="acconto" checked> Paga solo l'acconto ora (10% del soggiorno) — il saldo entro la fine del soggiorno</label>
+      </div>
+      <div class="campo">
+        <label class="checkriga"><input type="radio" name="modalita-pagamento" id="paga-completo" value="completo"> Paga tutto subito (100%) — nessun saldo da pagare dopo</label>
       </div>
 
       <div id="riepilogo-prezzo" class="riepilogo-prezzo" hidden>
@@ -327,19 +334,27 @@
     if (!dal || !al || !servizio || al < dal) { box.hidden = true; return; }
 
     var pappaFornita = document.getElementById('pappa-fornita').checked;
+    var pagaCompleto = document.getElementById('paga-completo').checked;
     var p = calcolaPrezzo(Number(servizio.prezzo), dal, al, pappaFornita);
     document.getElementById('riepilogo-notti').textContent = p.notti + (p.notti === 1 ? ' notte' : ' notti');
     var elPappa = document.getElementById('riepilogo-pappa');
-    if (pappaFornita) { elPappa.textContent = 'Pappa fornita: ' + euro(p.pappa) + ' (nel saldo)'; elPappa.hidden = false; }
+    if (pappaFornita) { elPappa.textContent = 'Pappa fornita: ' + euro(p.pappa) + (pagaCompleto ? '' : ' (nel saldo)'); elPappa.hidden = false; }
     else { elPappa.hidden = true; }
     document.getElementById('riepilogo-totale').textContent = 'Totale: ' + euro(p.totale);
-    document.getElementById('riepilogo-acconto').textContent = 'Acconto ora (10% del soggiorno, non rimborsabile): ' + euro(p.acconto);
-    document.getElementById('riepilogo-saldo').textContent = 'Saldo alla fine del soggiorno: ' + euro(p.saldo);
+    if (pagaCompleto) {
+      document.getElementById('riepilogo-acconto').textContent = 'Paghi ora, per intero: ' + euro(p.totale);
+      document.getElementById('riepilogo-saldo').textContent = 'Saldo: nessuno, già tutto saldato.';
+    } else {
+      document.getElementById('riepilogo-acconto').textContent = 'Acconto ora (10% del soggiorno): ' + euro(p.acconto);
+      document.getElementById('riepilogo-saldo').textContent = 'Saldo alla fine del soggiorno: ' + euro(p.saldo);
+    }
     box.hidden = false;
   }
 
   document.getElementById('select-servizio').addEventListener('change', aggiornaRiepilogo);
   document.getElementById('pappa-fornita').addEventListener('change', aggiornaRiepilogo);
+  document.getElementById('paga-acconto').addEventListener('change', aggiornaRiepilogo);
+  document.getElementById('paga-completo').addEventListener('change', aggiornaRiepilogo);
 
   // ---------- invio ----------
 
@@ -353,12 +368,14 @@
     var al = document.getElementById('data-al').value;
 
     var pappaFornita = document.getElementById('pappa-fornita').checked;
+    var pagaCompleto = document.getElementById('paga-completo').checked;
 
     if (!animaleId) { avviso('Aggiungi prima un animale nella tua area privata.', 'errore'); return; }
     if (!dal || !al || al < dal) { avviso('Scegli un intervallo di date valido.', 'errore'); return; }
 
     var servizio = servizi.filter(function(s){ return s.id === servizioId; })[0];
     var p = calcolaPrezzo(Number(servizio.prezzo), dal, al, pappaFornita);
+    var tipoPagamento = pagaCompleto ? 'completo' : 'acconto';
 
     sb.from('prenotazioni').insert({
       cliente_id: utenteCorrente.id,
@@ -373,8 +390,8 @@
       saldo_importo: p.saldo
     }).select().single().then(function(r){
       if (r.error) { avviso(r.error.message, 'errore'); return; }
-      avviso('Prenotazione creata: ti portiamo al pagamento dell\'acconto…', 'ok');
-      sb.functions.invoke('crea-pagamento', { body: { prenotazione_id: r.data.id, tipo: 'acconto' } }).then(function(fr){
+      avviso('Prenotazione creata: ti portiamo al pagamento ' + (pagaCompleto ? 'completo' : 'dell\'acconto') + '…', 'ok');
+      sb.functions.invoke('crea-pagamento', { body: { prenotazione_id: r.data.id, tipo: tipoPagamento } }).then(function(fr){
         if (fr.error || !fr.data || !fr.data.url) {
           avviso('Prenotazione creata ma il pagamento non è partito: vai nella tua area privata per riprovare.', 'errore');
           return;

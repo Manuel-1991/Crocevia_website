@@ -37,7 +37,7 @@ Deno.serve(async (req) => {
     if (erroreUtente || !user) return risposta({ error: "Sessione non valida." }, 401);
 
     const { prenotazione_id, tipo } = await req.json();
-    if (!prenotazione_id || !["acconto", "saldo"].includes(tipo)) {
+    if (!prenotazione_id || !["acconto", "saldo", "completo"].includes(tipo)) {
       return risposta({ error: "Richiesta non valida." }, 400);
     }
 
@@ -56,6 +56,12 @@ Deno.serve(async (req) => {
       }
       importo = Number(prenotazione.acconto_importo);
       descrizione = "Acconto " + (prenotazione.servizi?.nome ?? "prenotazione") + " — " + (prenotazione.animali?.nome ?? "");
+    } else if (tipo === "completo") {
+      if (prenotazione.stato !== "in_attesa_pagamento" || prenotazione.acconto_pagato_il) {
+        return risposta({ error: "Il pagamento completo non risulta dovuto per questa prenotazione." }, 409);
+      }
+      importo = Number(prenotazione.acconto_importo) + Number(prenotazione.saldo_importo);
+      descrizione = "Pagamento completo " + (prenotazione.servizi?.nome ?? "prenotazione") + " — " + (prenotazione.animali?.nome ?? "");
     } else {
       if (prenotazione.stato !== "confermata" || prenotazione.saldo_pagato_il) {
         return risposta({ error: "Il saldo non risulta dovuto per questa prenotazione." }, 409);

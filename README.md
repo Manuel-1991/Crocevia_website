@@ -7,8 +7,9 @@ Settimo Milanese (MI) · campo e bosco sul Lago Maggiore.
 Le pagine di presentazione sono HTML statico senza framework, come all'inizio.
 Da qui però il sito ha anche un vero backend: un database Supabase con account
 utente, animali e prenotazioni, pagamento online (Stripe) per stallo/pensione
-e asilo con acconto e saldo separati, evento automatico su Google Calendar a
-ogni prenotazione confermata. Le passeggiate di gruppo usano lo stesso
+e asilo — a scelta con acconto e saldo separati o per intero già alla
+prenotazione — evento automatico su Google Calendar a ogni prenotazione
+confermata. Le passeggiate di gruppo usano lo stesso
 account ma senza pagamento online: si prenota l'uscita in programma, si salda
 in loco. Educazione e valutazione restano invece sul modulo che compone un
 messaggio e apre WhatsApp — nessun account richiesto per quei servizi.
