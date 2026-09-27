@@ -161,9 +161,14 @@
   var esc = A.escapeHtml;
 
   var parametri = new URLSearchParams(window.location.search);
-  // dopo l'accesso si torna alla pagina dell'area da cui si era partiti
-  var torna = parametri.get('torna');
-  if (!/^[a-z-]+\.html$/.test(torna || '')) torna = null;
+  // dopo l'accesso si torna alla pagina da cui si era partiti: solo pagine
+  // di questo elenco, e il redirect usa sempre la stringa dell'elenco, mai
+  // il testo arrivato dall'URL (niente redirect verso siti esterni)
+  var PAGINE_RITORNO = ['area-profilo.html', 'area-cani.html', 'area-prenotazioni.html', 'area-passeggiate.html',
+    'area-staff.html', 'staff-prenotazioni.html', 'staff-nuova-prenotazione.html', 'staff-passeggiate.html',
+    'staff-utenti.html', 'prenota-pensione-asilo.html', 'prenota-passeggiata.html'];
+  var indiceRitorno = PAGINE_RITORNO.indexOf(parametri.get('torna'));
+  var torna = indiceRitorno === -1 ? null : PAGINE_RITORNO[indiceRitorno];
   var inRecupero = /type=recovery/.test(window.location.hash);
 
   var attesa = document.getElementById('area-attesa');
