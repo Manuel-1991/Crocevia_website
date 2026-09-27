@@ -1,7 +1,7 @@
 # Crocevia — sito
 
 Sito di **Crocevia** — educazione cinofila, asilo diurno, pensione e passeggiate
-di gruppo. Manuel, educatore cinofilo FICSS.
+di gruppo. Manuel, educatore cinofilo.
 Settimo Milanese (MI) · uscite sul Lago Maggiore.
 
 Le pagine di presentazione sono HTML statico senza framework, come all'inizio.
