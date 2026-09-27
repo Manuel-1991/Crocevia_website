@@ -65,7 +65,8 @@
   function nomeCompleto(p){
     return ((p && p.nome ? p.nome : '') + ' ' + (p && p.cognome ? p.cognome : '')).trim();
   }
-  var CAMPI_PROFILO = { nome: 'nome', cognome: 'cognome', telefono: 'telefono', indirizzo: 'indirizzo', codice_fiscale: 'codice fiscale' };
+  // campi obbligatori del profilo (il codice fiscale è facoltativo)
+  var CAMPI_PROFILO = { nome: 'nome', cognome: 'cognome', telefono: 'telefono', indirizzo: 'indirizzo' };
   function campiMancanti(p){
     return Object.keys(CAMPI_PROFILO).filter(function(k){ return !p || !p[k]; }).map(function(k){ return CAMPI_PROFILO[k]; });
   }
