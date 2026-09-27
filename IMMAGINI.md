@@ -103,5 +103,5 @@ e salvate in `.webp` dentro le cartelle di `assets/img/`.
 - **Stili**: `.card-foto`, `.foto-banner`, `.foto-griglia` in `style.css`.
 
 Per aggiungere o cambiare una foto basta sostituire il file con lo stesso
-nome (stesse proporzioni 4:3, banner 16:9), oppure chiedere a Claude di
+nome (stesse proporzioni: 4:3, quadrate per chi siamo, banner 16:9), oppure chiedere a Claude di
 rifare la selezione dal branch `foto-grezze`.

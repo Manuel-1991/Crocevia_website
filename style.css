@@ -401,6 +401,7 @@ h1.left{ text-align:left; }
   border-radius:3px; border:1px solid var(--border-soft); margin-bottom:16px;
   background: var(--surface);
 }
+.card-foto.quadrata{ aspect-ratio: 1 / 1; }
 /* foto larga in apertura di pagina */
 .foto-banner{ margin:0 0 20px; }
 .foto-banner img{
@@ -419,6 +420,13 @@ h1.left{ text-align:left; }
 }
 .foto-griglia figcaption, .foto-banner figcaption{
   font-style:italic; font-size:14px; color: var(--ink-muted); margin-top:7px;
+}
+/* sul telefono le foto restano affiancate a due a due (la prima, se sono
+   dispari, prende tutta la riga): impilate spingerebbero il testo troppo in basso */
+@media (max-width:600px){
+  .foto-griglia{ grid-template-columns: 1fr 1fr; gap:10px; }
+  .foto-griglia figure:first-child:nth-last-child(odd){ grid-column: 1 / -1; }
+  .foto-griglia figcaption{ font-size:13px; margin-top:5px; }
 }
 
 /* ---------- dividers ---------- */
