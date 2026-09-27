@@ -1337,11 +1337,11 @@ a.tessera:hover{ border-color:var(--gold); transform:translateY(-2px); color:var
 .accesso{ max-width:480px; margin:0 auto; }
 
 /* registrazione: i passi che seguono la creazione dell'account */
-.passi-iniziali{ margin:0 0 10px; padding:14px 18px 14px 36px; border:1px dashed var(--border); border-radius:4px; color:var(--ink-muted); font-size:15.5px; line-height:1.45; }
+.passi-iniziali{ margin:18px 0 10px; padding:14px 18px 14px 36px; border:1px dashed var(--border); border-radius:4px; color:var(--ink-muted); font-size:15.5px; line-height:1.45; }
 .passi-iniziali li{ margin:0 0 6px; }
 .passi-iniziali li:last-child{ margin:0; }
 .passi-iniziali b{ color:var(--ink); font-weight:600; }
-.nota-registrazione{ font-style:italic; color:var(--ink-muted); font-size:15px; margin:0 0 18px; }
+.nota-registrazione{ font-style:italic; color:var(--ink-muted); font-size:15px; margin:0; }
 
 /* panoramica: checklist "primi passi" del nuovo cliente */
 .primi-passi{ border-left-color:var(--gold); background:var(--gold-tint-soft); }
