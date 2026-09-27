@@ -24,7 +24,7 @@ Dettagli tecnici, schema del database ed Edge Function in
 | `educazione.html` | valutazione, lezioni, pacchetti |
 | `pensione-asilo.html` | stallo/pensione, asilo diurno, giornata tipo |
 | `passeggiate.html` | presentazione delle passeggiate di gruppo: format, temi, quando, prezzo |
-| `contattami.html` | modulo di contatto per educazione (valutazione, lezioni, pacchetti) → messaggio WhatsApp precompilato, nessun account richiesto |
+| `contattami.html` | modulo informativo (area: educazione, passeggiate, asilo, pensione; niente prezzi) → messaggio precompilato via WhatsApp o email, nessun account richiesto |
 | `area-privata.html` | login/registrazione, profilo, animali e prenotazioni del cliente (Supabase), inclusa la gestione della propria passeggiata |
 | `prenota-pensione-asilo.html` | calendario disponibilità e richiesta di prenotazione per pensione/asilo (richiede accesso) |
 | `prenota-passeggiata.html` | scelta dell'uscita e dei cani per la passeggiata di gruppo (richiede accesso) |
@@ -89,8 +89,8 @@ La vista orizzontale guarda larghezza **e** altezza: un telefono girato è largo
 - I campi del modulo stanno a 16px: sotto quella misura iOS zooma da solo quando
   li tocchi.
 - `contattami.html` non chiede date: è volutamente solo un modulo di
-  contatto (dati, cane, servizio, messaggio libero) che apre WhatsApp —
-  giorno e orario si concordano dopo, via chat. `prenota.html` resta come
+  contatto (dati, cane, area di interesse, messaggio libero) che apre
+  WhatsApp o il programma di posta — i dettagli si concordano dopo. `prenota.html` resta come
   semplice redirect verso `contattami.html`, per non rompere link salvati o
   indicizzati sul vecchio indirizzo. Pensione, asilo e passeggiate hanno le
   loro pagine dedicate con calendario e pagamento vero,
