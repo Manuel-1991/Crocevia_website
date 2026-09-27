@@ -86,6 +86,12 @@ La vista orizzontale guarda larghezza **e** altezza: un telefono girato è largo
   `backdrop-filter` diventa il riferimento per i figli `position:fixed`, e il
   menu a tutto schermo finirebbe agganciato all'intestazione invece che allo
   schermo.
+- **SEO delle pagine principali** (home, educazione, pensione & asilo,
+  passeggiate, dove operiamo): ognuna ha titolo e descrizione con servizio +
+  luogo, `<link rel="canonical">` e dati strutturati (`application/ld+json`
+  in testa alla pagina — `LocalBusiness` in home, `Service` con i prezzi e
+  `BreadcrumbList` sulle altre). **Se cambi un prezzo, cambialo anche lì**,
+  altrimenti Google mostra quello vecchio.
 - I campi del modulo stanno a 16px: sotto quella misura iOS zooma da solo quando
   li tocchi.
 - `contattami.html` non chiede date: è volutamente solo un modulo di
