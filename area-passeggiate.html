@@ -1,0 +1,166 @@
+<!doctype html>
+<html lang="it">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#0d2219">
+<script>(function(){try{var t=localStorage.getItem('crocevia-tema');if(t==='chiaro'||t==='scuro'){document.documentElement.setAttribute('data-tema',t);}}catch(e){}})();</script>
+<link rel="icon" type="image/png" href="assets/img/brand/favicon.png">
+<link rel="apple-touch-icon" href="assets/img/brand/apple-touch-icon.png">
+<title>Le mie passeggiate — Crocevia</title>
+<meta name="description" content="La tua prenotazione per le passeggiate di gruppo: cani presenti e cancellazione.">
+<meta name="robots" content="noindex">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;600;700&family=EB+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&display=swap">
+<link rel="stylesheet" href="style.css?v=20260927d">
+<noscript><style>.reveal{opacity:1!important;transform:none!important;}</style></noscript>
+<header class="site-header">
+  <nav class="nav">
+    <a href="index.html" class="brand" aria-label="Crocevia — Home">
+      <img class="logo-nav" src="assets/img/brand/logo-nav.webp" alt="Crocevia" width="200" height="201">
+      <span class="brand-text">
+        <span class="brand-word">CROCEVIA</span>
+        <span class="brand-tagline">Asilo · Pensione · Passeggiate</span>
+      </span>
+    </a>
+    <button class="tema-toggle" id="cambia-tema" type="button" aria-label="Passa al tema chiaro" aria-pressed="false">
+      <svg class="icona-sole" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><circle cx="12" cy="12" r="4"></circle><path d="M12 2v3M12 19v3M4.2 4.2l2.1 2.1M17.7 17.7l2.1 2.1M2 12h3M19 12h3M4.2 19.8l2.1-2.1M17.7 6.3l2.1-2.1" stroke-width="1.8" stroke-linecap="round"></path></svg>
+      <svg class="icona-luna" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M20 14.5A8.5 8.5 0 1 1 9.5 4a7 7 0 0 0 10.5 10.5Z"></path></svg>
+    </button>
+    <button class="nav-toggle" id="apri-menu" type="button" aria-controls="menu-crocevia" aria-expanded="false" aria-label="Apri il menu"><span class="barre" aria-hidden="true"></span></button>
+    <ul class="nav-links" id="menu-crocevia"><li><a href="index.html" class="nav">Home</a></li><li><a href="educazione.html" class="nav">Educazione</a></li><li><a href="pensione-asilo.html" class="nav">Pensione &amp; Asilo</a></li><li><a href="passeggiate.html" class="nav">Passeggiate</a></li><li><a href="chi-siamo.html" class="nav">Chi siamo</a></li><li><a href="dove-operiamo.html" class="nav">Dove operiamo</a></li><li><a href="faq.html" class="nav">FAQ</a></li><li><a href="contatti.html" class="nav">Contatti</a></li><li class="nav-item-mobile-only"><a href="contattami.html" class="nav">Contattami</a></li><li class="nav-item-mobile-only"><a href="area-privata.html" class="nav active">Area privata</a></li></ul><span class="nav-divider" aria-hidden="true"></span><a href="contattami.html" class="nav-cta">Contattami</a><a href="area-privata.html" class="nav-account active" aria-label="Area privata"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><circle cx="12" cy="8" r="3.5"></circle><path d="M5 20c1.2-4 4-6 7-6s5.8 2 7 6"></path></svg></a>
+  </nav>
+</header>
+<main class="wrap">
+
+<div class="crumb"><a href="area-privata.html">Area privata</a> / Passeggiate</div>
+<p id="area-attesa" class="caricamento">Caricamento…</p>
+
+<div id="area-corpo" hidden>
+  <div class="testa-area">
+    <h1>Passeggiate</h1>
+    <p class="premessa">Una sola prenotazione attiva alla volta: qui puoi cambiare i cani presenti o cancellarla. Saldo 50&nbsp;€ a persona, si paga in loco.</p>
+  </div>
+
+  <p id="messaggio-passeggiata" class="avviso" hidden></p>
+  <div id="blocco-passeggiata"><p class="caricamento">Caricamento…</p></div>
+</div>
+
+</main>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="supabase-client.js"></script>
+<script src="area-comune.js?v=20260927"></script>
+<script>
+(function(){
+  var A = window.CroceviaArea;
+  var sb = A.sb;
+  var esc = A.escapeHtml;
+
+  A.pagina({}, function(ctx){
+    var messaggio = document.getElementById('messaggio-passeggiata');
+    var blocco = document.getElementById('blocco-passeggiata');
+
+    function carica(){
+      Promise.all([
+        sb.from('iscrizioni_passeggiata')
+          .select('id, passeggiate(data,ora,argomento,luogo,stato), iscrizione_passeggiata_animali(animale_id)')
+          .eq('cliente_id', ctx.utente.id)
+          .eq('stato', 'confermata')
+          .maybeSingle(),
+        sb.from('animali').select('id,nome').eq('proprietario_id', ctx.utente.id).order('creato_il')
+      ]).then(function(r){
+        var iscrizioneRes = r[0], animaliRes = r[1];
+        if (iscrizioneRes.error) { A.avviso(messaggio, iscrizioneRes.error.message, 'errore'); return; }
+
+        var iscrizione = iscrizioneRes.data;
+        if (!iscrizione) {
+          blocco.innerHTML =
+            '<div class="pannello"><h2>Nessuna prenotazione attiva</h2>' +
+            '<p class="nota" style="margin:0 0 16px;">Uscite di gruppo sul Lago Maggiore, ogni settimana un tema diverso.</p>' +
+            '<a href="prenota-passeggiata.html" class="bottone bottone-pieno piccolo">Prenota una passeggiata &rarr;</a></div>';
+          return;
+        }
+
+        var tuoiCani = animaliRes.data || [];
+        var p = iscrizione.passeggiate || {};
+        var caniIscrizione = (iscrizione.iscrizione_passeggiata_animali || []).map(function(x){ return x.animale_id; });
+        var badge = p.stato === 'annullata_meteo' ? '<span class="badge-stato badge-annullata">Annullata per maltempo</span>'
+          : (p.stato === 'svolta' ? '<span class="badge-stato badge-completata">Svolta</span>'
+          : '<span class="badge-stato badge-confermata">Confermata</span>');
+
+        var checkboxCani = tuoiCani.map(function(a){
+          var checked = caniIscrizione.indexOf(a.id) !== -1;
+          return '<label class="checkriga"><input type="checkbox" name="cane-passeggiata" value="' + a.id + '"' + (checked ? ' checked' : '') + '> ' + esc(a.nome) + '</label>';
+        }).join('');
+
+        blocco.innerHTML =
+          '<div class="pren ' + (p.stato === 'annullata_meteo' ? 'rossa' : 'conf') + '">' +
+            '<div class="alto"><div>' +
+              '<h3>' + esc(p.argomento || '') + '</h3>' +
+              '<div class="quando">' + (p.data ? esc(A.formattaData(p.data)) + ', ore ' + esc(p.ora.slice(0, 5)) : '') + ' <small>· ' + esc(p.luogo || '') + '</small></div>' +
+            '</div>' + badge + '</div>' +
+            (p.stato === 'annullata_meteo' ? '<p class="avviso avviso-errore">L\'uscita è annullata per maltempo: ti ricontatto io per recuperarla.</p>' : '') +
+            '<div class="scelta-cani"><span class="etichetta">Chi porti</span>' + (checkboxCani || '<p class="vuoto">Non hai cani nel profilo.</p>') + '</div>' +
+            '<div class="riga-bottoni">' +
+              '<button type="button" class="bottone bottone-pieno piccolo" id="salva-cani-passeggiata">Salva i cani</button>' +
+              '<button type="button" class="bottone bottone-vuoto piccolo" id="annulla-passeggiata">Cancella la prenotazione</button>' +
+            '</div>' +
+          '</div>';
+
+        document.getElementById('salva-cani-passeggiata').addEventListener('click', function(){
+          var selezionati = Array.prototype.map.call(blocco.querySelectorAll('input[name="cane-passeggiata"]:checked'), function(el){ return el.value; });
+          if (!selezionati.length) { A.avviso(messaggio, 'Deve restare almeno un cane nella prenotazione.', 'errore'); return; }
+          salvaCani(iscrizione.id, caniIscrizione, selezionati);
+        });
+        document.getElementById('annulla-passeggiata').addEventListener('click', function(){
+          if (!window.confirm('Cancellare la tua prenotazione per questa passeggiata?')) return;
+          sb.from('iscrizioni_passeggiata').update({ stato: 'annullata' }).eq('id', iscrizione.id).then(function(r2){
+            if (r2.error) { A.avviso(messaggio, r2.error.message, 'errore'); return; }
+            A.avviso(messaggio, 'Prenotazione cancellata.', 'ok');
+            carica();
+          });
+        });
+      });
+    }
+
+    function salvaCani(iscrizioneId, prima, dopo){
+      var daTogliere = prima.filter(function(id){ return dopo.indexOf(id) === -1; });
+      var daAggiungere = dopo.filter(function(id){ return prima.indexOf(id) === -1; });
+      var operazioni = [];
+      if (daTogliere.length) operazioni.push(sb.from('iscrizione_passeggiata_animali').delete().eq('iscrizione_id', iscrizioneId).in('animale_id', daTogliere));
+      if (daAggiungere.length) operazioni.push(sb.from('iscrizione_passeggiata_animali').insert(daAggiungere.map(function(id){ return { iscrizione_id: iscrizioneId, animale_id: id }; })));
+      if (!operazioni.length) { A.avviso(messaggio, 'Nessuna modifica da salvare.', 'ok'); return; }
+      Promise.all(operazioni).then(function(risultati){
+        var errore = risultati.filter(function(x){ return x.error; })[0];
+        if (errore) { A.avviso(messaggio, errore.error.message, 'errore'); return; }
+        A.avviso(messaggio, 'Cani aggiornati.', 'ok');
+        carica();
+      });
+    }
+
+    carica();
+  });
+})();
+</script>
+<footer class="site-footer">
+  <div class="footer-inner">
+    <div class="footer-links">
+      <a href="chi-siamo.html">Chi siamo</a> &middot;
+      <a href="dove-operiamo.html">Dove operiamo</a> &middot;
+      <a href="faq.html">FAQ</a> &middot;
+      <a href="contatti.html">Contatti</a> &middot;
+      <a href="contattami.html">Contattami</a> &middot;
+      <a href="privacy.html">Privacy</a> &middot;
+      <a href="termini.html">Termini</a> &middot;
+      <a href="#" id="gestisci-cookie">Gestisci cookie</a>
+    </div>
+    <div class="footer-contact">
+      <a href="tel:+393334325389">+39 333 432 5389</a> &middot;
+      <a href="mailto:info@croceviacani.it">info@croceviacani.it</a>
+    </div>
+    <div class="footer-piva">Crocevia &middot; Manuel &middot; P.IVA 14868890964</div>
+  </div>
+</footer>
+
+<script src="main.js?v=20260927"></script>
+<script src="cookie-consent.js"></script>
+</html>

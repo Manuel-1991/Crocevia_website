@@ -1058,3 +1058,255 @@ main section tr:last-child td{ border-bottom:none; }
 }
 .riepilogo-prezzo p{ margin:4px 0; }
 .riepilogo-prezzo .totale{ font-family:"Cinzel", serif; color:var(--gold); font-size:16px; }
+
+/* ==================================================================
+   AREA PRIVATA E STAFF — menù "il mio conto" e pagine dedicate
+   Il pulsante con l'iniziale sostituisce l'icona .nav-account quando
+   sei loggato (lo inserisce area-comune.js) e apre il menù con tutte le
+   pagine dell'area; su telefono resta in testata accanto all'hamburger.
+   ================================================================== */
+/* hidden deve vincere anche sugli elementi che qui sotto hanno un display */
+[hidden]{ display:none !important; }
+
+.conto-wrap{ position:relative; order:4; flex:none; }
+.conto-btn{
+  position:relative; display:flex; align-items:center; justify-content:center; width:38px; height:38px; padding:0;
+  border:1px solid var(--border-soft); border-radius:4px; background:transparent;
+  color:var(--ink-muted); cursor:pointer; -webkit-tap-highlight-color: transparent;
+  transition: color .15s ease, border-color .15s ease;
+}
+.conto-btn:hover, .conto-btn.active, .conto-btn[aria-expanded="true"]{ color:var(--gold); border-color:var(--gold); }
+.conto-iniziale{
+  width:28px; height:28px; border-radius:50%; display:grid; place-items:center; flex:none;
+  background:var(--gold); color:var(--on-accent);
+  font-family:"Cinzel", serif; font-weight:700; font-size:13px; line-height:1;
+}
+.conto-punto{
+  position:absolute; top:-6px; right:-6px; min-width:18px; height:18px; padding:0 5px;
+  border-radius:9px; background:var(--rosso); color:#fff;
+  font:700 11px/18px system-ui, sans-serif; text-align:center;
+}
+@media (max-width:999px){
+  .conto-btn{ width:44px; height:44px; }
+}
+@media (orientation: landscape) and (max-width: 999px) and (max-height: 560px){
+  .conto-btn{ width:38px; height:38px; }
+}
+/* telefoni stretti: quattro elementi in testata (logo, tema, hamburger,
+   conto) — si stringono gli spazi, il logo resta intero */
+@media (max-width:400px){
+  .nav{ gap:8px; padding-left:14px; padding-right:14px; }
+  .tema-toggle, .nav-toggle, .conto-btn{ width:40px; height:40px; }
+}
+
+.menu-conto{
+  position:absolute; right:0; top:calc(100% + 10px); z-index:40; width:290px;
+  background:var(--menu-bg); border:1px solid var(--border); border-radius:6px;
+  box-shadow:0 18px 40px rgba(0,0,0,.35); padding:8px;
+}
+.menu-conto .chi{
+  display:flex; gap:12px; align-items:center; padding:8px 10px 12px;
+  border-bottom:1px solid var(--border-soft); margin-bottom:4px;
+}
+.menu-conto .chi .conto-iniziale{ width:38px; height:38px; font-size:16px; }
+.menu-conto .chi div{ min-width:0; }
+.menu-conto .chi b{ display:block; font-family:"Cinzel", serif; font-size:13.5px; color:var(--ink-strong); letter-spacing:.03em; }
+.menu-conto .chi small{ display:block; color:var(--ink-muted); font-size:14px; line-height:1.25; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
+.menu-conto .gruppo{
+  font-family:"Cinzel", serif; font-size:10px; letter-spacing:.18em; text-transform:uppercase;
+  color:var(--bandana); padding:10px 10px 4px;
+}
+.menu-conto a, .menu-conto button.voce{
+  display:flex; align-items:center; gap:11px; width:100%; padding:8px 10px; border-radius:4px;
+  color:var(--ink); font-family:"EB Garamond", Georgia, serif; font-size:16.5px; line-height:1.25;
+  background:none; border:0; cursor:pointer; text-align:left;
+}
+.menu-conto svg{ width:18px; height:18px; flex:none; fill:none; stroke:var(--ink-muted); stroke-width:1.7; stroke-linecap:round; stroke-linejoin:round; }
+.menu-conto a:hover, .menu-conto button.voce:hover{ background:var(--gold-tint-soft); color:var(--gold); }
+.menu-conto a:hover svg, .menu-conto a.attiva svg, .menu-conto button.voce:hover svg{ stroke:var(--gold); }
+.menu-conto a.attiva{ background:var(--gold-tint); color:var(--gold); }
+.menu-conto .conta{
+  margin-left:auto; font:700 11px/1 system-ui, sans-serif; padding:4px 7px; border-radius:10px;
+  background:var(--rosso-tint-nuova); color:var(--rosso-testo);
+}
+.menu-conto .conta.neutra{ background:var(--gold-tint); color:var(--gold); }
+.menu-conto hr{ border:0; border-top:1px solid var(--border-soft); margin:6px 0; }
+.menu-conto button.voce{ color:var(--ink-muted); }
+@media (max-width:600px){
+  .menu-conto{
+    position:fixed; left:12px; right:12px; width:auto; top:var(--menu-conto-top, 80px);
+    max-height:calc(100vh - var(--menu-conto-top, 80px) - 16px); overflow:auto;
+  }
+}
+
+/* contenuto delle pagine dell'area */
+.testa-area{ margin:0 0 28px; }
+.testa-area h1{ font-size:clamp(28px, 4vw, 36px); margin:0 0 8px; }
+.testa-area .premessa{ margin:0; }
+.testa-area.con-azione{ display:flex; justify-content:space-between; align-items:flex-end; gap:16px; flex-wrap:wrap; }
+.caricamento{ color:var(--ink-muted); font-style:italic; }
+
+.pannello{
+  border:1px solid var(--border-soft); border-left:3px solid var(--gold);
+  background:var(--surface-soft); border-radius:4px; padding:20px 22px 22px; margin:0 0 20px;
+}
+.pannello > h2{
+  font-family:"Cinzel", serif; font-size:13px; font-weight:600; letter-spacing:.09em;
+  text-transform:uppercase; color:var(--gold); margin:0 0 16px;
+}
+.pannello .nota{ color:var(--ink-muted); font-size:15px; font-style:italic; margin:-8px 0 16px; }
+.pannello > :last-child{ margin-bottom:0; }
+@media (max-width:999px){ .pannello{ padding:16px 16px 18px; } }
+/* i moduli che si aprono con scrollIntoView non finiscono sotto la testata fissa */
+.pannello{ scroll-margin-top: calc(var(--testata, 70px) + 16px); }
+.campo input.mancante{ border-color:var(--rosso); }
+.riga-bottoni{ display:flex; gap:10px; flex-wrap:wrap; align-items:center; }
+.bottone.piccolo{ padding:10px 16px; font-size:12px; }
+@media (max-width:999px){ .riga-bottoni .bottone, .testa-area .bottone{ width:100%; } }
+
+/* cose da fare, in cima alla panoramica */
+.da-fare{ display:grid; gap:10px; margin:0 0 28px; }
+.da-fare:empty{ display:none; }
+a.voce-da-fare{
+  display:flex; gap:14px; align-items:center; padding:13px 16px; border-radius:4px;
+  border:1px solid var(--border-soft); border-left:3px solid var(--rosso);
+  background:var(--rosso-tint-avviso); color:var(--ink);
+}
+a.voce-da-fare.oro{ border-left-color:var(--gold); background:var(--gold-tint-soft); }
+a.voce-da-fare:hover{ border-color:var(--gold); color:var(--ink); }
+.voce-da-fare b{ display:block; font-family:"Cinzel", serif; font-size:13.5px; letter-spacing:.04em; color:var(--ink-strong); }
+.voce-da-fare span{ color:var(--ink-muted); font-size:15px; }
+.voce-da-fare i{ margin-left:auto; font-style:normal; color:var(--gold); font-family:"Cinzel", serif; font-size:12px; letter-spacing:.06em; white-space:nowrap; }
+
+/* tessere: riquadri cliccabili della panoramica e della pagina "Oggi" */
+.tessere{ display:grid; grid-template-columns:1fr 1fr; gap:14px; margin:0 0 28px; }
+.tessere.quattro{ grid-template-columns:repeat(4, 1fr); }
+@media (max-width:760px){ .tessere.quattro{ grid-template-columns:1fr 1fr; } }
+@media (max-width:480px){ .tessere{ grid-template-columns:1fr; } .tessere.quattro{ grid-template-columns:1fr 1fr; } }
+.tessera{
+  display:flex; flex-direction:column; gap:6px; padding:18px 18px 16px; border-radius:4px;
+  border:1px solid var(--border-soft); background:var(--surface-soft); color:var(--ink);
+  transition: border-color .15s ease, transform .15s ease;
+}
+a.tessera:hover{ border-color:var(--gold); transform:translateY(-2px); color:var(--ink); }
+.tessera.oro{ border-left:3px solid var(--gold); }
+.tessera.allerta{ border-left:3px solid var(--rosso); }
+.tessera .etichetta{ font-family:"Cinzel", serif; font-size:10.5px; letter-spacing:.16em; text-transform:uppercase; color:var(--bandana); }
+.tessera h3{ font-size:16px; }
+.tessera p{ margin:0; color:var(--ink-muted); font-size:15px; line-height:1.4; }
+.tessera .piede{ margin-top:auto; padding-top:8px; font-family:"Cinzel", serif; font-size:11.5px; letter-spacing:.06em; color:var(--gold); }
+.tessera .numero-grande{ font-family:"Cinzel", serif; font-size:34px; line-height:1; color:var(--ink-strong); font-weight:700; }
+.tessera .numero-grande small{ font-size:16px; color:var(--ink-muted); }
+.azioni-rapide{ display:grid; grid-template-columns:1fr 1fr; gap:12px; margin:0 0 20px; }
+.azioni-rapide .bottone{ padding:14px 18px; font-size:13px; }
+@media (max-width:600px){ .azioni-rapide{ grid-template-columns:1fr; } }
+
+/* schede filtro (In arrivo / Passate, Da gestire / Confermate / Archivio) */
+.filtri{ display:flex; gap:4px; flex-wrap:wrap; margin:0 0 16px; border-bottom:1px solid var(--border-soft); }
+.filtri button{
+  background:none; border:0; border-bottom:2px solid transparent; margin-bottom:-1px;
+  padding:9px 12px; cursor:pointer; color:var(--ink-muted);
+  font-family:"Cinzel", serif; font-size:12px; letter-spacing:.07em; text-transform:uppercase;
+}
+.filtri button:hover{ color:var(--gold); }
+.filtri button.on{ color:var(--gold); border-bottom-color:var(--gold); }
+.filtri .n{ font:700 11px/1 system-ui, sans-serif; margin-left:5px; padding:3px 6px; border-radius:9px; background:var(--gold-tint); }
+.barra-cerca{ margin:0 0 14px; }
+.barra-cerca input{
+  width:100%; padding:10px 12px; background:var(--campo-bg); color:var(--ink);
+  border:1px solid var(--border); border-radius:4px; font:16px "EB Garamond", Georgia, serif;
+}
+.barra-cerca input:focus{ outline:none; border-color:var(--gold); box-shadow:0 0 0 2px var(--gold-tint); }
+
+/* scheda cane */
+.griglia-cani{ display:grid; grid-template-columns:1fr 1fr; gap:14px; margin:0 0 22px; }
+@media (max-width:600px){ .griglia-cani{ grid-template-columns:1fr; } }
+.cane{ border:1px solid var(--border-soft); background:var(--surface-soft); border-radius:4px; padding:16px 18px; display:flex; flex-direction:column; gap:10px; }
+.cane .testa{ display:flex; gap:12px; align-items:center; }
+.cane .avatar{ width:46px; height:46px; border-radius:50%; background:var(--gold-tint); color:var(--gold); display:grid; place-items:center; font-family:"Cinzel", serif; font-size:19px; font-weight:700; flex:none; }
+.cane h3{ font-size:17px; }
+.cane .sotto{ color:var(--ink-muted); font-size:15px; line-height:1.3; }
+.chips{ display:flex; gap:6px; flex-wrap:wrap; }
+.chip{ font-size:13px; padding:2px 10px; border-radius:20px; border:1px solid var(--border-soft); color:var(--ink-muted); }
+.chip.attenzione{ border-color:var(--rosso); color:var(--rosso-testo); }
+.cane-nota{ font-size:14.5px; color:var(--ink-muted); border-top:1px dashed var(--border-soft); padding-top:9px; line-height:1.4; margin:0; }
+.cane-nota b{ color:var(--ink); font-weight:600; }
+.cane .card-azioni{ margin-top:auto; }
+
+/* scheda prenotazione (cliente e staff) */
+.pren{
+  border:1px solid var(--border-soft); border-left:3px solid var(--gold);
+  background:var(--surface-soft); border-radius:4px; padding:16px 18px; margin:0 0 12px;
+}
+.pren.conf{ border-left-color:var(--verde-light); }
+.pren.rossa{ border-left-color:var(--rosso); }
+.pren.spenta{ border-left-color:var(--border); }
+.pren.spenta > *{ opacity:.8; }
+.pren .alto{ display:flex; justify-content:space-between; gap:8px 12px; align-items:flex-start; flex-wrap:wrap; }
+.pren h3{ font-family:"Cinzel", serif; font-size:15.5px; margin:0; color:var(--ink-strong); }
+.pren h3 .badge-stato{ margin-right:6px; vertical-align:2px; }
+.pren .quando{ color:var(--ink); font-size:16px; margin-top:2px; }
+.pren .quando small{ color:var(--ink-muted); font-size:14.5px; }
+.pren .riga-info{ color:var(--ink-muted); font-size:15px; margin:2px 0 0; }
+.pren .riga-info a{ color:var(--gold); }
+.pren .avviso{ margin:12px 0 0; font-size:14.5px; padding:9px 12px; }
+.pren .riga-bottoni, .pren .card-azioni{ margin-top:12px; }
+.pren .card-azioni{ flex-wrap:wrap; }
+.conti{
+  display:grid; grid-template-columns:repeat(3, 1fr); gap:1px; margin:12px 0 0;
+  background:var(--border-soft); border:1px solid var(--border-soft); border-radius:4px; overflow:hidden;
+}
+.conti div{ background:var(--campo-bg); padding:8px 12px; min-width:0; }
+.conti small{ display:block; font-family:"Cinzel", serif; font-size:9.5px; letter-spacing:.12em; text-transform:uppercase; color:var(--bandana); }
+.conti b{ font-size:16px; color:var(--ink-strong); font-weight:600; }
+.conti em{ display:block; font-size:13px; color:var(--ink-muted); }
+.conti em.ok{ color:var(--verde-light); }
+.conti em.no{ color:var(--rosso-testo-muto); }
+@media (max-width:480px){ .conti div{ padding:7px 9px; } .conti b{ font-size:15px; } }
+.scelta-cani{ display:grid; gap:8px; margin:12px 0 0; padding:12px 14px; border:1px dashed var(--border); border-radius:4px; }
+.scelta-cani .etichetta{ font-family:"Cinzel", serif; font-size:10.5px; letter-spacing:.14em; text-transform:uppercase; color:var(--bandana); }
+
+/* staff: elenchi, iscritti, posti */
+.elenco{ list-style:none; margin:0; padding:0; }
+.elenco li{ display:flex; gap:12px; align-items:center; padding:10px 0; border-bottom:1px solid var(--border-soft); }
+.elenco li:last-child{ border-bottom:0; }
+.elenco .quando-breve{ font-family:"Cinzel", serif; font-size:11.5px; color:var(--bandana); letter-spacing:.06em; width:112px; flex:none; text-transform:uppercase; }
+.elenco .cosa{ flex:1; min-width:0; }
+.elenco .cosa small{ display:block; color:var(--ink-muted); font-size:14px; }
+.elenco a.tel{ color:var(--gold); font-size:14.5px; white-space:nowrap; }
+@media (max-width:480px){ .elenco li{ flex-wrap:wrap; } .elenco .quando-breve{ width:auto; flex-basis:100%; } }
+.barra-posti{ height:6px; background:var(--border-soft); border-radius:3px; overflow:hidden; margin-top:8px; max-width:220px; }
+.barra-posti i{ display:block; height:100%; background:var(--gold); }
+.iscritti{ margin:12px 0 0; border-top:1px dashed var(--border-soft); padding-top:10px; }
+.iscritti summary{ cursor:pointer; color:var(--gold); font-family:"Cinzel", serif; font-size:12px; letter-spacing:.06em; text-transform:uppercase; }
+.iscritti ul{ list-style:none; padding:0; margin:8px 0 0; }
+.iscritti li{ display:flex; justify-content:space-between; gap:4px 10px; padding:6px 0; font-size:15px; border-bottom:1px solid var(--border-soft); flex-wrap:wrap; }
+.iscritti li:last-child{ border-bottom:0; }
+.iscritti li span{ color:var(--ink-muted); }
+.cliente-trovato{
+  display:flex; gap:12px; align-items:center; flex-wrap:wrap; padding:12px 14px; margin:0 0 16px;
+  border:1px solid var(--gold); background:var(--gold-tint-soft); border-radius:4px;
+}
+.cliente-trovato div{ flex:1; min-width:180px; }
+.cliente-trovato b{ font-family:"Cinzel", serif; font-size:14px; color:var(--ink-strong); }
+.cliente-trovato small{ display:block; color:var(--ink-muted); font-size:14.5px; }
+.riepilogo-staff{ padding:12px 14px; border:1px dashed var(--border); border-radius:4px; font-size:15.5px; color:var(--ink-muted); margin:4px 0 0; }
+.riepilogo-staff:empty{ display:none; }
+.riepilogo-staff b{ color:var(--ink-strong); }
+.spunte{ display:grid; gap:8px; margin:0 0 14px; }
+
+/* admin: tabella utenti (su telefono diventa una lista) */
+.tabella{ width:100%; border-collapse:collapse; font-size:15.5px; }
+.tabella th{ text-align:left; font-family:"Cinzel", serif; font-size:10.5px; letter-spacing:.1em; text-transform:uppercase; color:var(--bandana); padding:8px 10px; border-bottom:1px solid var(--border); }
+.tabella td{ padding:10px; border-bottom:1px solid var(--border-soft); vertical-align:middle; }
+.tabella td small{ display:block; color:var(--ink-muted); font-size:13.5px; }
+.tabella select{ padding:6px 8px; background:var(--campo-bg); color:var(--ink); border:1px solid var(--border); border-radius:4px; font:16px "EB Garamond", Georgia, serif; width:auto; }
+@media (max-width:600px){
+  .tabella thead{ display:none; }
+  .tabella tr{ display:grid; grid-template-columns:1fr auto; gap:2px 10px; padding:10px 0; border-bottom:1px solid var(--border-soft); }
+  .tabella td{ border:0; padding:0; min-width:0; overflow-wrap:anywhere; }
+  .tabella td:nth-child(3){ grid-row:1 / span 2; grid-column:2; align-self:center; }
+}
+
+/* pagina di accesso: colonna stretta */
+.accesso{ max-width:480px; margin:0 auto; }

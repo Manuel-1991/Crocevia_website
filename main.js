@@ -103,3 +103,29 @@
 
   elementi.forEach(function(el){ osservatore.observe(el); });
 })();
+
+/* menù "il mio conto" anche sulle pagine pubbliche. Le pagine dell'area
+   caricano già area-comune.js da sole; qui, solo se nel browser c'è una
+   sessione Supabase salvata (chiave sb-…-auth-token), si caricano gli
+   script che trasformano l'icona dell'area privata nel pulsante con il
+   menù. Chi non ha mai fatto l'accesso non scarica nulla in più. */
+(function(){
+  if (window.CroceviaArea || !document.querySelector('.nav-account')) return;
+  var loggato = false;
+  try{
+    for (var i = 0; i < localStorage.length; i++){
+      if (/^sb-.+-auth-token$/.test(localStorage.key(i) || '')) { loggato = true; break; }
+    }
+  }catch(e){}
+  if (!loggato) return;
+
+  function carica(src, poi){
+    var s = document.createElement('script');
+    s.src = src;
+    if (poi) s.onload = poi;
+    document.body.appendChild(s);
+  }
+  function area(){ carica('area-comune.js?v=20260927'); }
+  function client(){ if (window.CroceviaSupabase) area(); else carica('supabase-client.js', area); }
+  if (window.supabase) client(); else carica('https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2', client);
+})();

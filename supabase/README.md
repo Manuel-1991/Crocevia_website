@@ -82,7 +82,7 @@ un'installazione pulita da zero.
   disdetta di una prenotazione confermata dalla sua area privata (campo
   `disdetta_richiesta` + trigger che gli impedisce di cambiare qualunque
   altro campo); lo stato resta "confermata" finché non è lo staff ad
-  annullarla davvero col bottone già esistente in `area-staff.html`. Lo
+  annullarla davvero col bottone "Annulla" in `staff-prenotazioni.html`. Lo
   stesso trigger corregge anche una RLS mai davvero funzionante (mancava
   un `WITH CHECK` separato): il cliente ora può annullare per davvero una
   propria prenotazione ancora "in attesa di pagamento", come l'intento

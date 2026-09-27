@@ -1,0 +1,290 @@
+<!doctype html>
+<html lang="it">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#0d2219">
+<script>(function(){try{var t=localStorage.getItem('crocevia-tema');if(t==='chiaro'||t==='scuro'){document.documentElement.setAttribute('data-tema',t);}}catch(e){}})();</script>
+<link rel="icon" type="image/png" href="assets/img/brand/favicon.png">
+<link rel="apple-touch-icon" href="assets/img/brand/apple-touch-icon.png">
+<title>Uscite — Staff Crocevia</title>
+<meta name="description" content="Pannello staff Crocevia: uscite di gruppo in programma e iscritti.">
+<meta name="robots" content="noindex, nofollow">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;600;700&family=EB+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&display=swap">
+<link rel="stylesheet" href="style.css?v=20260927d">
+<noscript><style>.reveal{opacity:1!important;transform:none!important;}</style></noscript>
+<header class="site-header">
+  <nav class="nav">
+    <a href="index.html" class="brand" aria-label="Crocevia — Home">
+      <img class="logo-nav" src="assets/img/brand/logo-nav.webp" alt="Crocevia" width="200" height="201">
+      <span class="brand-text">
+        <span class="brand-word">CROCEVIA</span>
+        <span class="brand-tagline">Asilo · Pensione · Passeggiate</span>
+      </span>
+    </a>
+    <button class="tema-toggle" id="cambia-tema" type="button" aria-label="Passa al tema chiaro" aria-pressed="false">
+      <svg class="icona-sole" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><circle cx="12" cy="12" r="4"></circle><path d="M12 2v3M12 19v3M4.2 4.2l2.1 2.1M17.7 17.7l2.1 2.1M2 12h3M19 12h3M4.2 19.8l2.1-2.1M17.7 6.3l2.1-2.1" stroke-width="1.8" stroke-linecap="round"></path></svg>
+      <svg class="icona-luna" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M20 14.5A8.5 8.5 0 1 1 9.5 4a7 7 0 0 0 10.5 10.5Z"></path></svg>
+    </button>
+    <button class="nav-toggle" id="apri-menu" type="button" aria-controls="menu-crocevia" aria-expanded="false" aria-label="Apri il menu"><span class="barre" aria-hidden="true"></span></button>
+    <ul class="nav-links" id="menu-crocevia"><li><a href="index.html" class="nav">Home</a></li><li><a href="educazione.html" class="nav">Educazione</a></li><li><a href="pensione-asilo.html" class="nav">Pensione &amp; Asilo</a></li><li><a href="passeggiate.html" class="nav">Passeggiate</a></li><li><a href="chi-siamo.html" class="nav">Chi siamo</a></li><li><a href="dove-operiamo.html" class="nav">Dove operiamo</a></li><li><a href="faq.html" class="nav">FAQ</a></li><li><a href="contatti.html" class="nav">Contatti</a></li><li class="nav-item-mobile-only"><a href="contattami.html" class="nav">Contattami</a></li><li class="nav-item-mobile-only"><a href="area-privata.html" class="nav active">Area privata</a></li></ul><span class="nav-divider" aria-hidden="true"></span><a href="contattami.html" class="nav-cta">Contattami</a><a href="area-privata.html" class="nav-account active" aria-label="Area privata"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><circle cx="12" cy="8" r="3.5"></circle><path d="M5 20c1.2-4 4-6 7-6s5.8 2 7 6"></path></svg></a>
+  </nav>
+</header>
+<main class="wrap">
+
+<div class="crumb"><a href="area-staff.html">Staff</a> / Uscite</div>
+<p id="area-attesa" class="caricamento">Caricamento…</p>
+<div id="area-vietato" hidden><p class="avviso avviso-errore">Questa pagina è riservata allo staff. <a href="area-privata.html">Torna alla tua area privata</a>.</p></div>
+
+<div id="area-corpo" hidden>
+  <div class="testa-area con-azione">
+    <div>
+      <h1>Uscite in programma</h1>
+      <p class="premessa">Il telefono di ogni iscritto serve per avvisarlo se la passeggiata salta per maltempo, anche all'ultimo momento.</p>
+    </div>
+    <button type="button" class="bottone bottone-pieno piccolo" id="bottone-nuova-uscita">+ Nuova uscita</button>
+  </div>
+
+  <p id="messaggio-passeggiate-staff" class="avviso" hidden></p>
+
+  <form id="form-nuova-passeggiata" class="pannello" hidden>
+    <input type="hidden" id="passeggiata-id">
+    <h2 id="legenda-passeggiata">Nuova uscita</h2>
+    <div class="riga riga-3">
+      <div class="campo">
+        <label for="nuova-passeggiata-data">Data *</label>
+        <input type="date" id="nuova-passeggiata-data" required>
+      </div>
+      <div class="campo">
+        <label for="nuova-passeggiata-ora">Ora *</label>
+        <input type="time" id="nuova-passeggiata-ora" value="18:00" required>
+      </div>
+      <div class="campo">
+        <label for="nuova-passeggiata-luogo">Luogo</label>
+        <input type="text" id="nuova-passeggiata-luogo" value="Lago Maggiore">
+      </div>
+    </div>
+    <div class="campo">
+      <label for="nuova-passeggiata-argomento">Argomento *</label>
+      <input type="text" id="nuova-passeggiata-argomento" placeholder="es. Il cane e il fiuto" required>
+    </div>
+    <div class="campo">
+      <label for="nuova-passeggiata-note">Note</label>
+      <textarea id="nuova-passeggiata-note"></textarea>
+    </div>
+    <div class="riga-bottoni">
+      <button type="submit" class="bottone bottone-pieno piccolo" id="bottone-salva-passeggiata">Aggiungi uscita</button>
+      <button type="button" class="bottone bottone-vuoto piccolo" id="bottone-annulla-passeggiata">Annulla</button>
+    </div>
+  </form>
+
+  <div class="filtri" id="filtri" role="tablist">
+    <button type="button" class="on" data-filtro="future" role="tab">In programma <span class="n" data-n="future">0</span></button>
+    <button type="button" data-filtro="passate" role="tab">Passate <span class="n" data-n="passate">0</span></button>
+  </div>
+  <div id="lista-passeggiate-staff"><p class="caricamento">Caricamento…</p></div>
+
+  <p style="margin-top:20px;"><a href="staff-nuova-prenotazione.html#passeggiata">Iscrivi un cliente che ha telefonato →</a></p>
+</div>
+
+</main>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="supabase-client.js"></script>
+<script src="area-comune.js?v=20260927"></script>
+<script>
+(function(){
+  var A = window.CroceviaArea;
+  var sb = A.sb;
+  var esc = A.escapeHtml;
+
+  A.pagina({ staff: true }, function(){
+    var lista = document.getElementById('lista-passeggiate-staff');
+    var messaggio = document.getElementById('messaggio-passeggiate-staff');
+    var form = document.getElementById('form-nuova-passeggiata');
+    var bottoneSalva = document.getElementById('bottone-salva-passeggiata');
+    var etichette = { programmata: 'Programmata', annullata_meteo: 'Annullata (maltempo)', svolta: 'Svolta' };
+    var classiBadge = { programmata: 'badge-confermata', annullata_meteo: 'badge-annullata', svolta: 'badge-completata' };
+    var tutte = [];
+    var filtro = 'future';
+
+    function eFutura(p){ return p.data >= A.oggiIso(); }
+
+    function scheda(p){
+      var iscritti = (p.iscrizioni_passeggiata || []).filter(function(i){ return i.stato === 'confermata'; });
+      var cani = 0;
+      var righe = iscritti.map(function(i){
+        var cliente = i.profili || {};
+        var nomiCani = (i.iscrizione_passeggiata_animali || []).map(function(x){ return x.animali ? x.animali.nome : ''; }).filter(Boolean);
+        cani += nomiCani.length;
+        var contatti = [cliente.telefono ? A.telefonoLink(cliente.telefono) : '', cliente.email ? esc(cliente.email) : ''].filter(Boolean).join(' · ');
+        return '<li>' + esc(A.nomeCompleto(cliente) || '(senza nome)') +
+          '<span>' + (nomiCani.length ? esc(nomiCani.join(', ')) + (contatti ? ' · ' : '') : '') + contatti + '</span></li>';
+      }).join('');
+      var cap = A.CAPIENZA_PASSEGGIATA;
+
+      var azioni = [];
+      if (p.stato === 'programmata') {
+        azioni.push('<button type="button" data-azione="meteo">Annulla per maltempo</button>');
+        azioni.push('<button type="button" data-azione="svolta">Segna svolta</button>');
+      }
+      azioni.push('<button type="button" data-azione="modifica">Modifica</button>');
+      if (!iscritti.length) azioni.push('<button type="button" data-azione="elimina">Elimina</button>');
+
+      var card = document.createElement('div');
+      card.className = 'pren' + (p.stato === 'annullata_meteo' ? ' rossa' : (p.stato === 'svolta' ? ' spenta' : ' conf'));
+      card.innerHTML =
+        '<div class="alto"><div>' +
+          '<h3>' + esc(p.argomento) + '</h3>' +
+          '<div class="quando">' + esc(A.formattaData(p.data)) + ', ore ' + esc(p.ora.slice(0, 5)) + ' <small>· ' + esc(p.luogo) + '</small></div>' +
+          (p.note ? '<p class="riga-info"><em>' + esc(p.note) + '</em></p>' : '') +
+          '<div class="barra-posti"><i style="width:' + Math.min(100, Math.round(iscritti.length / cap * 100)) + '%"></i></div>' +
+          '<p class="riga-info">' + iscritti.length + ' / ' + cap + ' iscritti' + (cani ? ' · ' + cani + (cani === 1 ? ' cane' : ' cani') : '') + '</p>' +
+        '</div><span class="badge-stato ' + classiBadge[p.stato] + '">' + etichette[p.stato] + '</span></div>' +
+        (iscritti.length
+          ? '<details class="iscritti"' + (eFutura(p) ? ' open' : '') + '><summary>Iscritti (' + iscritti.length + ')</summary><ul>' + righe + '</ul></details>'
+          : '<p class="vuoto" style="margin:10px 0 0;">Nessun iscritto.</p>') +
+        '<div class="card-azioni">' + azioni.join('') + '</div>';
+
+      card.querySelectorAll('[data-azione]').forEach(function(bottone){
+        var azione = bottone.getAttribute('data-azione');
+        bottone.addEventListener('click', function(){
+          if (azione === 'modifica') apriForm(p);
+          else eseguiAzione(p.id, azione);
+        });
+      });
+      return card;
+    }
+
+    function mostraLista(){
+      var future = tutte.filter(eFutura).sort(function(a, b){ return a.data < b.data ? -1 : (a.data > b.data ? 1 : 0); });
+      var passate = tutte.filter(function(p){ return !eFutura(p); });
+      document.querySelector('[data-n="future"]').textContent = future.length;
+      document.querySelector('[data-n="passate"]').textContent = passate.length;
+      var righe = filtro === 'future' ? future : passate;
+      lista.innerHTML = '';
+      if (!righe.length) {
+        lista.innerHTML = '<p class="vuoto">' + (filtro === 'future' ? 'Nessuna uscita in programma.' : 'Nessuna uscita passata.') + '</p>';
+        return;
+      }
+      righe.forEach(function(p){ lista.appendChild(scheda(p)); });
+    }
+
+    function carica(){
+      sb.from('passeggiate')
+        .select('id, data, ora, argomento, luogo, stato, note, iscrizioni_passeggiata(id, stato, profili(nome,cognome,telefono,email), iscrizione_passeggiata_animali(animali(nome)))')
+        .order('data', { ascending: false })
+        .then(function(r){
+          if (r.error) { A.avviso(messaggio, r.error.message, 'errore'); return; }
+          tutte = r.data || [];
+          mostraLista();
+        });
+    }
+
+    function eseguiAzione(id, azione){
+      if (azione === 'elimina') {
+        if (!window.confirm('Eliminare questa uscita? Non ha iscritti, quindi non libera nessuno.')) return;
+        sb.from('passeggiate').delete().eq('id', id).then(function(r){
+          if (r.error) { A.avviso(messaggio, r.error.message, 'errore'); return; }
+          if (document.getElementById('passeggiata-id').value === id) chiudiForm();
+          carica();
+        });
+        return;
+      }
+      var campi = null;
+      if (azione === 'meteo') {
+        if (!window.confirm('Annullare questa uscita per maltempo? Gli iscritti verranno liberati in automatico.')) return;
+        campi = { stato: 'annullata_meteo' };
+      }
+      if (azione === 'svolta') campi = { stato: 'svolta' };
+      if (!campi) return;
+      sb.from('passeggiate').update(campi).eq('id', id).then(function(r){
+        if (r.error) { A.avviso(messaggio, r.error.message, 'errore'); return; }
+        carica();
+      });
+    }
+
+    // ---------- aggiungi / modifica (stesso modulo per entrambe) ----------
+
+    function prossimoMartedi(){
+      var d = new Date(); d.setHours(0, 0, 0, 0);
+      var diff = (2 - d.getDay() + 7) % 7 || 7; // martedì prossimo, mai oggi anche se oggi è martedì
+      d.setDate(d.getDate() + diff);
+      return A.isoLocale(d);
+    }
+
+    function apriForm(p){
+      p = p || {};
+      document.getElementById('passeggiata-id').value = p.id || '';
+      document.getElementById('nuova-passeggiata-data').value = p.data || prossimoMartedi();
+      document.getElementById('nuova-passeggiata-ora').value = p.ora ? p.ora.slice(0, 5) : '18:00';
+      document.getElementById('nuova-passeggiata-luogo').value = p.id ? (p.luogo || '') : 'Lago Maggiore';
+      document.getElementById('nuova-passeggiata-argomento').value = p.argomento || '';
+      document.getElementById('nuova-passeggiata-note').value = p.note || '';
+      document.getElementById('legenda-passeggiata').textContent = p.id ? 'Modifica uscita del ' + A.formattaData(p.data) : 'Nuova uscita';
+      bottoneSalva.textContent = p.id ? 'Salva modifiche' : 'Aggiungi uscita';
+      form.hidden = false;
+      form.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+    function chiudiForm(){ form.reset(); form.hidden = true; }
+
+    document.getElementById('nuova-passeggiata-data').min = A.oggiIso();
+    document.getElementById('bottone-nuova-uscita').addEventListener('click', function(){ apriForm(); });
+    document.getElementById('bottone-annulla-passeggiata').addEventListener('click', chiudiForm);
+
+    form.addEventListener('submit', function(e){
+      e.preventDefault();
+      messaggio.hidden = true;
+      var id = document.getElementById('passeggiata-id').value;
+      var dati = {
+        data: document.getElementById('nuova-passeggiata-data').value,
+        ora: document.getElementById('nuova-passeggiata-ora').value,
+        luogo: document.getElementById('nuova-passeggiata-luogo').value.trim() || 'Lago Maggiore',
+        argomento: document.getElementById('nuova-passeggiata-argomento').value.trim(),
+        note: document.getElementById('nuova-passeggiata-note').value.trim() || null
+      };
+      var richiesta = id
+        ? sb.from('passeggiate').update(dati).eq('id', id)
+        : sb.from('passeggiate').insert(dati);
+      richiesta.then(function(r){
+        if (r.error) { A.avviso(messaggio, r.error.message, 'errore'); return; }
+        A.avviso(messaggio, id ? 'Uscita aggiornata.' : 'Uscita aggiunta.', 'ok');
+        chiudiForm();
+        carica();
+      });
+    });
+
+    document.getElementById('filtri').addEventListener('click', function(e){
+      var b = e.target.closest('button[data-filtro]');
+      if (!b) return;
+      filtro = b.getAttribute('data-filtro');
+      this.querySelectorAll('button').forEach(function(x){ x.classList.toggle('on', x === b); });
+      mostraLista();
+    });
+
+    carica();
+  });
+})();
+</script>
+<footer class="site-footer">
+  <div class="footer-inner">
+    <div class="footer-links">
+      <a href="chi-siamo.html">Chi siamo</a> &middot;
+      <a href="dove-operiamo.html">Dove operiamo</a> &middot;
+      <a href="faq.html">FAQ</a> &middot;
+      <a href="contatti.html">Contatti</a> &middot;
+      <a href="contattami.html">Contattami</a> &middot;
+      <a href="privacy.html">Privacy</a> &middot;
+      <a href="termini.html">Termini</a> &middot;
+      <a href="#" id="gestisci-cookie">Gestisci cookie</a>
+    </div>
+    <div class="footer-contact">
+      <a href="tel:+393334325389">+39 333 432 5389</a> &middot;
+      <a href="mailto:info@croceviacani.it">info@croceviacani.it</a>
+    </div>
+    <div class="footer-piva">Crocevia &middot; Manuel &middot; P.IVA 14868890964</div>
+  </div>
+</footer>
+
+<script src="main.js?v=20260927"></script>
+<script src="cookie-consent.js"></script>
+</html>

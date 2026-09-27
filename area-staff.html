@@ -6,11 +6,11 @@
 <script>(function(){try{var t=localStorage.getItem('crocevia-tema');if(t==='chiaro'||t==='scuro'){document.documentElement.setAttribute('data-tema',t);}}catch(e){}})();</script>
 <link rel="icon" type="image/png" href="assets/img/brand/favicon.png">
 <link rel="apple-touch-icon" href="assets/img/brand/apple-touch-icon.png">
-<title>Staff — Crocevia</title>
-<meta name="description" content="Pannello staff Crocevia: prenotazioni in arrivo, conferme e pagamenti.">
+<title>Oggi — Staff Crocevia</title>
+<meta name="description" content="Pannello staff Crocevia: movimenti del giorno, cose da gestire e prossima uscita.">
 <meta name="robots" content="noindex, nofollow">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;600;700&family=EB+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&display=swap">
-<link rel="stylesheet" href="style.css?v=20260927c">
+<link rel="stylesheet" href="style.css?v=20260927d">
 <noscript><style>.reveal{opacity:1!important;transform:none!important;}</style></noscript>
 <header class="site-header">
   <nav class="nav">
@@ -26,740 +26,157 @@
       <svg class="icona-luna" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M20 14.5A8.5 8.5 0 1 1 9.5 4a7 7 0 0 0 10.5 10.5Z"></path></svg>
     </button>
     <button class="nav-toggle" id="apri-menu" type="button" aria-controls="menu-crocevia" aria-expanded="false" aria-label="Apri il menu"><span class="barre" aria-hidden="true"></span></button>
-    <ul class="nav-links" id="menu-crocevia"><li><a href="index.html" class="nav">Home</a></li><li><a href="educazione.html" class="nav">Educazione</a></li><li><a href="pensione-asilo.html" class="nav">Pensione &amp; Asilo</a></li><li><a href="passeggiate.html" class="nav">Passeggiate</a></li><li><a href="chi-siamo.html" class="nav">Chi siamo</a></li><li><a href="dove-operiamo.html" class="nav">Dove operiamo</a></li><li><a href="faq.html" class="nav">FAQ</a></li><li><a href="contatti.html" class="nav">Contatti</a></li><li class="nav-item-mobile-only"><a href="contattami.html" class="nav">Contattami</a></li><li class="nav-item-mobile-only"><a href="area-privata.html" class="nav">Area privata</a></li></ul><span class="nav-divider" aria-hidden="true"></span><a href="contattami.html" class="nav-cta">Contattami</a><a href="area-privata.html" class="nav-account" aria-label="Area privata"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><circle cx="12" cy="8" r="3.5"></circle><path d="M5 20c1.2-4 4-6 7-6s5.8 2 7 6"></path></svg></a>
+    <ul class="nav-links" id="menu-crocevia"><li><a href="index.html" class="nav">Home</a></li><li><a href="educazione.html" class="nav">Educazione</a></li><li><a href="pensione-asilo.html" class="nav">Pensione &amp; Asilo</a></li><li><a href="passeggiate.html" class="nav">Passeggiate</a></li><li><a href="chi-siamo.html" class="nav">Chi siamo</a></li><li><a href="dove-operiamo.html" class="nav">Dove operiamo</a></li><li><a href="faq.html" class="nav">FAQ</a></li><li><a href="contatti.html" class="nav">Contatti</a></li><li class="nav-item-mobile-only"><a href="contattami.html" class="nav">Contattami</a></li><li class="nav-item-mobile-only"><a href="area-privata.html" class="nav active">Area privata</a></li></ul><span class="nav-divider" aria-hidden="true"></span><a href="contattami.html" class="nav-cta">Contattami</a><a href="area-privata.html" class="nav-account active" aria-label="Area privata"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><circle cx="12" cy="8" r="3.5"></circle><path d="M5 20c1.2-4 4-6 7-6s5.8 2 7 6"></path></svg></a>
   </nav>
 </header>
 <main class="wrap">
 
-<div class="crumb"><a href="index.html">Home</a> / Staff</div>
-<div class="page-head left"><h1 class="left">Pannello staff</h1></div>
+<div class="crumb"><a href="area-privata.html">Area privata</a> / Staff</div>
+<p id="area-attesa" class="caricamento">Caricamento…</p>
+<div id="area-vietato" hidden><p class="avviso avviso-errore">Questa pagina è riservata allo staff. <a href="area-privata.html">Torna alla tua area privata</a>.</p></div>
 
-<div id="serve-accesso">
-  <p class="avviso">Devi prima <a href="area-privata.html">accedere</a>.</p>
-</div>
-
-<div id="serve-ruolo" hidden>
-  <p class="avviso avviso-errore">Questa pagina è riservata allo staff.</p>
-</div>
-
-<div id="corpo-staff" hidden>
+<div id="area-corpo" hidden>
+  <div class="testa-area">
+    <h1>Oggi</h1>
+    <p class="premessa" id="data-oggi"></p>
+  </div>
 
   <p id="messaggio-staff" class="avviso" hidden></p>
 
-  <section class="sezione-conto">
-    <h2>Prenotazioni</h2>
-    <p id="banner-nuove" class="avviso avviso-ok" hidden></p>
-    <div id="lista-prenotazioni-staff" class="lista-prenotazioni"></div>
-  </section>
+  <div class="tessere quattro" id="contatori"><p class="caricamento">Caricamento…</p></div>
 
-  <section class="sezione-conto">
-    <h2>Aggiungi una prenotazione</h2>
-    <p class="premessa" style="margin-bottom:16px;">Per chi prenota pensione o asilo telefonando invece di usare il sito. Il cliente deve essersi già registrato almeno una volta nell'area privata.</p>
-    <p id="messaggio-manuale" class="avviso" hidden></p>
+  <div class="pannello">
+    <h2>Movimenti di oggi</h2>
+    <ul class="elenco" id="movimenti-oggi"><li class="caricamento">Caricamento…</li></ul>
+  </div>
 
-    <form id="form-cerca-cliente">
-      <div class="riga riga-2">
-        <div class="campo">
-          <label for="cerca-email">Email del cliente registrato</label>
-          <input type="email" id="cerca-email" required>
-        </div>
-        <div class="campo" style="align-self:end;">
-          <button type="submit" class="bottone bottone-vuoto">Cerca</button>
-        </div>
-      </div>
-    </form>
+  <div class="pannello">
+    <h2>In arrivo nei prossimi 7 giorni</h2>
+    <ul class="elenco" id="arrivi-settimana"><li class="caricamento">Caricamento…</li></ul>
+  </div>
 
-    <form id="form-prenotazione-manuale" hidden>
-      <fieldset>
-        <legend id="legenda-cliente-trovato">Cliente</legend>
-        <div class="riga riga-2">
-          <div class="campo">
-            <label for="manuale-animale">Animale *</label>
-            <select id="manuale-animale" required></select>
-          </div>
-          <div class="campo">
-            <label for="manuale-servizio">Servizio *</label>
-            <select id="manuale-servizio" required></select>
-          </div>
-        </div>
-        <div class="riga riga-2">
-          <div class="campo">
-            <label for="manuale-dal">Dal *</label>
-            <input type="date" id="manuale-dal" required>
-          </div>
-          <div class="campo">
-            <label for="manuale-al">Al *</label>
-            <input type="date" id="manuale-al" required>
-          </div>
-        </div>
-        <div class="campo">
-          <label class="checkriga"><input type="checkbox" id="manuale-pappa-fornita"> Pappa fornita (+5 €/notte, per tutto il soggiorno, nel saldo)</label>
-        </div>
-        <div class="campo">
-          <label class="checkriga"><input type="checkbox" id="manuale-acconto-ricevuto"> Acconto già ricevuto (contanti/bonifico) — segna la prenotazione come confermata</label>
-        </div>
-        <div class="campo">
-          <label class="checkriga"><input type="checkbox" id="manuale-salta-calendario"> Non creare l'evento sul calendario per questa prenotazione</label>
-        </div>
-        <p id="manuale-riepilogo" class="premessa" style="margin:8px 0 0;"></p>
-      </fieldset>
-      <button type="submit" class="bottone bottone-pieno">Crea prenotazione</button>
-    </form>
-  </section>
+  <div class="pannello" id="prossima-uscita">
+    <h2>Prossima uscita</h2>
+    <p class="caricamento">Caricamento…</p>
+  </div>
 
-  <section class="sezione-conto">
-    <h2>Passeggiate</h2>
-    <p class="premessa" style="margin-bottom:16px;">Il numero di telefono di ogni iscritto serve per avvisarlo se la passeggiata salta per maltempo, anche all'ultimo momento.</p>
-    <p id="messaggio-passeggiate-staff" class="avviso" hidden></p>
-    <div id="lista-passeggiate-staff" class="lista-prenotazioni"></div>
-
-    <form id="form-nuova-passeggiata" style="margin-top:8px;">
-      <input type="hidden" id="passeggiata-id">
-      <fieldset>
-        <legend id="legenda-passeggiata">Aggiungi una passeggiata</legend>
-        <div class="riga riga-3">
-          <div class="campo">
-            <label for="nuova-passeggiata-data">Data *</label>
-            <input type="date" id="nuova-passeggiata-data" required>
-          </div>
-          <div class="campo">
-            <label for="nuova-passeggiata-ora">Ora *</label>
-            <input type="time" id="nuova-passeggiata-ora" value="18:00" required>
-          </div>
-          <div class="campo">
-            <label for="nuova-passeggiata-luogo">Luogo</label>
-            <input type="text" id="nuova-passeggiata-luogo" value="Lago Maggiore">
-          </div>
-        </div>
-        <div class="campo">
-          <label for="nuova-passeggiata-argomento">Argomento *</label>
-          <input type="text" id="nuova-passeggiata-argomento" placeholder="es. Il cane e il fiuto" required>
-        </div>
-        <div class="campo">
-          <label for="nuova-passeggiata-note">Note</label>
-          <textarea id="nuova-passeggiata-note"></textarea>
-        </div>
-      </fieldset>
-      <button type="submit" class="bottone bottone-pieno" id="bottone-salva-passeggiata">Aggiungi passeggiata</button>
-      <button type="button" class="bottone bottone-vuoto" id="bottone-annulla-passeggiata" hidden>Annulla modifica</button>
-    </form>
-
-    <h3 style="margin-top:28px;">Prenota per un cliente</h3>
-    <p class="premessa" style="margin-bottom:16px;">Il cliente deve essersi già registrato almeno una volta nell'area privata, con il telefono salvato nel profilo — serve per avvisarlo in caso di maltempo.</p>
-    <p id="messaggio-manuale-passeggiata" class="avviso" hidden></p>
-
-    <form id="form-cerca-cliente-passeggiata">
-      <div class="riga riga-2">
-        <div class="campo">
-          <label for="cerca-email-passeggiata">Email del cliente registrato</label>
-          <input type="email" id="cerca-email-passeggiata" required>
-        </div>
-        <div class="campo" style="align-self:end;">
-          <button type="submit" class="bottone bottone-vuoto">Cerca</button>
-        </div>
-      </div>
-    </form>
-
-    <form id="form-passeggiata-manuale" hidden>
-      <fieldset>
-        <legend id="legenda-cliente-trovato-passeggiata">Cliente</legend>
-        <div class="campo">
-          <label for="manuale-passeggiata-uscita">Uscita *</label>
-          <select id="manuale-passeggiata-uscita" required></select>
-        </div>
-        <div class="campo">
-          <label>Cani *</label>
-          <div id="manuale-passeggiata-cani"></div>
-        </div>
-      </fieldset>
-      <button type="submit" class="bottone bottone-pieno">Crea prenotazione</button>
-    </form>
-  </section>
-
-  <section class="sezione-conto" id="sezione-utenti" hidden>
-    <h2>Utenti</h2>
-    <p class="premessa" style="margin-bottom:16px;">Solo un admin può cambiare il ruolo di un utente. Il ruolo "addetto" è pensato per un futuro collaboratore.</p>
-    <div id="lista-utenti" class="lista-prenotazioni"></div>
-  </section>
-
+  <div class="azioni-rapide">
+    <a href="staff-nuova-prenotazione.html" class="bottone bottone-pieno">+ Nuova prenotazione</a>
+    <a href="staff-prenotazioni.html" class="bottone bottone-vuoto">Tutte le prenotazioni</a>
+  </div>
 </div>
 
 </main>
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script src="supabase-client.js"></script>
+<script src="area-comune.js?v=20260927"></script>
 <script>
 (function(){
-  var sb = window.CroceviaSupabase;
-  var utenteCorrente = null;
-  var ruoloCorrente = null;
+  var A = window.CroceviaArea;
+  var sb = A.sb;
+  var esc = A.escapeHtml;
 
-  var bloccoAccesso = document.getElementById('serve-accesso');
-  var bloccoRuolo = document.getElementById('serve-ruolo');
-  var corpo = document.getElementById('corpo-staff');
-  var messaggio = document.getElementById('messaggio-staff');
+  A.pagina({ staff: true }, function(){
+    var oggi = A.oggiIso();
+    var fraSette = A.traGiorni(7);
+    var dataOggi = A.formattaData(oggi);
+    document.getElementById('data-oggi').textContent = dataOggi.charAt(0).toUpperCase() + dataOggi.slice(1);
 
-  function avviso(el, testo, tipo){
-    el.textContent = testo;
-    el.className = 'avviso ' + (tipo === 'errore' ? 'avviso-errore' : 'avviso-ok');
-    el.hidden = false;
-  }
-  function euro(n){ return n == null ? '' : Number(n).toLocaleString('it-IT', { style: 'currency', currency: 'EUR' }); }
-  function escapeHtml(s){
-    var d = document.createElement('div');
-    d.textContent = s == null ? '' : String(s);
-    return d.innerHTML;
-  }
-
-  sb.auth.onAuthStateChange(function(evento, sessione){
-    if (sessione && sessione.user) {
-      utenteCorrente = sessione.user;
-      verificaRuolo();
-    } else {
-      utenteCorrente = null;
-      bloccoAccesso.hidden = false;
-      bloccoRuolo.hidden = true;
-      corpo.hidden = true;
+    function tessera(href, classe, etichetta, numero, testo){
+      return '<a class="tessera ' + classe + '" href="' + href + '"><span class="etichetta">' + esc(etichetta) + '</span>' +
+        '<span class="numero-grande">' + numero + '</span><p>' + esc(testo) + '</p></a>';
     }
-  });
 
-  function verificaRuolo(){
-    sb.from('profili').select('ruolo').eq('id', utenteCorrente.id).single().then(function(r){
-      ruoloCorrente = r.data ? r.data.ruolo : null;
-      bloccoAccesso.hidden = true;
-      if (ruoloCorrente !== 'addetto' && ruoloCorrente !== 'admin') {
-        bloccoRuolo.hidden = false;
-        corpo.hidden = true;
-        return;
-      }
-      bloccoRuolo.hidden = true;
-      corpo.hidden = false;
-      document.getElementById('sezione-utenti').hidden = (ruoloCorrente !== 'admin');
-      caricaPrenotazioniStaff();
-      caricaServiziManuale();
-      caricaPasseggiateStaff();
-      if (ruoloCorrente === 'admin') caricaUtenti();
-    });
-  }
+    function voceMovimento(etichetta, p, dettagli){
+      var cliente = p.profili || {};
+      return '<li><span class="quando-breve">' + esc(etichetta) + '</span>' +
+        '<div class="cosa">' + esc(p.animali ? p.animali.nome : '') + ' · ' + esc(p.servizi ? p.servizi.nome : '') +
+        (p.stato === 'in_attesa_pagamento' ? ' <span class="badge-stato badge-in_attesa_pagamento">da pagare</span>' : '') +
+        '<small>' + esc(A.nomeCompleto(cliente)) + (dettagli.length ? ' · ' + esc(dettagli.join(' · ')) : '') + '</small></div>' +
+        (cliente.telefono ? '<a class="tel" href="tel:' + esc(String(cliente.telefono).replace(/[^\d+]/g, '')) + '">Chiama</a>' : '') +
+        '</li>';
+    }
 
-  // ---------- prenotazioni ----------
+    var ultima = A.ultimaVisitaStaff();
+    Promise.all([
+      sb.from('prenotazioni')
+        .select('id, data_dal, data_al, stato, saldo_importo, saldo_pagato_il, pappa_fornita, disdetta_richiesta, creato_il, animali(nome,note_mediche), servizi(nome,categoria), profili(nome,cognome,telefono)')
+        .in('stato', ['in_attesa_pagamento', 'confermata'])
+        .gte('data_al', oggi)
+        .order('data_dal'),
+      ultima
+        ? sb.from('prenotazioni').select('id', { count: 'exact', head: true }).gt('creato_il', ultima)
+        : Promise.resolve({ count: 0 }),
+      sb.from('passeggiate')
+        .select('id, data, ora, argomento, luogo, stato, iscrizioni_passeggiata(stato)')
+        .eq('stato', 'programmata')
+        .gte('data', oggi)
+        .order('data')
+        .limit(1),
+      sb.from('prenotazioni').select('id', { count: 'exact', head: true }).eq('stato', 'confermata').lt('data_al', oggi)
+    ]).then(function(r){
+      var errore = r.filter(function(x){ return x.error; })[0];
+      if (errore) { A.avviso(document.getElementById('messaggio-staff'), errore.error.message, 'errore'); }
+      var attive = r[0].data || [];
+      var nuove = r[1].count || 0;
+      var uscita = (r[2].data || [])[0];
+      var daChiudere = r[3].count || 0;
 
-  var listaPrenotazioniStaff = document.getElementById('lista-prenotazioni-staff');
-  var etichetteStato = {
-    in_attesa_pagamento: 'In attesa di pagamento',
-    confermata: 'Confermata',
-    completata: 'Completata',
-    annullata: 'Annullata'
-  };
-  var prioritaStato = { in_attesa_pagamento: 0, confermata: 1, completata: 2, annullata: 3 };
+      // contatori
+      var disdette = attive.filter(function(p){ return p.stato === 'confermata' && p.disdetta_richiesta; }).length;
+      var daPagare = attive.filter(function(p){ return p.stato === 'in_attesa_pagamento'; }).length;
+      var inStruttura = attive.filter(function(p){
+        return p.data_dal <= oggi && p.data_al >= oggi && p.servizi && (p.servizi.categoria === 'pensione' || p.servizi.categoria === 'asilo');
+      }).length;
+      document.getElementById('contatori').innerHTML =
+        tessera('staff-prenotazioni.html', disdette ? 'allerta' : '', 'Disdette', disdette, 'da gestire') +
+        tessera('staff-prenotazioni.html', daPagare ? 'oro' : '', 'Da pagare', daPagare, 'in attesa acconto') +
+        tessera('staff-prenotazioni.html', nuove ? 'oro' : '', 'Nuove', nuove, ultima ? 'dall\'ultima visita' : 'richieste') +
+        tessera('staff-prenotazioni.html', '', 'Oggi', inStruttura + '<small>/5</small>', 'cani in pensione o asilo');
 
-  var CHIAVE_ULTIMA_VISITA = 'crocevia-staff-ultima-visita';
-
-  function caricaPrenotazioniStaff(){
-    sb.from('prenotazioni')
-      .select('id, data_dal, data_al, stato, prezzo_totale, acconto_importo, acconto_pagato_il, saldo_importo, saldo_pagato_il, pappa_fornita, pappa_importo, creato_il, disdetta_richiesta, disdetta_richiesta_il, animali(nome), servizi(nome), profili(nome,cognome,telefono,email)')
-      .order('data_dal')
-      .then(function(r){
-        if (r.error) { avviso(messaggio, r.error.message, 'errore'); return; }
-
-        var ultimaVisita = null;
-        try { ultimaVisita = localStorage.getItem(CHIAVE_ULTIMA_VISITA); } catch (e) {}
-        var nuove = (r.data || []).filter(function(p){ return !ultimaVisita || p.creato_il > ultimaVisita; });
-        var banner = document.getElementById('banner-nuove');
-        if (ultimaVisita && nuove.length) {
-          banner.textContent = nuove.length === 1 ? '1 nuova richiesta dall\'ultima visita.' : nuove.length + ' nuove richieste dall\'ultima visita.';
-          banner.hidden = false;
-        } else {
-          banner.hidden = true;
+      // movimenti di oggi
+      var movimenti = [];
+      attive.forEach(function(p){
+        var dettagli = [];
+        if (p.pappa_fornita) dettagli.push('pappa fornita');
+        if (p.animali && p.animali.note_mediche) dettagli.push('salute: ' + p.animali.note_mediche);
+        if (p.data_dal === oggi) {
+          movimenti.push(voceMovimento(p.data_al === oggi ? 'Solo oggi' : 'Arriva', p, dettagli));
+        } else if (p.data_al === oggi) {
+          if (p.saldo_importo && !p.saldo_pagato_il) dettagli.push('saldo da incassare ' + A.euro(p.saldo_importo));
+          movimenti.push(voceMovimento('Ultimo giorno', p, dettagli));
         }
-        var idNuove = {};
-        nuove.forEach(function(p){ idNuove[p.id] = true; });
-        try { localStorage.setItem(CHIAVE_ULTIMA_VISITA, new Date().toISOString()); } catch (e) {}
-
-        var righe = (r.data || []).slice().sort(function(a, b){
-          var pa = a.disdetta_richiesta ? -1 : prioritaStato[a.stato];
-          var pb = b.disdetta_richiesta ? -1 : prioritaStato[b.stato];
-          if (pa !== pb) return pa - pb;
-          return a.data_dal < b.data_dal ? -1 : (a.data_dal > b.data_dal ? 1 : 0);
-        });
-        listaPrenotazioniStaff.innerHTML = '';
-        if (!righe.length) {
-          listaPrenotazioniStaff.innerHTML = '<p class="vuoto">Nessuna prenotazione.</p>';
-          return;
-        }
-        righe.forEach(function(p){
-          var cliente = p.profili || {};
-          var contatto = [cliente.telefono, cliente.email].filter(Boolean).join(' · ');
-          var card = document.createElement('div');
-          card.className = 'card-prenotazione';
-
-          var azioni = [];
-          if (p.stato === 'in_attesa_pagamento') {
-            azioni.push('<button type="button" data-azione="conferma">Conferma manualmente</button>');
-          }
-          if (p.stato === 'confermata' && !p.saldo_pagato_il) {
-            azioni.push('<button type="button" data-azione="saldo">Segna saldo ricevuto</button>');
-          }
-          if (p.stato === 'confermata') {
-            azioni.push('<button type="button" data-azione="completa">Segna completata</button>');
-          }
-          if (p.stato !== 'annullata' && p.stato !== 'completata') {
-            azioni.push('<button type="button" data-azione="annulla">Annulla</button>');
-          }
-
-          card.innerHTML =
-            '<div><h3>' + (idNuove[p.id] ? '<span class="badge-stato badge-nuova" style="margin-right:6px;">Nuova</span>' : '') + escapeHtml(p.servizi ? p.servizi.nome : '') + ' — ' + escapeHtml(p.animali ? p.animali.nome : '') + '</h3>' +
-            '<p>' + escapeHtml(cliente.nome || '') + ' ' + escapeHtml(cliente.cognome || '') + (contatto ? ' · ' + escapeHtml(contatto) : '') + '</p>' +
-            '<p>' + escapeHtml(p.data_dal) + ' → ' + escapeHtml(p.data_al) + (p.pappa_fornita ? ' · <b>pappa fornita</b>' : '') + '</p>' +
-            '<p>Totale ' + euro(p.prezzo_totale) +
-              (p.acconto_importo ? ' · acconto ' + euro(p.acconto_importo) + (p.acconto_pagato_il ? ' (pagato)' : ' (da pagare)') : '') +
-              (p.saldo_importo ? ' · saldo ' + euro(p.saldo_importo) + (p.saldo_pagato_il ? ' (pagato)' : ' (da pagare)') : '') +
-            '</p>' +
-            (p.disdetta_richiesta ? '<p class="avviso avviso-errore" style="margin-top:10px;"><b>Disdetta richiesta</b> il ' + escapeHtml(new Date(p.disdetta_richiesta_il).toLocaleString('it-IT')) + '</p>' : '') +
-            (azioni.length ? '<p class="card-azioni" style="margin-top:10px;">' + azioni.join('') + '</p>' : '') +
-            '</div>' +
-            '<span class="badge-stato badge-' + p.stato + '">' + (etichetteStato[p.stato] || p.stato) + '</span>';
-
-          card.querySelectorAll('[data-azione]').forEach(function(bottone){
-            bottone.addEventListener('click', function(){ eseguiAzionePrenotazione(p.id, bottone.getAttribute('data-azione')); });
-          });
-
-          listaPrenotazioniStaff.appendChild(card);
-        });
       });
-  }
+      if (daChiudere) {
+        movimenti.push('<li><span class="quando-breve">Da chiudere</span><div class="cosa">' + daChiudere + (daChiudere === 1 ? ' soggiorno finito è' : ' soggiorni finiti sono') +
+          ' ancora "confermati"<small>Segnali come completati dalle prenotazioni</small></div><a class="tel" href="staff-prenotazioni.html">Apri</a></li>');
+      }
+      document.getElementById('movimenti-oggi').innerHTML = movimenti.join('') || '<li class="vuoto">Nessun arrivo o partenza oggi.</li>';
 
-  function eseguiAzionePrenotazione(id, azione){
-    var campi = null;
-    if (azione === 'conferma') campi = { stato: 'confermata', acconto_pagato_il: new Date().toISOString() };
-    if (azione === 'saldo') campi = { saldo_pagato_il: new Date().toISOString() };
-    if (azione === 'completa') campi = { stato: 'completata' };
-    if (azione === 'annulla') {
-      if (!window.confirm('Annullare questa prenotazione?')) return;
-      campi = { stato: 'annullata' };
-    }
-    if (!campi) return;
-    sb.from('prenotazioni').update(campi).eq('id', id).then(function(r){
-      if (r.error) { avviso(messaggio, r.error.message, 'errore'); return; }
-      caricaPrenotazioniStaff();
-    });
-  }
-
-  // ---------- utenti (solo admin) ----------
-
-  var listaUtenti = document.getElementById('lista-utenti');
-
-  function caricaUtenti(){
-    sb.from('profili').select('id,nome,cognome,email,telefono,ruolo').order('creato_il').then(function(r){
-      if (r.error) { avviso(messaggio, r.error.message, 'errore'); return; }
-      listaUtenti.innerHTML = '';
-      (r.data || []).forEach(function(u){
-        var card = document.createElement('div');
-        card.className = 'card-prenotazione';
-        card.innerHTML =
-          '<div><h3>' + escapeHtml((u.nome || '') + ' ' + (u.cognome || '')).trim() + '</h3>' +
-          '<p>' + escapeHtml(u.email || '') + (u.telefono ? ' · ' + escapeHtml(u.telefono) : '') + '</p>' +
-          '</div>' +
-          '<div class="campo" style="margin:0;max-width:170px;">' +
-          '<select data-ruolo-per="' + u.id + '">' +
-          ['cliente', 'addetto', 'admin'].map(function(r2){
-            return '<option value="' + r2 + '"' + (r2 === u.ruolo ? ' selected' : '') + '>' + r2 + '</option>';
-          }).join('') +
-          '</select></div>';
-        card.querySelector('[data-ruolo-per]').addEventListener('change', function(){
-          var nuovoRuolo = this.value;
-          if (u.id === utenteCorrente.id) {
-            if (!window.confirm('Stai per cambiare il tuo stesso ruolo. Continuare?')) { this.value = u.ruolo; return; }
-          }
-          sb.from('profili').update({ ruolo: nuovoRuolo }).eq('id', u.id).then(function(r){
-            if (r.error) { avviso(messaggio, r.error.message, 'errore'); caricaUtenti(); return; }
-            u.ruolo = nuovoRuolo;
-          });
-        });
-        listaUtenti.appendChild(card);
+      // arrivi dei prossimi 7 giorni
+      var arrivi = attive.filter(function(p){ return p.data_dal > oggi && p.data_dal <= fraSette; }).map(function(p){
+        var d = A.dataLocale(p.data_dal);
+        var dettagli = [A.durata(p.data_dal, p.data_al, p.servizi && p.servizi.categoria)];
+        if (p.pappa_fornita) dettagli.push('pappa fornita');
+        if (p.disdetta_richiesta) dettagli.push('disdetta richiesta');
+        return voceMovimento(['dom','lun','mar','mer','gio','ven','sab'][d.getDay()] + ' ' + d.getDate(), p, dettagli);
       });
-    });
-  }
+      document.getElementById('arrivi-settimana').innerHTML = arrivi.join('') || '<li class="vuoto">Nessun arrivo in settimana.</li>';
 
-  // ---------- aggiungi prenotazione manuale ----------
-
-  var serviziManuale = [];
-  var clienteTrovato = null;
-  var formCercaCliente = document.getElementById('form-cerca-cliente');
-  var formPrenotazioneManuale = document.getElementById('form-prenotazione-manuale');
-  var messaggioManuale = document.getElementById('messaggio-manuale');
-
-  function dataLocale(s){ return new Date(s + 'T00:00:00'); }
-
-  function calcolaPrezzoManuale(prezzoNotte, dal, al, pappaFornita){
-    var notti = Math.round((dataLocale(al) - dataLocale(dal)) / 86400000) + 1;
-    var moltiplicatore = notti >= 30 ? 0.8 : (notti >= 7 ? 0.9 : 1);
-    var base = Math.round(notti * prezzoNotte * moltiplicatore * 100) / 100;
-    var pappa = pappaFornita ? Math.round(notti * 5 * 100) / 100 : 0;
-    var acconto = Math.round(base * 10) / 100;
-    var totale = Math.round((base + pappa) * 100) / 100;
-    var saldo = Math.round((base - acconto + pappa) * 100) / 100;
-    return { notti: notti, totale: totale, acconto: acconto, saldo: saldo, pappa: pappa };
-  }
-
-  function caricaServiziManuale(){
-    sb.from('servizi').select('id,categoria,nome,prezzo').in('categoria', ['pensione', 'asilo']).eq('attivo', true).then(function(r){
-      serviziManuale = r.data || [];
-      document.getElementById('manuale-servizio').innerHTML = serviziManuale.map(function(s){
-        return '<option value="' + s.id + '">' + escapeHtml(s.nome) + ' — ' + euro(s.prezzo) + '/notte</option>';
-      }).join('');
-    });
-  }
-
-  function aggiornaRiepilogoManuale(){
-    var dal = document.getElementById('manuale-dal').value;
-    var al = document.getElementById('manuale-al').value;
-    var servizioId = document.getElementById('manuale-servizio').value;
-    var servizio = serviziManuale.filter(function(s){ return s.id === servizioId; })[0];
-    var box = document.getElementById('manuale-riepilogo');
-    if (!dal || !al || !servizio || al < dal) { box.textContent = ''; return; }
-    var pappaFornita = document.getElementById('manuale-pappa-fornita').checked;
-    var p = calcolaPrezzoManuale(Number(servizio.prezzo), dal, al, pappaFornita);
-    box.textContent = p.notti + (p.notti === 1 ? ' notte' : ' notti') +
-      (pappaFornita ? ' · pappa ' + euro(p.pappa) + ' (nel saldo)' : '') +
-      ' · totale ' + euro(p.totale) + ' · acconto ' + euro(p.acconto) + ' · saldo ' + euro(p.saldo);
-  }
-  ['manuale-dal', 'manuale-al', 'manuale-servizio', 'manuale-pappa-fornita'].forEach(function(id){
-    document.getElementById(id).addEventListener('change', aggiornaRiepilogoManuale);
-  });
-
-  formCercaCliente.addEventListener('submit', function(e){
-    e.preventDefault();
-    messaggioManuale.hidden = true;
-    formPrenotazioneManuale.hidden = true;
-    var email = document.getElementById('cerca-email').value.trim();
-
-    sb.from('profili').select('id,nome,cognome,email').eq('email', email).maybeSingle().then(function(r){
-      if (r.error || !r.data) {
-        avviso(messaggioManuale, 'Nessun cliente registrato con questa email. Deve prima registrarsi lui stesso nell\'area privata.', 'errore');
-        return;
+      // prossima uscita
+      var box = document.getElementById('prossima-uscita');
+      if (!uscita) {
+        box.innerHTML = '<h2>Prossima uscita</h2><p class="vuoto" style="margin:0 0 12px;">Nessuna uscita in programma.</p><a href="staff-passeggiate.html">Programma un\'uscita →</a>';
+      } else {
+        var iscritti = (uscita.iscrizioni_passeggiata || []).filter(function(i){ return i.stato === 'confermata'; }).length;
+        var cap = A.CAPIENZA_PASSEGGIATA;
+        box.innerHTML = '<h2>Prossima uscita</h2>' +
+          '<p style="margin:0;"><b>' + esc(A.formattaData(uscita.data)) + ', ore ' + esc(uscita.ora.slice(0, 5)) + '</b> · ' + esc(uscita.argomento) + ' · ' + esc(uscita.luogo) + '</p>' +
+          '<p style="margin:4px 0 0;color:var(--ink-muted);">' + iscritti + ' / ' + cap + ' iscritti</p>' +
+          '<div class="barra-posti"><i style="width:' + Math.min(100, Math.round(iscritti / cap * 100)) + '%"></i></div>' +
+          '<p style="margin:12px 0 0;"><a href="staff-passeggiate.html">Vedi iscritti →</a></p>';
       }
-      clienteTrovato = r.data;
-      return sb.from('animali').select('id,nome').eq('proprietario_id', clienteTrovato.id);
-    }).then(function(r){
-      if (!r) return;
-      if (r.error) { avviso(messaggioManuale, r.error.message, 'errore'); return; }
-      if (!r.data.length) {
-        avviso(messaggioManuale, 'Il cliente non ha ancora animali registrati.', 'errore');
-        return;
-      }
-      document.getElementById('manuale-animale').innerHTML = r.data.map(function(a){
-        return '<option value="' + a.id + '">' + escapeHtml(a.nome) + '</option>';
-      }).join('');
-      document.getElementById('legenda-cliente-trovato').textContent =
-        'Cliente: ' + clienteTrovato.nome + ' ' + clienteTrovato.cognome + ' (' + clienteTrovato.email + ')';
-      formPrenotazioneManuale.hidden = false;
-      aggiornaRiepilogoManuale();
-    });
-  });
-
-  formPrenotazioneManuale.addEventListener('submit', function(e){
-    e.preventDefault();
-    messaggioManuale.hidden = true;
-    if (!clienteTrovato) return;
-
-    var animaleId = document.getElementById('manuale-animale').value;
-    var servizioId = document.getElementById('manuale-servizio').value;
-    var dal = document.getElementById('manuale-dal').value;
-    var al = document.getElementById('manuale-al').value;
-    var accontoRicevuto = document.getElementById('manuale-acconto-ricevuto').checked;
-    var saltaCalendario = document.getElementById('manuale-salta-calendario').checked;
-    var pappaFornita = document.getElementById('manuale-pappa-fornita').checked;
-
-    if (!dal || !al || al < dal) { avviso(messaggioManuale, 'Scegli un intervallo di date valido.', 'errore'); return; }
-
-    var servizio = serviziManuale.filter(function(s){ return s.id === servizioId; })[0];
-    var p = calcolaPrezzoManuale(Number(servizio.prezzo), dal, al, pappaFornita);
-
-    var dati = {
-      cliente_id: clienteTrovato.id,
-      animale_id: animaleId,
-      servizio_id: servizioId,
-      data_dal: dal,
-      data_al: al,
-      pappa_fornita: pappaFornita,
-      prezzo_totale: p.totale,
-      acconto_importo: p.acconto,
-      saldo_importo: p.saldo,
-      salta_calendario: saltaCalendario
-    };
-    if (accontoRicevuto) {
-      dati.stato = 'confermata';
-      dati.acconto_pagato_il = new Date().toISOString();
-    } else {
-      dati.stato = 'in_attesa_pagamento';
-    }
-
-    sb.from('prenotazioni').insert(dati).then(function(r){
-      if (r.error) { avviso(messaggioManuale, r.error.message, 'errore'); return; }
-      avviso(messaggioManuale, 'Prenotazione creata.', 'ok');
-      formPrenotazioneManuale.hidden = true;
-      formPrenotazioneManuale.reset();
-      formCercaCliente.reset();
-      clienteTrovato = null;
-      caricaPrenotazioniStaff();
-    });
-  });
-
-  // ---------- passeggiate ----------
-
-  var listaPasseggiateStaff = document.getElementById('lista-passeggiate-staff');
-  var messaggioPasseggiateStaff = document.getElementById('messaggio-passeggiate-staff');
-  var formNuovaPasseggiata = document.getElementById('form-nuova-passeggiata');
-  var nomiGiorni = ['domenica','lunedì','martedì','mercoledì','giovedì','venerdì','sabato'];
-  var nomiMesi = ['gennaio','febbraio','marzo','aprile','maggio','giugno','luglio','agosto','settembre','ottobre','novembre','dicembre'];
-  var etichettePasseggiata = { programmata: 'Programmata', annullata_meteo: 'Annullata (maltempo)', svolta: 'Svolta' };
-  var classeBadgePasseggiata = { programmata: 'badge-confermata', annullata_meteo: 'badge-annullata', svolta: 'badge-completata' };
-
-  function formattaData(iso){
-    var d = new Date(iso + 'T00:00:00');
-    return nomiGiorni[d.getDay()] + ' ' + d.getDate() + ' ' + nomiMesi[d.getMonth()];
-  }
-
-  function caricaPasseggiateStaff(){
-    sb.from('passeggiate')
-      .select('id, data, ora, argomento, luogo, stato, note, iscrizioni_passeggiata(id, stato, profili(nome,cognome,telefono,email), iscrizione_passeggiata_animali(animali(nome)))')
-      .order('data', { ascending: false })
-      .then(function(r){
-        if (r.error) { avviso(messaggioPasseggiateStaff, r.error.message, 'errore'); return; }
-        listaPasseggiateStaff.innerHTML = '';
-        if (!r.data.length) {
-          listaPasseggiateStaff.innerHTML = '<p class="vuoto">Nessuna passeggiata ancora programmata.</p>';
-          return;
-        }
-        r.data.forEach(function(p){
-          var iscritti = (p.iscrizioni_passeggiata || []).filter(function(i){ return i.stato === 'confermata'; });
-          var listaIscritti = iscritti.map(function(i){
-            var cliente = i.profili || {};
-            var cani = (i.iscrizione_passeggiata_animali || []).map(function(r2){ return r2.animali ? r2.animali.nome : ''; }).filter(Boolean).join(', ');
-            var contatto = [cliente.telefono, cliente.email].filter(Boolean).join(' · ');
-            return '<li>' + escapeHtml(((cliente.nome || '') + ' ' + (cliente.cognome || '')).trim() || '(senza nome)') +
-              (contatto ? ' — ' + escapeHtml(contatto) : '') + (cani ? ' — cani: ' + escapeHtml(cani) : '') + '</li>';
-          }).join('');
-
-          var azioni = [];
-          if (p.stato === 'programmata') {
-            azioni.push('<button type="button" data-azione="meteo">Annulla per maltempo</button>');
-            azioni.push('<button type="button" data-azione="svolta">Segna svolta</button>');
-          }
-          azioni.push('<button type="button" data-azione="modifica">Modifica</button>');
-          if (!iscritti.length) {
-            azioni.push('<button type="button" data-azione="elimina">Elimina</button>');
-          }
-
-          var card = document.createElement('div');
-          card.className = 'card-prenotazione';
-          card.innerHTML =
-            '<div><h3>' + escapeHtml(p.argomento) + '</h3>' +
-            '<p>' + escapeHtml(formattaData(p.data) + ', ore ' + p.ora.slice(0,5)) + ' &middot; ' + escapeHtml(p.luogo) + '</p>' +
-            (p.note ? '<p><em>' + escapeHtml(p.note) + '</em></p>' : '') +
-            '<p>' + iscritti.length + '/10 iscritti</p>' +
-            (listaIscritti ? '<ul style="margin:8px 0 0;padding-left:18px;">' + listaIscritti + '</ul>' : '<p class="vuoto">Nessun iscritto.</p>') +
-            (azioni.length ? '<p class="card-azioni" style="margin-top:10px;">' + azioni.join('') + '</p>' : '') +
-            '</div>' +
-            '<span class="badge-stato ' + classeBadgePasseggiata[p.stato] + '">' + etichettePasseggiata[p.stato] + '</span>';
-
-          card.querySelectorAll('[data-azione]').forEach(function(bottone){
-            var azione = bottone.getAttribute('data-azione');
-            if (azione === 'modifica') {
-              bottone.addEventListener('click', function(){ modificaPasseggiata(p); });
-            } else {
-              bottone.addEventListener('click', function(){ eseguiAzionePasseggiata(p.id, azione); });
-            }
-          });
-
-          listaPasseggiateStaff.appendChild(card);
-        });
-      });
-  }
-
-  function eseguiAzionePasseggiata(id, azione){
-    if (azione === 'elimina') {
-      if (!window.confirm('Eliminare questa passeggiata? Non ha iscritti, quindi non libera nessuno.')) return;
-      sb.from('passeggiate').delete().eq('id', id).then(function(r){
-        if (r.error) { avviso(messaggioPasseggiateStaff, r.error.message, 'errore'); return; }
-        if (document.getElementById('passeggiata-id').value === id) resetFormPasseggiata();
-        caricaPasseggiateStaff();
-      });
-      return;
-    }
-    var campi = null;
-    if (azione === 'meteo') {
-      if (!window.confirm('Annullare questa passeggiata per maltempo? Gli iscritti verranno liberati in automatico.')) return;
-      campi = { stato: 'annullata_meteo' };
-    }
-    if (azione === 'svolta') campi = { stato: 'svolta' };
-    if (!campi) return;
-    sb.from('passeggiate').update(campi).eq('id', id).then(function(r){
-      if (r.error) { avviso(messaggioPasseggiateStaff, r.error.message, 'errore'); return; }
-      caricaPasseggiateStaff();
-    });
-  }
-
-  // ---------- aggiungi / modifica passeggiata (stesso modulo per entrambe) ----------
-
-  var bottoneSalvaPasseggiata = document.getElementById('bottone-salva-passeggiata');
-  var bottoneAnnullaPasseggiata = document.getElementById('bottone-annulla-passeggiata');
-
-  function isoLocale(d){
-    var m = d.getMonth() + 1, g = d.getDate();
-    return d.getFullYear() + '-' + (m < 10 ? '0' : '') + m + '-' + (g < 10 ? '0' : '') + g;
-  }
-
-  function prossimoMartedi(){
-    var d = new Date(); d.setHours(0, 0, 0, 0);
-    var diff = (2 - d.getDay() + 7) % 7 || 7; // martedì prossimo, mai oggi anche se oggi è martedì
-    d.setDate(d.getDate() + diff);
-    return isoLocale(d);
-  }
-
-  function resetFormPasseggiata(){
-    formNuovaPasseggiata.reset();
-    document.getElementById('passeggiata-id').value = '';
-    document.getElementById('nuova-passeggiata-data').value = prossimoMartedi();
-    document.getElementById('nuova-passeggiata-ora').value = '18:00';
-    document.getElementById('nuova-passeggiata-luogo').value = 'Lago Maggiore';
-    document.getElementById('legenda-passeggiata').textContent = 'Aggiungi una passeggiata';
-    bottoneSalvaPasseggiata.textContent = 'Aggiungi passeggiata';
-    bottoneAnnullaPasseggiata.hidden = true;
-  }
-  document.getElementById('nuova-passeggiata-data').min = isoLocale(new Date());
-  resetFormPasseggiata();
-  bottoneAnnullaPasseggiata.addEventListener('click', resetFormPasseggiata);
-
-  function modificaPasseggiata(p){
-    document.getElementById('passeggiata-id').value = p.id;
-    document.getElementById('nuova-passeggiata-data').value = p.data;
-    document.getElementById('nuova-passeggiata-ora').value = p.ora.slice(0, 5);
-    document.getElementById('nuova-passeggiata-luogo').value = p.luogo || '';
-    document.getElementById('nuova-passeggiata-argomento').value = p.argomento || '';
-    document.getElementById('nuova-passeggiata-note').value = p.note || '';
-    document.getElementById('legenda-passeggiata').textContent = 'Modifica passeggiata del ' + formattaData(p.data);
-    bottoneSalvaPasseggiata.textContent = 'Salva modifiche';
-    bottoneAnnullaPasseggiata.hidden = false;
-    formNuovaPasseggiata.scrollIntoView({ behavior: 'smooth', block: 'center' });
-  }
-
-  formNuovaPasseggiata.addEventListener('submit', function(e){
-    e.preventDefault();
-    messaggioPasseggiateStaff.hidden = true;
-    var id = document.getElementById('passeggiata-id').value;
-    var dati = {
-      data: document.getElementById('nuova-passeggiata-data').value,
-      ora: document.getElementById('nuova-passeggiata-ora').value,
-      luogo: document.getElementById('nuova-passeggiata-luogo').value.trim() || 'Lago Maggiore',
-      argomento: document.getElementById('nuova-passeggiata-argomento').value.trim(),
-      note: document.getElementById('nuova-passeggiata-note').value.trim() || null
-    };
-    var richiesta = id
-      ? sb.from('passeggiate').update(dati).eq('id', id)
-      : sb.from('passeggiate').insert(dati);
-    richiesta.then(function(r){
-      if (r.error) { avviso(messaggioPasseggiateStaff, r.error.message, 'errore'); return; }
-      avviso(messaggioPasseggiateStaff, id ? 'Passeggiata aggiornata.' : 'Passeggiata aggiunta.', 'ok');
-      resetFormPasseggiata();
-      caricaPasseggiateStaff();
-    });
-  });
-
-  // ---------- prenota una passeggiata per un cliente ----------
-
-  var clienteTrovatoPasseggiata = null;
-  var formCercaClientePasseggiata = document.getElementById('form-cerca-cliente-passeggiata');
-  var formPasseggiataManuale = document.getElementById('form-passeggiata-manuale');
-  var messaggioManualePasseggiata = document.getElementById('messaggio-manuale-passeggiata');
-
-  function caricaUsciteManuale(){
-    return sb.from('passeggiate_disponibilita').select('*').then(function(r){
-      var uscite = r.data || [];
-      document.getElementById('manuale-passeggiata-uscita').innerHTML = uscite.length
-        ? '<option value="" selected disabled>Scegli un\'uscita…</option>' + uscite.map(function(u){
-            var posti = Math.max(u.posti_liberi, 0);
-            return '<option value="' + u.id + '"' + (posti <= 0 ? ' disabled' : '') + '>' +
-              escapeHtml(formattaData(u.data)) + ' ore ' + escapeHtml(u.ora.slice(0, 5)) + ' — ' + escapeHtml(u.argomento) +
-              ' (' + (posti <= 0 ? 'al completo' : posti + ' liberi') + ')</option>';
-          }).join('')
-        : '<option value="" selected disabled>Nessuna uscita in programma</option>';
-    });
-  }
-
-  formCercaClientePasseggiata.addEventListener('submit', function(e){
-    e.preventDefault();
-    messaggioManualePasseggiata.hidden = true;
-    formPasseggiataManuale.hidden = true;
-    clienteTrovatoPasseggiata = null;
-    var email = document.getElementById('cerca-email-passeggiata').value.trim();
-
-    sb.from('profili').select('id,nome,cognome,email,telefono').eq('email', email).maybeSingle().then(function(r){
-      if (r.error || !r.data) {
-        avviso(messaggioManualePasseggiata, 'Nessun cliente registrato con questa email. Deve prima registrarsi lui stesso nell\'area privata.', 'errore');
-        return;
-      }
-      if (!r.data.telefono) {
-        avviso(messaggioManualePasseggiata, 'Il cliente non ha un telefono salvato nel profilo: chiedigli di aggiungerlo nella sua area privata prima di procedere (serve per avvisarlo in caso di maltempo).', 'errore');
-        return;
-      }
-      clienteTrovatoPasseggiata = r.data;
-      return Promise.all([
-        sb.from('animali').select('id,nome').eq('proprietario_id', clienteTrovatoPasseggiata.id),
-        sb.from('iscrizioni_passeggiata').select('id').eq('cliente_id', clienteTrovatoPasseggiata.id).eq('stato', 'confermata').maybeSingle(),
-        caricaUsciteManuale()
-      ]);
-    }).then(function(r){
-      if (!r || !clienteTrovatoPasseggiata) return;
-      var animaliRes = r[0], iscrizioneRes = r[1];
-      if (animaliRes.error) { avviso(messaggioManualePasseggiata, animaliRes.error.message, 'errore'); return; }
-      if (!animaliRes.data.length) {
-        avviso(messaggioManualePasseggiata, 'Il cliente non ha ancora animali registrati.', 'errore');
-        return;
-      }
-      if (iscrizioneRes.data) {
-        avviso(messaggioManualePasseggiata, 'Il cliente ha già una prenotazione attiva per una passeggiata.', 'errore');
-        return;
-      }
-      document.getElementById('manuale-passeggiata-cani').innerHTML = animaliRes.data.map(function(a){
-        return '<label class="checkriga"><input type="checkbox" name="manuale-cane-passeggiata" value="' + a.id + '"> ' + escapeHtml(a.nome) + '</label>';
-      }).join('');
-      document.getElementById('legenda-cliente-trovato-passeggiata').textContent =
-        'Cliente: ' + clienteTrovatoPasseggiata.nome + ' ' + clienteTrovatoPasseggiata.cognome + ' (' + clienteTrovatoPasseggiata.email + ')';
-      formPasseggiataManuale.hidden = false;
-    });
-  });
-
-  formPasseggiataManuale.addEventListener('submit', function(e){
-    e.preventDefault();
-    messaggioManualePasseggiata.hidden = true;
-    if (!clienteTrovatoPasseggiata) return;
-
-    var uscitaId = document.getElementById('manuale-passeggiata-uscita').value;
-    var caniId = Array.prototype.map.call(formPasseggiataManuale.querySelectorAll('input[name="manuale-cane-passeggiata"]:checked'), function(el){ return el.value; });
-
-    if (!uscitaId) { avviso(messaggioManualePasseggiata, 'Scegli un\'uscita.', 'errore'); return; }
-    if (!caniId.length) { avviso(messaggioManualePasseggiata, 'Scegli almeno un cane.', 'errore'); return; }
-
-    sb.from('iscrizioni_passeggiata').insert({
-      cliente_id: clienteTrovatoPasseggiata.id,
-      passeggiata_id: uscitaId,
-      stato: 'confermata'
-    }).select().single().then(function(r){
-      if (r.error) { avviso(messaggioManualePasseggiata, r.error.message, 'errore'); return; }
-      var iscrizioneId = r.data.id;
-      sb.from('iscrizione_passeggiata_animali').insert(
-        caniId.map(function(id){ return { iscrizione_id: iscrizioneId, animale_id: id }; })
-      ).then(function(r2){
-        if (r2.error) { avviso(messaggioManualePasseggiata, 'Prenotazione creata ma non è stato possibile salvare i cani: ' + r2.error.message, 'errore'); return; }
-        avviso(messaggioManualePasseggiata, 'Prenotazione creata.', 'ok');
-        formPasseggiataManuale.hidden = true;
-        formPasseggiataManuale.reset();
-        formCercaClientePasseggiata.reset();
-        clienteTrovatoPasseggiata = null;
-        caricaPasseggiateStaff();
-      });
     });
   });
 })();
@@ -784,6 +201,6 @@
   </div>
 </footer>
 
-<script src="main.js?v=20260918"></script>
+<script src="main.js?v=20260927"></script>
 <script src="cookie-consent.js"></script>
 </html>

@@ -1,0 +1,246 @@
+<!doctype html>
+<html lang="it">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#0d2219">
+<script>(function(){try{var t=localStorage.getItem('crocevia-tema');if(t==='chiaro'||t==='scuro'){document.documentElement.setAttribute('data-tema',t);}}catch(e){}})();</script>
+<link rel="icon" type="image/png" href="assets/img/brand/favicon.png">
+<link rel="apple-touch-icon" href="assets/img/brand/apple-touch-icon.png">
+<title>I miei cani — Crocevia</title>
+<meta name="description" content="Le schede dei tuoi cani: razza, età, allergie e note sul carattere.">
+<meta name="robots" content="noindex">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;600;700&family=EB+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&display=swap">
+<link rel="stylesheet" href="style.css?v=20260927d">
+<noscript><style>.reveal{opacity:1!important;transform:none!important;}</style></noscript>
+<header class="site-header">
+  <nav class="nav">
+    <a href="index.html" class="brand" aria-label="Crocevia — Home">
+      <img class="logo-nav" src="assets/img/brand/logo-nav.webp" alt="Crocevia" width="200" height="201">
+      <span class="brand-text">
+        <span class="brand-word">CROCEVIA</span>
+        <span class="brand-tagline">Asilo · Pensione · Passeggiate</span>
+      </span>
+    </a>
+    <button class="tema-toggle" id="cambia-tema" type="button" aria-label="Passa al tema chiaro" aria-pressed="false">
+      <svg class="icona-sole" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><circle cx="12" cy="12" r="4"></circle><path d="M12 2v3M12 19v3M4.2 4.2l2.1 2.1M17.7 17.7l2.1 2.1M2 12h3M19 12h3M4.2 19.8l2.1-2.1M17.7 6.3l2.1-2.1" stroke-width="1.8" stroke-linecap="round"></path></svg>
+      <svg class="icona-luna" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M20 14.5A8.5 8.5 0 1 1 9.5 4a7 7 0 0 0 10.5 10.5Z"></path></svg>
+    </button>
+    <button class="nav-toggle" id="apri-menu" type="button" aria-controls="menu-crocevia" aria-expanded="false" aria-label="Apri il menu"><span class="barre" aria-hidden="true"></span></button>
+    <ul class="nav-links" id="menu-crocevia"><li><a href="index.html" class="nav">Home</a></li><li><a href="educazione.html" class="nav">Educazione</a></li><li><a href="pensione-asilo.html" class="nav">Pensione &amp; Asilo</a></li><li><a href="passeggiate.html" class="nav">Passeggiate</a></li><li><a href="chi-siamo.html" class="nav">Chi siamo</a></li><li><a href="dove-operiamo.html" class="nav">Dove operiamo</a></li><li><a href="faq.html" class="nav">FAQ</a></li><li><a href="contatti.html" class="nav">Contatti</a></li><li class="nav-item-mobile-only"><a href="contattami.html" class="nav">Contattami</a></li><li class="nav-item-mobile-only"><a href="area-privata.html" class="nav active">Area privata</a></li></ul><span class="nav-divider" aria-hidden="true"></span><a href="contattami.html" class="nav-cta">Contattami</a><a href="area-privata.html" class="nav-account active" aria-label="Area privata"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><circle cx="12" cy="8" r="3.5"></circle><path d="M5 20c1.2-4 4-6 7-6s5.8 2 7 6"></path></svg></a>
+  </nav>
+</header>
+<main class="wrap">
+
+<div class="crumb"><a href="area-privata.html">Area privata</a> / I miei cani</div>
+<p id="area-attesa" class="caricamento">Caricamento…</p>
+
+<div id="area-corpo" hidden>
+  <div class="testa-area con-azione">
+    <div>
+      <h1>I miei cani</h1>
+      <p class="premessa">Allergie e note sul carattere mi servono per accudirli al meglio.</p>
+    </div>
+    <button type="button" class="bottone bottone-pieno piccolo" id="bottone-nuovo-cane">+ Aggiungi un cane</button>
+  </div>
+
+  <p id="messaggio-animale" class="avviso" hidden></p>
+  <div id="lista-animali" class="griglia-cani"><p class="caricamento">Caricamento…</p></div>
+
+  <form id="form-animale" class="pannello" hidden>
+    <input type="hidden" id="animale-id">
+    <h2 id="legenda-animale">Nuovo cane</h2>
+    <div class="riga riga-3">
+      <div class="campo">
+        <label for="animale-nome">Nome *</label>
+        <input type="text" id="animale-nome" required>
+      </div>
+      <div class="campo">
+        <label for="animale-razza">Razza</label>
+        <input type="text" id="animale-razza">
+      </div>
+      <div class="campo">
+        <label for="animale-data-nascita">Data di nascita</label>
+        <input type="date" id="animale-data-nascita">
+      </div>
+    </div>
+    <div class="riga riga-2">
+      <div class="campo">
+        <label for="animale-sesso">Sesso</label>
+        <select id="animale-sesso">
+          <option value="">Non specificato</option>
+          <option value="maschio">Maschio</option>
+          <option value="femmina">Femmina</option>
+        </select>
+      </div>
+      <div class="campo">
+        <span class="campo-etichetta-vuota" aria-hidden="true">&nbsp;</span>
+        <label class="checkriga"><input type="checkbox" id="animale-sterilizzato"> Sterilizzato/a</label>
+      </div>
+    </div>
+    <div class="campo">
+      <label for="animale-note-mediche">Allergie / note mediche</label>
+      <textarea id="animale-note-mediche"></textarea>
+    </div>
+    <div class="campo">
+      <label for="animale-note-comportamentali">Note comportamentali</label>
+      <textarea id="animale-note-comportamentali"></textarea>
+    </div>
+    <div class="riga-bottoni">
+      <button type="submit" class="bottone bottone-pieno piccolo" id="bottone-salva-animale">Aggiungi il cane</button>
+      <button type="button" class="bottone bottone-vuoto piccolo" id="bottone-annulla-animale">Annulla</button>
+    </div>
+  </form>
+</div>
+
+</main>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="supabase-client.js"></script>
+<script src="area-comune.js?v=20260927"></script>
+<script>
+(function(){
+  var A = window.CroceviaArea;
+  var sb = A.sb;
+  var esc = A.escapeHtml;
+
+  A.pagina({}, function(ctx){
+    var formAnimale = document.getElementById('form-animale');
+    var messaggioAnimale = document.getElementById('messaggio-animale');
+    var listaAnimali = document.getElementById('lista-animali');
+
+    function eta(iso){
+      var nascita = A.dataLocale(iso), oggi = new Date();
+      var mesi = (oggi.getFullYear() - nascita.getFullYear()) * 12 + oggi.getMonth() - nascita.getMonth() - (oggi.getDate() < nascita.getDate() ? 1 : 0);
+      if (mesi < 0) return '';
+      if (mesi < 12) return mesi === 1 ? '1 mese' : mesi + ' mesi';
+      var anni = Math.floor(mesi / 12);
+      return anni === 1 ? '1 anno' : anni + ' anni';
+    }
+
+    function apriForm(a, senzaScorrere){
+      a = a || {};
+      document.getElementById('animale-id').value = a.id || '';
+      document.getElementById('animale-nome').value = a.nome || '';
+      document.getElementById('animale-razza').value = a.razza || '';
+      document.getElementById('animale-data-nascita').value = a.data_nascita || '';
+      document.getElementById('animale-sesso').value = a.sesso || '';
+      document.getElementById('animale-sterilizzato').checked = !!a.sterilizzato;
+      document.getElementById('animale-note-mediche').value = a.note_mediche || '';
+      document.getElementById('animale-note-comportamentali').value = a.note_comportamentali || '';
+      document.getElementById('legenda-animale').textContent = a.id ? 'Modifica ' + a.nome : 'Nuovo cane';
+      document.getElementById('bottone-salva-animale').textContent = a.id ? 'Salva modifiche' : 'Aggiungi il cane';
+      formAnimale.hidden = false;
+      if (senzaScorrere) return;
+      formAnimale.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      document.getElementById('animale-nome').focus({ preventScroll: true });
+    }
+    function chiudiForm(){ formAnimale.reset(); formAnimale.hidden = true; }
+
+    document.getElementById('bottone-nuovo-cane').addEventListener('click', function(){ apriForm(); });
+    document.getElementById('bottone-annulla-animale').addEventListener('click', chiudiForm);
+
+    function schedaCane(a){
+      var sotto = [a.razza, a.data_nascita ? eta(a.data_nascita) : null].filter(Boolean).join(' · ');
+      var chips = [];
+      if (a.sesso) chips.push('<span class="chip">' + (a.sesso === 'femmina' ? 'Femmina' : 'Maschio') + '</span>');
+      if (a.sterilizzato) chips.push('<span class="chip">' + (a.sesso === 'femmina' ? 'Sterilizzata' : 'Sterilizzato') + '</span>');
+      if (a.note_mediche) chips.push('<span class="chip attenzione">Note mediche</span>');
+      var note = '';
+      if (a.note_mediche) note += '<p class="cane-nota"><b>Salute:</b> ' + esc(a.note_mediche) + '</p>';
+      if (a.note_comportamentali) note += '<p class="cane-nota"><b>Carattere:</b> ' + esc(a.note_comportamentali) + '</p>';
+
+      var card = document.createElement('div');
+      card.className = 'cane';
+      card.innerHTML =
+        '<div class="testa"><span class="avatar" aria-hidden="true">' + esc((a.nome || '?').charAt(0).toUpperCase()) + '</span>' +
+        '<div><h3>' + esc(a.nome) + '</h3>' + (sotto ? '<div class="sotto">' + esc(sotto) + '</div>' : '') + '</div></div>' +
+        (chips.length ? '<div class="chips">' + chips.join('') + '</div>' : '') +
+        note +
+        '<div class="card-azioni"><button type="button" data-modifica>Modifica</button><button type="button" data-elimina>Elimina</button></div>';
+      card.querySelector('[data-modifica]').addEventListener('click', function(){ apriForm(a); });
+      card.querySelector('[data-elimina]').addEventListener('click', function(){ eliminaAnimale(a); });
+      return card;
+    }
+
+    function caricaAnimali(){
+      sb.from('animali').select('*').eq('proprietario_id', ctx.utente.id).order('creato_il').then(function(r){
+        if (r.error) { A.avviso(messaggioAnimale, r.error.message, 'errore'); return; }
+        listaAnimali.innerHTML = '';
+        if (!r.data.length) {
+          listaAnimali.innerHTML = '<p class="vuoto">Non hai ancora aggiunto nessun cane: compila la scheda qui sotto.</p>';
+          apriForm(null, true);
+          return;
+        }
+        r.data.forEach(function(a){ listaAnimali.appendChild(schedaCane(a)); });
+      });
+    }
+
+    function eliminaAnimale(a){
+      if (!window.confirm('Eliminare ' + a.nome + '?')) return;
+      sb.from('animali').delete().eq('id', a.id).then(function(r){
+        if (r.error) {
+          var testo = r.error.code === '23503'
+            ? 'Non puoi eliminare un cane che ha prenotazioni o una passeggiata collegate.'
+            : r.error.message;
+          A.avviso(messaggioAnimale, testo, 'errore');
+          return;
+        }
+        messaggioAnimale.hidden = true;
+        if (document.getElementById('animale-id').value === a.id) chiudiForm();
+        caricaAnimali();
+        A.aggiornaConteggi();
+      });
+    }
+
+    formAnimale.addEventListener('submit', function(e){
+      e.preventDefault();
+      messaggioAnimale.hidden = true;
+      var id = document.getElementById('animale-id').value;
+      var dati = {
+        nome: document.getElementById('animale-nome').value.trim(),
+        razza: document.getElementById('animale-razza').value.trim() || null,
+        data_nascita: document.getElementById('animale-data-nascita').value || null,
+        sesso: document.getElementById('animale-sesso').value || null,
+        sterilizzato: document.getElementById('animale-sterilizzato').checked,
+        note_mediche: document.getElementById('animale-note-mediche').value.trim() || null,
+        note_comportamentali: document.getElementById('animale-note-comportamentali').value.trim() || null
+      };
+      var richiesta = id
+        ? sb.from('animali').update(dati).eq('id', id)
+        : sb.from('animali').insert(Object.assign({ proprietario_id: ctx.utente.id }, dati));
+      richiesta.then(function(r){
+        if (r.error) { A.avviso(messaggioAnimale, r.error.message, 'errore'); return; }
+        chiudiForm();
+        A.avviso(messaggioAnimale, id ? 'Modifiche salvate.' : 'Cane aggiunto: ' + dati.nome + '.', 'ok');
+        caricaAnimali();
+        A.aggiornaConteggi();
+      });
+    });
+
+    caricaAnimali();
+  });
+})();
+</script>
+<footer class="site-footer">
+  <div class="footer-inner">
+    <div class="footer-links">
+      <a href="chi-siamo.html">Chi siamo</a> &middot;
+      <a href="dove-operiamo.html">Dove operiamo</a> &middot;
+      <a href="faq.html">FAQ</a> &middot;
+      <a href="contatti.html">Contatti</a> &middot;
+      <a href="contattami.html">Contattami</a> &middot;
+      <a href="privacy.html">Privacy</a> &middot;
+      <a href="termini.html">Termini</a> &middot;
+      <a href="#" id="gestisci-cookie">Gestisci cookie</a>
+    </div>
+    <div class="footer-contact">
+      <a href="tel:+393334325389">+39 333 432 5389</a> &middot;
+      <a href="mailto:info@croceviacani.it">info@croceviacani.it</a>
+    </div>
+    <div class="footer-piva">Crocevia &middot; Manuel &middot; P.IVA 14868890964</div>
+  </div>
+</footer>
+
+<script src="main.js?v=20260927"></script>
+<script src="cookie-consent.js"></script>
+</html>
