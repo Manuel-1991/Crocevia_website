@@ -85,9 +85,23 @@ git push
 - **Logo e favicon** (`assets/img/brand/`) sono a posto così come sono: non
   serve ricaricarli, sono già collegati a tutte le pagine.
 
-## Cosa succede dopo
+## Stato attuale (settembre 2026)
 
-Le pagine ora puntano già a `assets/img/brand/` per logo e favicon, e a
-`style.css` per lo stile. Le cartelle per le foto vere (`assets/img/index/`,
-`assets/img/chi-siamo/`, ecc.) sono pronte ma vuote. Appena carichi le foto,
-aggiorno le pagine perché le mostrino (`<img src="assets/img/chi-siamo/01-...jpg">`).
+Le foto sono online. Le 297 foto originali sono state caricate sul branch
+`foto-grezze` (solo deposito, non va unito al sito); da lì ne sono state
+scelte 15, ritagliate, corrette leggermente in luce e colore, ridimensionate
+e salvate in `.webp` dentro le cartelle di `assets/img/`.
+
+- **Metadati rimossi**: le foto da telefono contengono data e coordinate GPS
+  (anche di casa). Le versioni per il sito non hanno più nessun metadato.
+- **Due misure per foto**: `nome.webp` (grande) e `nome-480.webp` (piccola,
+  per il telefono), scelte dal browser con `srcset`. Il banner di
+  `passeggiate/` ha `-800` al posto di `-480`.
+- **Dove sono usate**: home (3 riquadri), chi siamo (Manuel, Dingo), dove
+  operiamo (una per luogo), educazione e passeggiate (galleria + banner),
+  pensione & asilo (galleria da 3).
+- **Stili**: `.card-foto`, `.foto-banner`, `.foto-griglia` in `style.css`.
+
+Per aggiungere o cambiare una foto basta sostituire il file con lo stesso
+nome (stesse proporzioni 4:3, banner 16:9), oppure chiedere a Claude di
+rifare la selezione dal branch `foto-grezze`.

@@ -381,6 +381,8 @@ h1.left{ text-align:left; }
 /* segnaposto in attesa di una foto vera: basta sostituire il contenuto
    di .teaser-figura con un <img src="assets/img/..."> quando disponibile */
 .teaser-figura svg{ width:46px; height:46px; color: var(--ink-muted); opacity:.6; }
+.teaser-figura.foto{ overflow:hidden; background: var(--surface); }
+.teaser-figura img{ display:block; width:100%; height:100%; object-fit:cover; }
 .teaser-corpo{ min-width:0; }
 .teaser h3{ font-family:"EB Garamond", Georgia, serif; font-weight:600; font-size:19px; margin-bottom:8px; color: var(--ink); }
 .teaser p{ font-style:italic; color: var(--ink-muted); margin:0; }
@@ -389,6 +391,34 @@ h1.left{ text-align:left; }
   .teaser, .teaser--inversa{ grid-template-columns: 1fr; text-align:center; }
   .teaser--inversa .teaser-figura{ order:0; }
   .teaser-figura{ width:100%; height:110px; margin:0 auto; }
+  .teaser-figura.foto{ height:auto; aspect-ratio: 16 / 9; }
+}
+
+/* ---------- foto ---------- */
+/* foto in testa a una card (chi siamo, dove operiamo) */
+.card-foto{
+  display:block; width:100%; height:auto; aspect-ratio: 4 / 3; object-fit:cover;
+  border-radius:3px; border:1px solid var(--border-soft); margin-bottom:16px;
+  background: var(--surface);
+}
+/* foto larga in apertura di pagina */
+.foto-banner{ margin:0 0 20px; }
+.foto-banner img{
+  display:block; width:100%; height:auto; aspect-ratio: 16 / 9; object-fit:cover;
+  border-radius:4px; border:1px solid var(--border-soft); background: var(--surface);
+}
+/* piccola galleria: 2 o 3 foto affiancate, una sotto l'altra sul telefono */
+.foto-griglia{
+  display:grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap:14px; margin:0 0 20px;
+}
+.foto-griglia figure{ margin:0; }
+.foto-griglia img{
+  display:block; width:100%; height:auto; aspect-ratio: 4 / 3; object-fit:cover;
+  border-radius:4px; border:1px solid var(--border-soft); background: var(--surface);
+}
+.foto-griglia figcaption, .foto-banner figcaption{
+  font-style:italic; font-size:14px; color: var(--ink-muted); margin-top:7px;
 }
 
 /* ---------- dividers ---------- */
