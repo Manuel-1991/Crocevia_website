@@ -24,8 +24,7 @@
 <meta name="twitter:image" content="https://croceviacani.it/assets/img/brand/logo-nav.webp">
 <meta name="robots" content="noindex">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;600;700&family=EB+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&display=swap">
-<link rel="stylesheet" href="style.css?v=20260927c">
-<noscript><style>.reveal{opacity:1!important;transform:none!important;}</style></noscript>
+<link rel="stylesheet" href="style.css?v=20260927d">
 <header class="site-header">
   <nav class="nav">
     <a href="index.html" class="brand" aria-label="Crocevia — Home">
@@ -45,12 +44,14 @@
 </header>
 <main class="wrap">
 
-<div class="crumb"><a href="index.html">Home</a> / Area privata</div>
-<div class="page-head left"><h1 class="left">Area privata</h1></div>
+<p id="area-attesa" class="caricamento" style="margin-top:40px;">Caricamento…</p>
 
-<p class="premessa">Accedi o registrati per gestire i tuoi animali e prenotare pensione, asilo o le passeggiate di gruppo. Per l'educazione continua a scrivere su WhatsApp da <a href="contattami.html">Contattami</a>.</p>
-
-<div id="blocco-autenticazione">
+<div id="blocco-autenticazione" class="accesso" hidden>
+  <div class="crumb"><a href="index.html">Home</a> / Area privata</div>
+  <div class="testa-area">
+    <h1>Area privata</h1>
+    <p class="premessa">Accedi o registrati per gestire i tuoi cani e prenotare pensione, asilo o le passeggiate di gruppo. Per l'educazione continua a scrivere su WhatsApp da <a href="contattami.html">Contattami</a>.</p>
+  </div>
 
   <div class="schede-conto">
     <button type="button" class="scheda-tab attiva" id="tab-accedi">Accedi</button>
@@ -105,188 +106,103 @@
     </fieldset>
     <button type="submit" class="bottone bottone-pieno bottone-full">Crea account</button>
   </form>
-
 </div>
 
-<div id="pannello-nuova-password" hidden>
-  <p class="premessa">Hai seguito il link di recupero: imposta la tua nuova password.</p>
+<div id="pannello-nuova-password" class="accesso" hidden>
+  <div class="crumb"><a href="index.html">Home</a> / Area privata</div>
+  <div class="testa-area">
+    <h1>Nuova password</h1>
+    <p class="premessa">Hai seguito il link di recupero: imposta la tua nuova password.</p>
+  </div>
   <p id="messaggio-nuova-password" class="avviso" hidden></p>
-  <form id="form-nuova-password">
-    <fieldset>
-      <legend>Nuova password</legend>
-      <div class="campo">
-        <label for="nuova-password">Nuova password * (almeno 6 caratteri)</label>
-        <input type="password" id="nuova-password" required minlength="6" autocomplete="new-password">
-      </div>
-      <div class="campo">
-        <label for="nuova-password-conferma">Conferma nuova password *</label>
-        <input type="password" id="nuova-password-conferma" required minlength="6" autocomplete="new-password">
-      </div>
-    </fieldset>
+  <form id="form-nuova-password" class="pannello">
+    <div class="campo">
+      <label for="nuova-password">Nuova password * (almeno 6 caratteri)</label>
+      <input type="password" id="nuova-password" required minlength="6" autocomplete="new-password">
+    </div>
+    <div class="campo">
+      <label for="nuova-password-conferma">Conferma nuova password *</label>
+      <input type="password" id="nuova-password-conferma" required minlength="6" autocomplete="new-password">
+    </div>
     <button type="submit" class="bottone bottone-pieno bottone-full">Salva nuova password</button>
   </form>
 </div>
 
-<div id="area-cliente" hidden>
-
-  <div class="riga-benvenuto">
-    <p class="premessa">Ciao <strong id="benvenuto-email"></strong>.</p>
-    <button type="button" id="bottone-esci" class="bottone bottone-vuoto">Esci</button>
+<div id="panoramica" hidden>
+  <div class="crumb"><a href="index.html">Home</a> / Area privata</div>
+  <div class="testa-area">
+    <h1 id="saluto">Ciao</h1>
+    <p class="premessa">Ecco cosa succede con i tuoi cani. Tutte le pagine dell'area sono nel menù in alto a destra.</p>
   </div>
 
-  <p id="link-staff" hidden><a href="area-staff.html" class="bottone bottone-vuoto">Pannello staff &rarr;</a></p>
+  <p id="messaggio-panoramica" class="avviso" hidden></p>
+  <div class="da-fare" id="da-fare"></div>
+  <div class="tessere" id="tessere"><p class="caricamento">Caricamento…</p></div>
 
-  <p id="messaggio-pagamento" class="avviso" hidden></p>
+  <div class="azioni-rapide">
+    <a href="prenota-pensione-asilo.html" class="bottone bottone-pieno">Prenota pensione o asilo</a>
+    <a href="prenota-passeggiata.html" class="bottone bottone-vuoto">Prenota una passeggiata</a>
+  </div>
 
-  <section class="sezione-conto">
-    <h2>Il tuo profilo</h2>
-    <p class="premessa" style="margin-bottom:16px;">Servono tutti questi dati prima di poter prenotare pensione o asilo. Il telefono serve anche per le passeggiate: senza, non puoi iscriverti, perché è l'unico modo per avvisarti se una passeggiata salta per maltempo.</p>
-    <p id="messaggio-profilo" class="avviso" hidden></p>
-    <form id="form-profilo">
-      <div class="riga riga-2">
-        <div class="campo">
-          <label for="profilo-nome">Nome *</label>
-          <input type="text" id="profilo-nome" required>
-        </div>
-        <div class="campo">
-          <label for="profilo-cognome">Cognome *</label>
-          <input type="text" id="profilo-cognome" required>
-        </div>
-      </div>
-      <div class="riga riga-2">
-        <div class="campo">
-          <label for="profilo-telefono">Telefono *</label>
-          <input type="tel" id="profilo-telefono" required>
-        </div>
-        <div class="campo">
-          <label for="profilo-email">Email</label>
-          <input type="email" id="profilo-email" disabled>
-        </div>
-      </div>
-      <div class="campo">
-        <label for="profilo-indirizzo">Indirizzo *</label>
-        <input type="text" id="profilo-indirizzo" required>
-      </div>
-      <div class="campo">
-        <label for="profilo-codice-fiscale">Codice fiscale *</label>
-        <input type="text" id="profilo-codice-fiscale" required>
-      </div>
-      <button type="submit" class="bottone bottone-pieno">Salva profilo</button>
-    </form>
-  </section>
-
-  <section class="sezione-conto">
-    <h2>Cambia password</h2>
-    <p id="messaggio-cambio-password" class="avviso" hidden></p>
-    <form id="form-cambio-password">
-      <div class="riga riga-2">
-        <div class="campo">
-          <label for="cambio-password-nuova">Nuova password * (almeno 6 caratteri)</label>
-          <input type="password" id="cambio-password-nuova" required minlength="6" autocomplete="new-password">
-        </div>
-        <div class="campo">
-          <label for="cambio-password-conferma">Conferma *</label>
-          <input type="password" id="cambio-password-conferma" required minlength="6" autocomplete="new-password">
-        </div>
-      </div>
-      <button type="submit" class="bottone bottone-pieno">Aggiorna password</button>
-    </form>
-  </section>
-
-  <section class="sezione-conto">
-    <h2>I tuoi animali</h2>
-    <p id="messaggio-animale" class="avviso" hidden></p>
-    <div id="lista-animali" class="lista-animali"></div>
-
-    <form id="form-animale">
-      <input type="hidden" id="animale-id">
-      <fieldset>
-        <legend id="legenda-animale">Aggiungi un animale</legend>
-        <div class="riga riga-3">
-          <div class="campo">
-            <label for="animale-nome">Nome *</label>
-            <input type="text" id="animale-nome" required>
-          </div>
-          <div class="campo">
-            <label for="animale-razza">Razza</label>
-            <input type="text" id="animale-razza">
-          </div>
-          <div class="campo">
-            <label for="animale-data-nascita">Data di nascita</label>
-            <input type="date" id="animale-data-nascita">
-          </div>
-        </div>
-        <div class="riga riga-2">
-          <div class="campo">
-            <label for="animale-sesso">Sesso</label>
-            <select id="animale-sesso">
-              <option value="">Non specificato</option>
-              <option value="maschio">Maschio</option>
-              <option value="femmina">Femmina</option>
-            </select>
-          </div>
-          <div class="campo">
-            <span class="campo-etichetta-vuota" aria-hidden="true">&nbsp;</span>
-            <label class="checkriga"><input type="checkbox" id="animale-sterilizzato"> Sterilizzato/a</label>
-          </div>
-        </div>
-        <div class="campo">
-          <label for="animale-note-mediche">Allergie / note mediche</label>
-          <textarea id="animale-note-mediche"></textarea>
-        </div>
-        <div class="campo">
-          <label for="animale-note-comportamentali">Note comportamentali</label>
-          <textarea id="animale-note-comportamentali"></textarea>
-        </div>
-      </fieldset>
-      <button type="submit" class="bottone bottone-pieno" id="bottone-salva-animale">Aggiungi animale</button>
-      <button type="button" class="bottone bottone-vuoto" id="bottone-annulla-animale" hidden>Annulla modifica</button>
-    </form>
-  </section>
-
-  <section class="sezione-conto">
-    <h2>Le tue prenotazioni</h2>
-    <p style="margin:0 0 16px;"><a href="prenota-pensione-asilo.html" class="bottone bottone-pieno">Prenota pensione o asilo &rarr;</a></p>
-    <div id="lista-prenotazioni" class="lista-prenotazioni"></div>
-  </section>
-
-  <section class="sezione-conto">
-    <h2>La tua passeggiata</h2>
-    <p class="premessa" style="margin-bottom:16px;">Una sola prenotazione attiva alla volta: qui puoi cambiare i cani presenti o cancellarla.</p>
-    <p id="messaggio-passeggiata" class="avviso" hidden></p>
-    <div id="blocco-passeggiata"></div>
-  </section>
-
+  <div class="da-fare" id="scorciatoia-staff" hidden>
+    <a class="voce-da-fare oro" href="area-staff.html"><div><b>Pannello staff</b><span>Prenotazioni, uscite e clienti</span></div><i>Apri →</i></a>
+  </div>
 </div>
 
 </main>
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script src="supabase-client.js"></script>
+<script src="area-comune.js?v=20260927"></script>
 <script>
 (function(){
-  var sb = window.CroceviaSupabase;
-  var utenteCorrente = null;
+  var A = window.CroceviaArea;
+  var sb = A.sb;
+  var esc = A.escapeHtml;
 
+  var parametri = new URLSearchParams(window.location.search);
+  // dopo l'accesso si torna alla pagina dell'area da cui si era partiti
+  var torna = parametri.get('torna');
+  if (!/^[a-z-]+\.html$/.test(torna || '')) torna = null;
+  var inRecupero = /type=recovery/.test(window.location.hash);
+
+  var attesa = document.getElementById('area-attesa');
   var blocco = document.getElementById('blocco-autenticazione');
-  var area = document.getElementById('area-cliente');
+  var pannelloNuovaPassword = document.getElementById('pannello-nuova-password');
+  var panoramica = document.getElementById('panoramica');
 
   var tabAccedi = document.getElementById('tab-accedi');
   var tabRegistrati = document.getElementById('tab-registrati');
   var formLogin = document.getElementById('form-login');
   var formRegistrazione = document.getElementById('form-registrazione');
   var formRecupero = document.getElementById('form-recupero');
-  var pannelloNuovaPassword = document.getElementById('pannello-nuova-password');
   var messaggioAuth = document.getElementById('messaggio-auth');
 
   function mostra(el){ el.hidden = false; }
   function nascondi(el){ el.hidden = true; }
+  function vaiAvanti(){ window.location.replace(torna || 'area-privata.html'); }
 
-  function avviso(el, testo, tipo){
-    el.textContent = testo;
-    el.className = 'avviso ' + (tipo === 'errore' ? 'avviso-errore' : 'avviso-ok');
-    mostra(el);
+  function mostraRecupero(){
+    nascondi(attesa); nascondi(blocco); nascondi(panoramica);
+    mostra(pannelloNuovaPassword);
   }
+
+  sb.auth.onAuthStateChange(function(evento){
+    if (evento === 'PASSWORD_RECOVERY') { inRecupero = true; mostraRecupero(); }
+  });
+
+  A.sessione.then(function(ctx){
+    nascondi(attesa);
+    if (inRecupero) { mostraRecupero(); return; }
+    if (!ctx) { mostra(blocco); return; }
+    // ritorno da Stripe: l'esito del pagamento si legge tra le prenotazioni
+    var esito = parametri.get('pagamento');
+    if (esito) { window.location.replace('area-prenotazioni.html?pagamento=' + encodeURIComponent(esito)); return; }
+    if (torna) { window.location.replace(torna); return; }
+    mostraPanoramica(ctx);
+  });
+
+  // ---------- accesso, registrazione, recupero ----------
 
   tabAccedi.addEventListener('click', function(){
     tabAccedi.classList.add('attiva');
@@ -319,8 +235,8 @@
     sb.auth.resetPasswordForEmail(email, {
       redirectTo: window.location.origin + '/area-privata.html'
     }).then(function(r){
-      if (r.error) { avviso(messaggioAuth, r.error.message, 'errore'); return; }
-      avviso(messaggioAuth, 'Se l\'indirizzo è registrato, ti abbiamo inviato un\'email con il link per reimpostare la password.', 'ok');
+      if (r.error) { A.avviso(messaggioAuth, r.error.message, 'errore'); return; }
+      A.avviso(messaggioAuth, 'Se l\'indirizzo è registrato, ti abbiamo inviato un\'email con il link per reimpostare la password.', 'ok');
       formRecupero.reset();
     });
   });
@@ -331,7 +247,8 @@
     var email = document.getElementById('login-email').value.trim();
     var password = document.getElementById('login-password').value;
     sb.auth.signInWithPassword({ email: email, password: password }).then(function(r){
-      if (r.error) avviso(messaggioAuth, r.error.message, 'errore');
+      if (r.error) { A.avviso(messaggioAuth, r.error.message, 'errore'); return; }
+      vaiAvanti();
     });
   });
 
@@ -341,48 +258,17 @@
     var email = document.getElementById('reg-email').value.trim();
     var password = document.getElementById('reg-password').value;
     var conferma = document.getElementById('reg-password-conferma').value;
-    if (password !== conferma) { avviso(messaggioAuth, 'Le due password non coincidono.', 'errore'); return; }
+    if (password !== conferma) { A.avviso(messaggioAuth, 'Le due password non coincidono.', 'errore'); return; }
     sb.auth.signUp({
       email: email,
       password: password,
       options: { emailRedirectTo: window.location.origin + '/area-privata.html' }
     }).then(function(r){
-      if (r.error) { avviso(messaggioAuth, r.error.message, 'errore'); return; }
-      if (r.data.session) return; // onAuthStateChange mostrerà l'area cliente
-      avviso(messaggioAuth, 'Account creato: controlla la tua email per confermarlo, poi accedi da qui.', 'ok');
+      if (r.error) { A.avviso(messaggioAuth, r.error.message, 'errore'); return; }
+      if (r.data.session) { vaiAvanti(); return; }
+      A.avviso(messaggioAuth, 'Account creato: controlla la tua email per confermarlo, poi accedi da qui.', 'ok');
       formRegistrazione.reset();
     });
-  });
-
-  document.getElementById('bottone-esci').addEventListener('click', function(){
-    sb.auth.signOut();
-  });
-
-  sb.auth.onAuthStateChange(function(evento, sessione){
-    if (evento === 'PASSWORD_RECOVERY') {
-      nascondi(blocco);
-      nascondi(area);
-      mostra(pannelloNuovaPassword);
-      return;
-    }
-    if (!pannelloNuovaPassword.hidden) return; // non interrompere il recupero in corso
-
-    if (sessione && sessione.user) {
-      utenteCorrente = sessione.user;
-      nascondi(blocco);
-      mostra(area);
-      document.getElementById('benvenuto-email').textContent = utenteCorrente.email;
-      mostraEsitoPagamento();
-      caricaProfilo();
-      caricaAnimali();
-      caricaPrenotazioni();
-      nascondi(messaggioPasseggiata);
-      caricaPasseggiata();
-    } else {
-      utenteCorrente = null;
-      mostra(blocco);
-      nascondi(area);
-    }
   });
 
   document.getElementById('form-nuova-password').addEventListener('submit', function(e){
@@ -391,363 +277,105 @@
     msg.hidden = true;
     var nuova = document.getElementById('nuova-password').value;
     var conferma = document.getElementById('nuova-password-conferma').value;
-    if (nuova !== conferma) { avviso(msg, 'Le due password non coincidono.', 'errore'); return; }
+    if (nuova !== conferma) { A.avviso(msg, 'Le due password non coincidono.', 'errore'); return; }
     sb.auth.updateUser({ password: nuova }).then(function(r){
-      if (r.error) { avviso(msg, r.error.message, 'errore'); return; }
-      nascondi(pannelloNuovaPassword);
-      window.history.replaceState({}, '', window.location.pathname);
-      sb.auth.getSession().then(function(s){
-        if (s.data.session) {
-          utenteCorrente = s.data.session.user;
-          nascondi(blocco);
-          mostra(area);
-          document.getElementById('benvenuto-email').textContent = utenteCorrente.email;
-          caricaProfilo();
-          caricaAnimali();
-          caricaPrenotazioni();
-          nascondi(messaggioPasseggiata);
-          caricaPasseggiata();
-        }
-      });
+      if (r.error) { A.avviso(msg, r.error.message, 'errore'); return; }
+      window.location.replace('area-privata.html');
     });
   });
 
-  document.getElementById('form-cambio-password').addEventListener('submit', function(e){
-    e.preventDefault();
-    var msg = document.getElementById('messaggio-cambio-password');
-    msg.hidden = true;
-    var nuova = document.getElementById('cambio-password-nuova').value;
-    var conferma = document.getElementById('cambio-password-conferma').value;
-    if (nuova !== conferma) { avviso(msg, 'Le due password non coincidono.', 'errore'); return; }
-    sb.auth.updateUser({ password: nuova }).then(function(r){
-      if (r.error) { avviso(msg, r.error.message, 'errore'); return; }
-      avviso(msg, 'Password aggiornata.', 'ok');
-      document.getElementById('form-cambio-password').reset();
-    });
-  });
+  // ---------- panoramica ----------
 
-  function mostraEsitoPagamento(){
-    var parametri = new URLSearchParams(window.location.search);
-    var esito = parametri.get('pagamento');
-    if (!esito) return;
-    var msg = document.getElementById('messaggio-pagamento');
-    if (esito === 'riuscito') {
-      avviso(msg, 'Pagamento ricevuto, grazie! Se la prenotazione qui sotto risulta ancora "in attesa" aggiorna la pagina tra qualche secondo.', 'ok');
-    } else {
-      avviso(msg, 'Pagamento annullato: la prenotazione resta in attesa, puoi riprovare quando vuoi.', 'errore');
-    }
-    window.history.replaceState({}, '', window.location.pathname);
+  function voceDaFare(href, titolo, testo, azione, oro){
+    return '<a class="voce-da-fare' + (oro ? ' oro' : '') + '" href="' + href + '"><div><b>' + esc(titolo) + '</b><span>' + esc(testo) + '</span></div><i>' + esc(azione) + ' →</i></a>';
+  }
+  function tessera(href, etichetta, titolo, righe, piede, oro){
+    return '<a class="tessera' + (oro ? ' oro' : '') + '" href="' + href + '">' +
+      '<span class="etichetta">' + esc(etichetta) + '</span>' +
+      '<h3>' + esc(titolo) + '</h3>' + righe +
+      '<span class="piede">' + esc(piede) + ' →</span></a>';
   }
 
-  function avviaPagamento(prenotazioneId, tipo){
-    sb.functions.invoke('crea-pagamento', { body: { prenotazione_id: prenotazioneId, tipo: tipo } }).then(function(r){
-      if (r.error || !r.data || !r.data.url) {
-        window.alert('Non è stato possibile avviare il pagamento. Riprova tra poco.');
-        return;
-      }
-      window.location.href = r.data.url;
-    });
-  }
+  function mostraPanoramica(ctx){
+    var uid = ctx.utente.id;
+    var p = ctx.profilo;
+    mostra(panoramica);
+    document.getElementById('saluto').textContent = p.nome ? 'Ciao ' + p.nome : 'Ciao';
+    document.getElementById('scorciatoia-staff').hidden = !A.eStaff(p);
 
-  // ---------- profilo ----------
-
-  var formProfilo = document.getElementById('form-profilo');
-  var messaggioProfilo = document.getElementById('messaggio-profilo');
-
-  function caricaProfilo(){
-    sb.from('profili').select('*').eq('id', utenteCorrente.id).single().then(function(r){
-      if (r.error) { avviso(messaggioProfilo, r.error.message, 'errore'); return; }
-      var p = r.data;
-      document.getElementById('profilo-nome').value = p.nome || '';
-      document.getElementById('profilo-cognome').value = p.cognome || '';
-      document.getElementById('profilo-telefono').value = p.telefono || '';
-      document.getElementById('profilo-email').value = utenteCorrente.email;
-      document.getElementById('profilo-indirizzo').value = p.indirizzo || '';
-      document.getElementById('profilo-codice-fiscale').value = p.codice_fiscale || '';
-      document.getElementById('link-staff').hidden = (p.ruolo !== 'addetto' && p.ruolo !== 'admin');
-    });
-  }
-
-  formProfilo.addEventListener('submit', function(e){
-    e.preventDefault();
-    nascondi(messaggioProfilo);
-    var dati = {
-      nome: document.getElementById('profilo-nome').value.trim(),
-      cognome: document.getElementById('profilo-cognome').value.trim(),
-      telefono: document.getElementById('profilo-telefono').value.trim(),
-      indirizzo: document.getElementById('profilo-indirizzo').value.trim(),
-      codice_fiscale: document.getElementById('profilo-codice-fiscale').value.trim().toUpperCase()
-    };
-    sb.from('profili').update(dati).eq('id', utenteCorrente.id).then(function(r){
-      if (r.error) avviso(messaggioProfilo, r.error.message, 'errore');
-      else avviso(messaggioProfilo, 'Profilo salvato.', 'ok');
-    });
-  });
-
-  // ---------- animali ----------
-
-  var formAnimale = document.getElementById('form-animale');
-  var messaggioAnimale = document.getElementById('messaggio-animale');
-  var listaAnimali = document.getElementById('lista-animali');
-  var bottoneAnnullaAnimale = document.getElementById('bottone-annulla-animale');
-
-  function resetFormAnimale(){
-    formAnimale.reset();
-    document.getElementById('animale-id').value = '';
-    document.getElementById('legenda-animale').textContent = 'Aggiungi un animale';
-    document.getElementById('bottone-salva-animale').textContent = 'Aggiungi animale';
-    nascondi(bottoneAnnullaAnimale);
-  }
-  bottoneAnnullaAnimale.addEventListener('click', resetFormAnimale);
-
-  function caricaAnimali(){
-    sb.from('animali').select('*').eq('proprietario_id', utenteCorrente.id).order('creato_il').then(function(r){
-      if (r.error) { avviso(messaggioAnimale, r.error.message, 'errore'); return; }
-      listaAnimali.innerHTML = '';
-      if (!r.data.length) {
-        listaAnimali.innerHTML = '<p class="vuoto">Non hai ancora aggiunto nessun animale.</p>';
-        return;
-      }
-      r.data.forEach(function(a){
-        var card = document.createElement('div');
-        card.className = 'card-animale';
-        var dettagli = [a.razza, a.data_nascita ? ('nato/a il ' + a.data_nascita) : null].filter(Boolean).join(' · ');
-        card.innerHTML =
-          '<div><h3>' + escapeHtml(a.nome) + '</h3>' +
-          (dettagli ? '<p>' + escapeHtml(dettagli) + '</p>' : '') +
-          '</div>' +
-          '<div class="card-azioni">' +
-          '<button type="button" data-modifica="' + a.id + '">Modifica</button>' +
-          '<button type="button" data-elimina="' + a.id + '">Elimina</button>' +
-          '</div>';
-        card.querySelector('[data-modifica]').addEventListener('click', function(){ modificaAnimale(a); });
-        card.querySelector('[data-elimina]').addEventListener('click', function(){ eliminaAnimale(a.id); });
-        listaAnimali.appendChild(card);
-      });
-    });
-  }
-
-  function modificaAnimale(a){
-    document.getElementById('animale-id').value = a.id;
-    document.getElementById('animale-nome').value = a.nome || '';
-    document.getElementById('animale-razza').value = a.razza || '';
-    document.getElementById('animale-data-nascita').value = a.data_nascita || '';
-    document.getElementById('animale-sesso').value = a.sesso || '';
-    document.getElementById('animale-sterilizzato').checked = !!a.sterilizzato;
-    document.getElementById('animale-note-mediche').value = a.note_mediche || '';
-    document.getElementById('animale-note-comportamentali').value = a.note_comportamentali || '';
-    document.getElementById('legenda-animale').textContent = 'Modifica ' + a.nome;
-    document.getElementById('bottone-salva-animale').textContent = 'Salva modifiche';
-    mostra(bottoneAnnullaAnimale);
-    formAnimale.scrollIntoView({ behavior: 'smooth', block: 'center' });
-  }
-
-  function eliminaAnimale(id){
-    if (!window.confirm('Eliminare questo animale?')) return;
-    sb.from('animali').delete().eq('id', id).then(function(r){
-      if (r.error) {
-        var testo = r.error.code === '23503'
-          ? 'Non puoi eliminare un animale che ha prenotazioni o una passeggiata collegate.'
-          : r.error.message;
-        avviso(messaggioAnimale, testo, 'errore');
-        return;
-      }
-      caricaAnimali();
-    });
-  }
-
-  formAnimale.addEventListener('submit', function(e){
-    e.preventDefault();
-    nascondi(messaggioAnimale);
-    var id = document.getElementById('animale-id').value;
-    var dati = {
-      nome: document.getElementById('animale-nome').value.trim(),
-      razza: document.getElementById('animale-razza').value.trim() || null,
-      data_nascita: document.getElementById('animale-data-nascita').value || null,
-      sesso: document.getElementById('animale-sesso').value || null,
-      sterilizzato: document.getElementById('animale-sterilizzato').checked,
-      note_mediche: document.getElementById('animale-note-mediche').value.trim() || null,
-      note_comportamentali: document.getElementById('animale-note-comportamentali').value.trim() || null
-    };
-    var richiesta = id
-      ? sb.from('animali').update(dati).eq('id', id)
-      : sb.from('animali').insert(Object.assign({ proprietario_id: utenteCorrente.id }, dati));
-    richiesta.then(function(r){
-      if (r.error) { avviso(messaggioAnimale, r.error.message, 'errore'); return; }
-      resetFormAnimale();
-      caricaAnimali();
-    });
-  });
-
-  // ---------- prenotazioni ----------
-
-  var listaPrenotazioni = document.getElementById('lista-prenotazioni');
-  var etichetteStato = {
-    in_attesa_pagamento: 'In attesa di pagamento',
-    confermata: 'Confermata',
-    completata: 'Completata',
-    annullata: 'Annullata'
-  };
-
-  function giorniAllInizio(dataDal){
-    var oggi = new Date(); oggi.setHours(0, 0, 0, 0);
-    var inizio = dataLocale(dataDal);
-    return Math.round((inizio - oggi) / 86400000);
-  }
-  function dataLocale(s){ return new Date(s + 'T00:00:00'); }
-
-  function chiediDisdetta(prenotazioneId, dataDal){
-    var giorni = giorniAllInizio(dataDal);
-    var testo = giorni >= 7
-      ? 'Confermi la richiesta di disdetta? Mancano ' + giorni + ' giorni all\'inizio: secondo i termini ti verrà rimborsato quanto versato, meno le commissioni di pagamento. La richiesta va comunque confermata da me prima che il posto si liberi.'
-      : 'Confermi la richiesta di disdetta? Siamo a ' + giorni + ' giorni dall\'inizio: sotto i 7 giorni di preavviso, secondo i termini l\'importo versato non è rimborsabile. La richiesta verrà comunque inoltrata.';
-    if (!window.confirm(testo)) return;
-    sb.from('prenotazioni').update({ disdetta_richiesta: true, disdetta_richiesta_il: new Date().toISOString() }).eq('id', prenotazioneId).then(function(r){
-      if (r.error) { window.alert('Non è stato possibile inviare la richiesta: ' + r.error.message); return; }
-      caricaPrenotazioni();
-    });
-  }
-
-  function caricaPrenotazioni(){
-    sb.from('prenotazioni')
-      .select('id, data_dal, data_al, stato, prezzo_totale, acconto_importo, acconto_pagato_il, saldo_importo, saldo_pagato_il, pappa_fornita, disdetta_richiesta, disdetta_richiesta_il, animali(nome), servizi(nome)')
-      .eq('cliente_id', utenteCorrente.id)
-      .order('data_dal', { ascending: false })
-      .then(function(r){
-        if (r.error) return;
-        listaPrenotazioni.innerHTML = '';
-        if (!r.data.length) {
-          listaPrenotazioni.innerHTML = '<p class="vuoto">Nessuna prenotazione ancora.</p>';
-          return;
-        }
-        r.data.forEach(function(p){
-          var card = document.createElement('div');
-          card.className = 'card-prenotazione';
-          var azione = '';
-          if (p.stato === 'in_attesa_pagamento' && !p.acconto_pagato_il) {
-            azione = '<button type="button" class="bottone bottone-pieno" data-paga="acconto">Paga acconto ' + euro(p.acconto_importo) + '</button>' +
-              '<button type="button" class="bottone bottone-vuoto" data-paga="completo">Paga tutto subito ' + euro(p.prezzo_totale) + '</button>';
-          } else if (p.stato === 'confermata' && !p.saldo_pagato_il) {
-            azione = '<button type="button" class="bottone bottone-vuoto" data-paga="saldo">Paga saldo ' + euro(p.saldo_importo) + '</button>';
-          }
-          var disdetta = '';
-          if (p.stato === 'confermata' && !p.disdetta_richiesta) {
-            disdetta = '<button type="button" class="bottone bottone-vuoto" data-disdici="1">Chiedi la disdetta</button>';
-          }
-          card.innerHTML =
-            '<div><h3>' + escapeHtml(p.servizi ? p.servizi.nome : '') + ' — ' + escapeHtml(p.animali ? p.animali.nome : '') + '</h3>' +
-            '<p>' + escapeHtml(p.data_dal) + ' → ' + escapeHtml(p.data_al) + (p.pappa_fornita ? ' · pappa fornita' : '') + '</p>' +
-            '<p>Totale ' + euro(p.prezzo_totale) +
-              (p.acconto_importo ? ' · acconto ' + euro(p.acconto_importo) + (p.acconto_pagato_il ? ' (pagato)' : '') : '') +
-              (p.saldo_importo ? ' · saldo ' + euro(p.saldo_importo) + (p.saldo_pagato_il ? ' (pagato)' : '') : '') +
-            '</p>' +
-            (p.disdetta_richiesta ? '<p class="avviso avviso-errore" style="margin-top:10px;">Disdetta richiesta il ' + escapeHtml(new Date(p.disdetta_richiesta_il).toLocaleDateString('it-IT')) + ' — in attesa di conferma.</p>' : '') +
-            (azione || disdetta ? '<div style="display:flex; gap:10px; flex-wrap:wrap; margin-top:10px;">' + azione + disdetta + '</div>' : '') +
-            '</div>' +
-            '<span class="badge-stato badge-' + p.stato + '">' + (etichetteStato[p.stato] || p.stato) + '</span>';
-          var bottoniPaga = card.querySelectorAll('[data-paga]');
-          for (var i = 0; i < bottoniPaga.length; i++) {
-            bottoniPaga[i].addEventListener('click', function(){ avviaPagamento(p.id, this.getAttribute('data-paga')); });
-          }
-          var bottoneDisdici = card.querySelector('[data-disdici]');
-          if (bottoneDisdici) {
-            bottoneDisdici.addEventListener('click', function(){ chiediDisdetta(p.id, p.data_dal); });
-          }
-          listaPrenotazioni.appendChild(card);
-        });
-      });
-  }
-
-  function euro(n){ return n == null ? '' : Number(n).toLocaleString('it-IT', { style: 'currency', currency: 'EUR' }); }
-  function escapeHtml(s){
-    var d = document.createElement('div');
-    d.textContent = s == null ? '' : String(s);
-    return d.innerHTML;
-  }
-
-  // ---------- la tua passeggiata ----------
-
-  var messaggioPasseggiata = document.getElementById('messaggio-passeggiata');
-  var bloccoPasseggiata = document.getElementById('blocco-passeggiata');
-  var nomiGiorni = ['domenica','lunedì','martedì','mercoledì','giovedì','venerdì','sabato'];
-  var nomiMesi = ['gennaio','febbraio','marzo','aprile','maggio','giugno','luglio','agosto','settembre','ottobre','novembre','dicembre'];
-
-  function formattaData(iso){
-    var d = new Date(iso + 'T00:00:00');
-    return nomiGiorni[d.getDay()] + ' ' + d.getDate() + ' ' + nomiMesi[d.getMonth()];
-  }
-
-  function caricaPasseggiata(){
     Promise.all([
+      sb.from('prenotazioni')
+        .select('id, data_dal, data_al, stato, acconto_importo, disdetta_richiesta, animali(nome), servizi(nome,categoria)')
+        .eq('cliente_id', uid)
+        .in('stato', ['in_attesa_pagamento', 'confermata'])
+        .gte('data_al', A.oggiIso())
+        .order('data_dal'),
       sb.from('iscrizioni_passeggiata')
-        .select('id, passeggiate(data,ora,argomento,luogo,stato), iscrizione_passeggiata_animali(animale_id, animali(nome))')
-        .eq('cliente_id', utenteCorrente.id)
+        .select('id, passeggiate(data,ora,argomento,luogo,stato), iscrizione_passeggiata_animali(animali(nome))')
+        .eq('cliente_id', uid)
         .eq('stato', 'confermata')
         .maybeSingle(),
-      sb.from('animali').select('id,nome').eq('proprietario_id', utenteCorrente.id).order('creato_il')
+      sb.from('animali').select('id,nome').eq('proprietario_id', uid).order('creato_il')
     ]).then(function(r){
-      var iscrizioneRes = r[0], animaliRes = r[1];
-      if (iscrizioneRes.error) { avviso(messaggioPasseggiata, iscrizioneRes.error.message, 'errore'); return; }
+      var errore = r.filter(function(x){ return x.error; })[0];
+      if (errore) { A.avviso(document.getElementById('messaggio-panoramica'), errore.error.message, 'errore'); }
+      var prenotazioni = r[0].data || [];
+      var iscrizione = r[1].data;
+      var cani = r[2].data || [];
+      var mancanti = A.campiMancanti(p);
 
-      var iscrizione = iscrizioneRes.data;
-      if (!iscrizione) {
-        bloccoPasseggiata.innerHTML =
-          '<p class="vuoto">Nessuna prenotazione attiva.</p>' +
-          '<p style="margin-top:12px;"><a href="prenota-passeggiata.html" class="bottone bottone-pieno">Prenota una passeggiata &rarr;</a></p>';
-        return;
+      // cose da fare
+      var daFare = prenotazioni.filter(function(x){ return x.stato === 'in_attesa_pagamento'; }).map(function(x){
+        return voceDaFare('area-prenotazioni.html', 'Acconto da pagare',
+          (x.servizi ? x.servizi.nome : '') + ' per ' + (x.animali ? x.animali.nome : '') + ', ' + A.intervallo(x.data_dal, x.data_al) + ' · ' + A.euro(x.acconto_importo),
+          'Paga');
+      });
+      if (!cani.length) {
+        daFare.push(voceDaFare('area-cani.html', 'Aggiungi il tuo cane', 'Serve per prenotare pensione, asilo e passeggiate', 'Aggiungi', true));
+      }
+      if (mancanti.length) {
+        daFare.push(voceDaFare('area-profilo.html', 'Completa il profilo', 'Manca: ' + mancanti.join(', ') + ' — servono per prenotare', 'Completa', true));
+      }
+      document.getElementById('da-fare').innerHTML = daFare.join('');
+
+      // tessere
+      var html = '';
+      var prossima = prenotazioni[0];
+      if (prossima) {
+        html += tessera('area-prenotazioni.html', 'Prossimo soggiorno',
+          (prossima.servizi ? prossima.servizi.nome : '') + ' · ' + (prossima.animali ? prossima.animali.nome : ''),
+          '<p>' + esc(A.intervallo(prossima.data_dal, prossima.data_al)) + ' · ' + esc(A.durata(prossima.data_dal, prossima.data_al, prossima.servizi && prossima.servizi.categoria)) + '</p>' +
+          '<p><span class="badge-stato badge-' + prossima.stato + '">' + (prossima.disdetta_richiesta ? 'Disdetta richiesta' : A.etichetteStato[prossima.stato]) + '</span></p>',
+          prenotazioni.length > 1 ? 'Tutte le prenotazioni (' + prenotazioni.length + ')' : 'Vedi la prenotazione', true);
+      } else {
+        html += tessera('prenota-pensione-asilo.html', 'Pensione e asilo', 'Nessun soggiorno in programma',
+          '<p>Il calendario mostra i posti liberi in tempo reale.</p>', 'Prenota');
       }
 
-      var tuoiCani = animaliRes.data || [];
-      var p = iscrizione.passeggiate;
-      var caniIscrizione = (iscrizione.iscrizione_passeggiata_animali || []).map(function(r2){ return r2.animale_id; });
-      var stato = p ? p.stato : null;
-      var statoTesto = stato === 'annullata_meteo' ? ' — annullata per maltempo, ti ricontatto io'
-        : (stato === 'svolta' ? ' — svolta' : '');
+      var uscita = iscrizione && iscrizione.passeggiate;
+      if (uscita) {
+        var nomiCani = (iscrizione.iscrizione_passeggiata_animali || []).map(function(x){ return x.animali ? x.animali.nome : ''; }).filter(Boolean);
+        var statoUscita = uscita.stato === 'annullata_meteo' ? '<p><span class="badge-stato badge-annullata">Annullata per maltempo</span></p>'
+          : (uscita.stato === 'svolta' ? '<p><span class="badge-stato badge-completata">Svolta</span></p>' : '');
+        html += tessera('area-passeggiate.html', 'Prossima passeggiata', uscita.argomento,
+          '<p>' + esc(A.formattaData(uscita.data)) + ', ore ' + esc(uscita.ora.slice(0, 5)) + '<br>' + esc(uscita.luogo) +
+          (nomiCani.length ? ' · con ' + esc(nomiCani.join(' e ')) : '') + '</p>' + statoUscita,
+          'Gestisci', true);
+      } else {
+        html += tessera('prenota-passeggiata.html', 'Passeggiate', 'Nessuna passeggiata prenotata',
+          '<p>Uscite di gruppo sul Lago Maggiore, saldo in loco.</p>', 'Prenota');
+      }
 
-      var checkboxCani = tuoiCani.map(function(a){
-        var checked = caniIscrizione.indexOf(a.id) !== -1;
-        return '<label class="checkriga"><input type="checkbox" name="cane-passeggiata" value="' + a.id + '"' + (checked ? ' checked' : '') + '> ' + escapeHtml(a.nome) + '</label>';
-      }).join('');
+      html += tessera('area-cani.html', 'I miei cani', cani.length ? cani.map(function(c){ return c.nome; }).join(', ') : 'Nessun cane ancora',
+        '<p>' + (cani.length === 1 ? '1 cane registrato' : cani.length + ' cani registrati') + '</p>',
+        cani.length ? 'Vedi e modifica' : 'Aggiungi');
 
-      bloccoPasseggiata.innerHTML =
-        '<div class="card-prenotazione">' +
-        '<div><h3>' + escapeHtml(p ? p.argomento : '') + '</h3>' +
-        '<p>' + escapeHtml(p ? (formattaData(p.data) + ', ore ' + p.ora.slice(0,5)) : '') + ' &middot; ' + escapeHtml(p ? p.luogo : '') + statoTesto + '</p>' +
-        '<p>Saldo 50&nbsp;€ a persona, si paga in loco &mdash; nessun anticipo dovuto.</p>' +
-        '<div style="margin-top:10px;">' + (checkboxCani || '<p class="vuoto">Non hai altri cani nel profilo.</p>') + '</div>' +
-        '<p class="card-azioni" style="margin-top:14px;">' +
-        '<button type="button" id="salva-cani-passeggiata">Salva i cani</button> ' +
-        '<button type="button" id="annulla-passeggiata">Cancella la prenotazione</button>' +
-        '</p></div></div>';
+      html += tessera('area-profilo.html', 'Profilo', A.nomeCompleto(p) || 'Il tuo profilo',
+        '<p>' + (p.telefono ? esc(p.telefono) + '<br>' : '') + esc(ctx.utente.email) + '</p>' +
+        (mancanti.length ? '<p style="color:var(--rosso-testo-muto)">Manca: ' + esc(mancanti.join(', ')) + '</p>' : ''),
+        mancanti.length ? 'Completa' : 'Modifica');
 
-      document.getElementById('salva-cani-passeggiata').addEventListener('click', function(){
-        var selezionati = Array.prototype.map.call(bloccoPasseggiata.querySelectorAll('input[name="cane-passeggiata"]:checked'), function(el){ return el.value; });
-        if (!selezionati.length) { avviso(messaggioPasseggiata, 'Deve restare almeno un cane nella prenotazione.', 'errore'); return; }
-        salvaCaniPasseggiata(iscrizione.id, caniIscrizione, selezionati);
-      });
-      document.getElementById('annulla-passeggiata').addEventListener('click', function(){
-        if (!window.confirm('Cancellare la tua prenotazione per questa passeggiata?')) return;
-        sb.from('iscrizioni_passeggiata').update({ stato: 'annullata' }).eq('id', iscrizione.id).then(function(r2){
-          if (r2.error) { avviso(messaggioPasseggiata, r2.error.message, 'errore'); return; }
-          avviso(messaggioPasseggiata, 'Prenotazione cancellata.', 'ok');
-          caricaPasseggiata();
-        });
-      });
-    });
-  }
-
-  function salvaCaniPasseggiata(iscrizioneId, prima, dopo){
-    var daTogliere = prima.filter(function(id){ return dopo.indexOf(id) === -1; });
-    var daAggiungere = dopo.filter(function(id){ return prima.indexOf(id) === -1; });
-    var operazioni = [];
-    if (daTogliere.length) operazioni.push(sb.from('iscrizione_passeggiata_animali').delete().eq('iscrizione_id', iscrizioneId).in('animale_id', daTogliere));
-    if (daAggiungere.length) operazioni.push(sb.from('iscrizione_passeggiata_animali').insert(daAggiungere.map(function(id){ return { iscrizione_id: iscrizioneId, animale_id: id }; })));
-    if (!operazioni.length) { avviso(messaggioPasseggiata, 'Nessuna modifica da salvare.', 'ok'); return; }
-    Promise.all(operazioni).then(function(risultati){
-      var errore = risultati.filter(function(r){ return r.error; })[0];
-      if (errore) { avviso(messaggioPasseggiata, errore.error.message, 'errore'); return; }
-      avviso(messaggioPasseggiata, 'Cani aggiornati.', 'ok');
-      caricaPasseggiata();
+      document.getElementById('tessere').innerHTML = html;
     });
   }
 })();
@@ -772,6 +400,6 @@
   </div>
 </footer>
 
-<script src="main.js?v=20260918"></script>
+<script src="main.js?v=20260927"></script>
 <script src="cookie-consent.js"></script>
 </html>

@@ -1,0 +1,208 @@
+<!doctype html>
+<html lang="it">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#0d2219">
+<script>(function(){try{var t=localStorage.getItem('crocevia-tema');if(t==='chiaro'||t==='scuro'){document.documentElement.setAttribute('data-tema',t);}}catch(e){}})();</script>
+<link rel="icon" type="image/png" href="assets/img/brand/favicon.png">
+<link rel="apple-touch-icon" href="assets/img/brand/apple-touch-icon.png">
+<title>Pensione e asilo — Area privata — Crocevia</title>
+<meta name="description" content="Le tue prenotazioni di pensione e asilo, i pagamenti e le disdette.">
+<meta name="robots" content="noindex">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;600;700&family=EB+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&display=swap">
+<link rel="stylesheet" href="style.css?v=20260927d">
+<noscript><style>.reveal{opacity:1!important;transform:none!important;}</style></noscript>
+<header class="site-header">
+  <nav class="nav">
+    <a href="index.html" class="brand" aria-label="Crocevia — Home">
+      <img class="logo-nav" src="assets/img/brand/logo-nav.webp" alt="Crocevia" width="200" height="201">
+      <span class="brand-text">
+        <span class="brand-word">CROCEVIA</span>
+        <span class="brand-tagline">Asilo · Pensione · Passeggiate</span>
+      </span>
+    </a>
+    <button class="tema-toggle" id="cambia-tema" type="button" aria-label="Passa al tema chiaro" aria-pressed="false">
+      <svg class="icona-sole" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><circle cx="12" cy="12" r="4"></circle><path d="M12 2v3M12 19v3M4.2 4.2l2.1 2.1M17.7 17.7l2.1 2.1M2 12h3M19 12h3M4.2 19.8l2.1-2.1M17.7 6.3l2.1-2.1" stroke-width="1.8" stroke-linecap="round"></path></svg>
+      <svg class="icona-luna" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M20 14.5A8.5 8.5 0 1 1 9.5 4a7 7 0 0 0 10.5 10.5Z"></path></svg>
+    </button>
+    <button class="nav-toggle" id="apri-menu" type="button" aria-controls="menu-crocevia" aria-expanded="false" aria-label="Apri il menu"><span class="barre" aria-hidden="true"></span></button>
+    <ul class="nav-links" id="menu-crocevia"><li><a href="index.html" class="nav">Home</a></li><li><a href="educazione.html" class="nav">Educazione</a></li><li><a href="pensione-asilo.html" class="nav">Pensione &amp; Asilo</a></li><li><a href="passeggiate.html" class="nav">Passeggiate</a></li><li><a href="chi-siamo.html" class="nav">Chi siamo</a></li><li><a href="dove-operiamo.html" class="nav">Dove operiamo</a></li><li><a href="faq.html" class="nav">FAQ</a></li><li><a href="contatti.html" class="nav">Contatti</a></li><li class="nav-item-mobile-only"><a href="contattami.html" class="nav">Contattami</a></li><li class="nav-item-mobile-only"><a href="area-privata.html" class="nav active">Area privata</a></li></ul><span class="nav-divider" aria-hidden="true"></span><a href="contattami.html" class="nav-cta">Contattami</a><a href="area-privata.html" class="nav-account active" aria-label="Area privata"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><circle cx="12" cy="8" r="3.5"></circle><path d="M5 20c1.2-4 4-6 7-6s5.8 2 7 6"></path></svg></a>
+  </nav>
+</header>
+<main class="wrap">
+
+<div class="crumb"><a href="area-privata.html">Area privata</a> / Pensione e asilo</div>
+<p id="area-attesa" class="caricamento">Caricamento…</p>
+
+<div id="area-corpo" hidden>
+  <div class="testa-area con-azione">
+    <div>
+      <h1>Pensione e asilo</h1>
+      <p class="premessa">Le tue prenotazioni, i pagamenti e le disdette.</p>
+    </div>
+    <a href="prenota-pensione-asilo.html" class="bottone bottone-pieno piccolo">+ Nuova prenotazione</a>
+  </div>
+
+  <p id="messaggio-pagamento" class="avviso" hidden></p>
+  <p id="messaggio-prenotazioni" class="avviso" hidden></p>
+
+  <div class="filtri" id="filtri" role="tablist">
+    <button type="button" class="on" data-filtro="attive" role="tab">In arrivo <span class="n" data-n="attive">0</span></button>
+    <button type="button" data-filtro="passate" role="tab">Passate <span class="n" data-n="passate">0</span></button>
+  </div>
+  <div id="lista-prenotazioni"><p class="caricamento">Caricamento…</p></div>
+</div>
+
+</main>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="supabase-client.js"></script>
+<script src="area-comune.js?v=20260927"></script>
+<script>
+(function(){
+  var A = window.CroceviaArea;
+  var sb = A.sb;
+  var esc = A.escapeHtml;
+
+  A.pagina({}, function(ctx){
+    var lista = document.getElementById('lista-prenotazioni');
+    var tutte = [];
+    var filtro = 'attive';
+
+    // esito del ritorno da Stripe (?pagamento=riuscito|annullato)
+    var esito = new URLSearchParams(window.location.search).get('pagamento');
+    if (esito) {
+      var msg = document.getElementById('messaggio-pagamento');
+      if (esito === 'riuscito') {
+        A.avviso(msg, 'Pagamento ricevuto, grazie! Se la prenotazione qui sotto risulta ancora "in attesa" aggiorna la pagina tra qualche secondo.', 'ok');
+      } else {
+        A.avviso(msg, 'Pagamento annullato: la prenotazione resta in attesa, puoi riprovare finché non scade.', 'errore');
+      }
+      window.history.replaceState({}, '', window.location.pathname);
+    }
+
+    function eAttiva(p){
+      return (p.stato === 'in_attesa_pagamento' || p.stato === 'confermata') && p.data_al >= A.oggiIso();
+    }
+
+    function pagato(quando){ return '<em class="ok">pagato il ' + esc(new Date(quando).toLocaleDateString('it-IT', { day: 'numeric', month: 'short' })) + '</em>'; }
+
+    function scheda(p){
+      var classe = 'pren';
+      if (p.stato === 'confermata') classe += p.disdetta_richiesta ? ' rossa' : ' conf';
+      if (p.stato === 'completata' || p.stato === 'annullata') classe += ' spenta';
+
+      var conti = '<div><small>Totale</small><b>' + A.euro(p.prezzo_totale) + '</b></div>';
+      conti += '<div><small>Acconto</small><b>' + A.euro(p.acconto_importo) + '</b>' +
+        (p.acconto_pagato_il ? pagato(p.acconto_pagato_il) : (p.stato === 'annullata' ? '<em>—</em>' : '<em class="no">da pagare</em>')) + '</div>';
+      conti += '<div><small>Saldo</small><b>' + A.euro(p.saldo_importo) + '</b>' +
+        (p.saldo_pagato_il ? pagato(p.saldo_pagato_il)
+          : (p.stato === 'in_attesa_pagamento' ? '<em>dopo l\'acconto</em>'
+          : (p.stato === 'confermata' ? '<em class="no">da pagare</em>' : '<em>—</em>'))) + '</div>';
+
+      var bottoni = [];
+      if (p.stato === 'in_attesa_pagamento' && !p.acconto_pagato_il) {
+        bottoni.push('<button type="button" class="bottone bottone-pieno piccolo" data-paga="acconto">Paga acconto ' + A.euro(p.acconto_importo) + '</button>');
+        bottoni.push('<button type="button" class="bottone bottone-vuoto piccolo" data-paga="completo">Paga tutto subito ' + A.euro(p.prezzo_totale) + '</button>');
+      } else if (p.stato === 'confermata' && !p.saldo_pagato_il) {
+        bottoni.push('<button type="button" class="bottone bottone-pieno piccolo" data-paga="saldo">Paga saldo ' + A.euro(p.saldo_importo) + '</button>');
+      }
+      if (p.stato === 'confermata' && !p.disdetta_richiesta) {
+        bottoni.push('<button type="button" class="bottone bottone-vuoto piccolo" data-disdici>Chiedi la disdetta</button>');
+      }
+
+      var card = document.createElement('div');
+      card.className = classe;
+      card.innerHTML =
+        '<div class="alto"><div>' +
+          '<h3>' + esc(p.servizi ? p.servizi.nome : '') + ' · ' + esc(p.animali ? p.animali.nome : '') + '</h3>' +
+          '<div class="quando">' + esc(A.intervallo(p.data_dal, p.data_al)) + ' <small>· ' + esc(A.durata(p.data_dal, p.data_al, p.servizi && p.servizi.categoria)) +
+            (p.pappa_fornita ? ' · pappa fornita' : '') + '</small></div>' +
+        '</div><span class="badge-stato badge-' + p.stato + '">' + (A.etichetteStato[p.stato] || p.stato) + '</span></div>' +
+        '<div class="conti">' + conti + '</div>' +
+        (p.stato === 'in_attesa_pagamento' ? '<p class="avviso">Se il pagamento non arriva entro 15 minuti dalla richiesta, la prenotazione decade e il posto torna libero.</p>' : '') +
+        (p.disdetta_richiesta && p.stato === 'confermata' ? '<p class="avviso avviso-errore">Disdetta richiesta il ' + esc(new Date(p.disdetta_richiesta_il).toLocaleDateString('it-IT')) + ' — in attesa di conferma.</p>' : '') +
+        (bottoni.length ? '<div class="riga-bottoni">' + bottoni.join('') + '</div>' : '');
+
+      card.querySelectorAll('[data-paga]').forEach(function(b){
+        b.addEventListener('click', function(){ b.disabled = true; A.avviaPagamento(p.id, b.getAttribute('data-paga')); });
+      });
+      var disdici = card.querySelector('[data-disdici]');
+      if (disdici) disdici.addEventListener('click', function(){ chiediDisdetta(p); });
+      return card;
+    }
+
+    function mostraLista(){
+      var righe = tutte.filter(function(p){ return filtro === 'attive' ? eAttiva(p) : !eAttiva(p); });
+      if (filtro === 'attive') righe.sort(function(a, b){ return a.data_dal < b.data_dal ? -1 : (a.data_dal > b.data_dal ? 1 : 0); });
+      lista.innerHTML = '';
+      if (!righe.length) {
+        lista.innerHTML = filtro === 'attive'
+          ? '<p class="vuoto">Nessun soggiorno in programma. <a href="prenota-pensione-asilo.html">Prenota pensione o asilo →</a></p>'
+          : '<p class="vuoto">Ancora niente qui.</p>';
+        return;
+      }
+      righe.forEach(function(p){ lista.appendChild(scheda(p)); });
+    }
+
+    function carica(){
+      sb.from('prenotazioni')
+        .select('id, data_dal, data_al, stato, prezzo_totale, acconto_importo, acconto_pagato_il, saldo_importo, saldo_pagato_il, pappa_fornita, disdetta_richiesta, disdetta_richiesta_il, animali(nome), servizi(nome,categoria)')
+        .eq('cliente_id', ctx.utente.id)
+        .order('data_dal', { ascending: false })
+        .then(function(r){
+          if (r.error) { A.avviso(document.getElementById('messaggio-prenotazioni'), r.error.message, 'errore'); return; }
+          tutte = r.data || [];
+          document.querySelector('[data-n="attive"]').textContent = tutte.filter(eAttiva).length;
+          document.querySelector('[data-n="passate"]').textContent = tutte.filter(function(p){ return !eAttiva(p); }).length;
+          mostraLista();
+        });
+    }
+
+    function chiediDisdetta(p){
+      var giorni = A.giorniTra(A.oggiIso(), p.data_dal);
+      var testo = giorni >= 7
+        ? 'Confermi la richiesta di disdetta? Mancano ' + giorni + ' giorni all\'inizio: secondo i termini ti verrà rimborsato quanto versato, meno le commissioni di pagamento. La richiesta va comunque confermata da me prima che il posto si liberi.'
+        : 'Confermi la richiesta di disdetta? Siamo a ' + giorni + ' giorni dall\'inizio: sotto i 7 giorni di preavviso, secondo i termini l\'importo versato non è rimborsabile. La richiesta verrà comunque inoltrata.';
+      if (!window.confirm(testo)) return;
+      sb.from('prenotazioni').update({ disdetta_richiesta: true, disdetta_richiesta_il: new Date().toISOString() }).eq('id', p.id).then(function(r){
+        if (r.error) { window.alert('Non è stato possibile inviare la richiesta: ' + r.error.message); return; }
+        carica();
+      });
+    }
+
+    document.getElementById('filtri').addEventListener('click', function(e){
+      var b = e.target.closest('button[data-filtro]');
+      if (!b) return;
+      filtro = b.getAttribute('data-filtro');
+      this.querySelectorAll('button').forEach(function(x){ x.classList.toggle('on', x === b); });
+      mostraLista();
+    });
+
+    carica();
+  });
+})();
+</script>
+<footer class="site-footer">
+  <div class="footer-inner">
+    <div class="footer-links">
+      <a href="chi-siamo.html">Chi siamo</a> &middot;
+      <a href="dove-operiamo.html">Dove operiamo</a> &middot;
+      <a href="faq.html">FAQ</a> &middot;
+      <a href="contatti.html">Contatti</a> &middot;
+      <a href="contattami.html">Contattami</a> &middot;
+      <a href="privacy.html">Privacy</a> &middot;
+      <a href="termini.html">Termini</a> &middot;
+      <a href="#" id="gestisci-cookie">Gestisci cookie</a>
+    </div>
+    <div class="footer-contact">
+      <a href="tel:+393334325389">+39 333 432 5389</a> &middot;
+      <a href="mailto:info@croceviacani.it">info@croceviacani.it</a>
+    </div>
+    <div class="footer-piva">Crocevia &middot; Manuel &middot; P.IVA 14868890964</div>
+  </div>
+</footer>
+
+<script src="main.js?v=20260927"></script>
+<script src="cookie-consent.js"></script>
+</html>

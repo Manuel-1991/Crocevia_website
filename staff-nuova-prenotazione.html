@@ -1,0 +1,434 @@
+<!doctype html>
+<html lang="it">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#0d2219">
+<script>(function(){try{var t=localStorage.getItem('crocevia-tema');if(t==='chiaro'||t==='scuro'){document.documentElement.setAttribute('data-tema',t);}}catch(e){}})();</script>
+<link rel="icon" type="image/png" href="assets/img/brand/favicon.png">
+<link rel="apple-touch-icon" href="assets/img/brand/apple-touch-icon.png">
+<title>Nuova prenotazione — Staff Crocevia</title>
+<meta name="description" content="Pannello staff Crocevia: prenotazione di pensione, asilo o passeggiata per un cliente che telefona.">
+<meta name="robots" content="noindex, nofollow">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;600;700&family=EB+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&display=swap">
+<link rel="stylesheet" href="style.css?v=20260927d">
+<noscript><style>.reveal{opacity:1!important;transform:none!important;}</style></noscript>
+<header class="site-header">
+  <nav class="nav">
+    <a href="index.html" class="brand" aria-label="Crocevia — Home">
+      <img class="logo-nav" src="assets/img/brand/logo-nav.webp" alt="Crocevia" width="200" height="201">
+      <span class="brand-text">
+        <span class="brand-word">CROCEVIA</span>
+        <span class="brand-tagline">Asilo · Pensione · Passeggiate</span>
+      </span>
+    </a>
+    <button class="tema-toggle" id="cambia-tema" type="button" aria-label="Passa al tema chiaro" aria-pressed="false">
+      <svg class="icona-sole" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><circle cx="12" cy="12" r="4"></circle><path d="M12 2v3M12 19v3M4.2 4.2l2.1 2.1M17.7 17.7l2.1 2.1M2 12h3M19 12h3M4.2 19.8l2.1-2.1M17.7 6.3l2.1-2.1" stroke-width="1.8" stroke-linecap="round"></path></svg>
+      <svg class="icona-luna" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M20 14.5A8.5 8.5 0 1 1 9.5 4a7 7 0 0 0 10.5 10.5Z"></path></svg>
+    </button>
+    <button class="nav-toggle" id="apri-menu" type="button" aria-controls="menu-crocevia" aria-expanded="false" aria-label="Apri il menu"><span class="barre" aria-hidden="true"></span></button>
+    <ul class="nav-links" id="menu-crocevia"><li><a href="index.html" class="nav">Home</a></li><li><a href="educazione.html" class="nav">Educazione</a></li><li><a href="pensione-asilo.html" class="nav">Pensione &amp; Asilo</a></li><li><a href="passeggiate.html" class="nav">Passeggiate</a></li><li><a href="chi-siamo.html" class="nav">Chi siamo</a></li><li><a href="dove-operiamo.html" class="nav">Dove operiamo</a></li><li><a href="faq.html" class="nav">FAQ</a></li><li><a href="contatti.html" class="nav">Contatti</a></li><li class="nav-item-mobile-only"><a href="contattami.html" class="nav">Contattami</a></li><li class="nav-item-mobile-only"><a href="area-privata.html" class="nav active">Area privata</a></li></ul><span class="nav-divider" aria-hidden="true"></span><a href="contattami.html" class="nav-cta">Contattami</a><a href="area-privata.html" class="nav-account active" aria-label="Area privata"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><circle cx="12" cy="8" r="3.5"></circle><path d="M5 20c1.2-4 4-6 7-6s5.8 2 7 6"></path></svg></a>
+  </nav>
+</header>
+<main class="wrap">
+
+<div class="crumb"><a href="area-staff.html">Staff</a> / Nuova prenotazione</div>
+<p id="area-attesa" class="caricamento">Caricamento…</p>
+<div id="area-vietato" hidden><p class="avviso avviso-errore">Questa pagina è riservata allo staff. <a href="area-privata.html">Torna alla tua area privata</a>.</p></div>
+
+<div id="area-corpo" hidden>
+  <div class="testa-area">
+    <h1>Nuova prenotazione</h1>
+    <p class="premessa">Per chi prenota telefonando invece di usare il sito. Il cliente deve essersi già registrato almeno una volta nell'area privata.</p>
+  </div>
+
+  <div class="filtri" id="schede" role="tablist">
+    <button type="button" class="on" data-scheda="pensione" role="tab">Pensione o asilo</button>
+    <button type="button" data-scheda="passeggiata" role="tab">Passeggiata</button>
+  </div>
+
+  <!-- ===== pensione / asilo ===== -->
+  <div data-pannello="pensione">
+    <p id="messaggio-manuale" class="avviso" hidden></p>
+
+    <form id="form-cerca-cliente" class="pannello">
+      <h2>1 · Cliente</h2>
+      <div class="riga riga-2">
+        <div class="campo">
+          <label for="cerca-email">Email del cliente registrato</label>
+          <input type="email" id="cerca-email" required>
+        </div>
+        <div class="campo" style="align-self:end;">
+          <button type="submit" class="bottone bottone-vuoto piccolo">Cerca</button>
+        </div>
+      </div>
+    </form>
+    <div class="cliente-trovato" id="cliente-trovato" hidden></div>
+
+    <form id="form-prenotazione-manuale" hidden>
+      <div class="pannello">
+        <h2>2 · Soggiorno</h2>
+        <div class="riga riga-2">
+          <div class="campo">
+            <label for="manuale-animale">Cane *</label>
+            <select id="manuale-animale" required></select>
+          </div>
+          <div class="campo">
+            <label for="manuale-servizio">Servizio *</label>
+            <select id="manuale-servizio" required></select>
+          </div>
+        </div>
+        <div class="riga riga-2">
+          <div class="campo">
+            <label for="manuale-dal">Dal *</label>
+            <input type="date" id="manuale-dal" required>
+          </div>
+          <div class="campo">
+            <label for="manuale-al">Al *</label>
+            <input type="date" id="manuale-al" required>
+          </div>
+        </div>
+        <div class="spunte">
+          <label class="checkriga"><input type="checkbox" id="manuale-pappa-fornita"> Pappa fornita (+5 €/notte, per tutto il soggiorno, nel saldo)</label>
+          <label class="checkriga"><input type="checkbox" id="manuale-acconto-ricevuto"> Acconto già ricevuto (contanti/bonifico) — segna la prenotazione come confermata</label>
+          <label class="checkriga"><input type="checkbox" id="manuale-salta-calendario"> Non creare l'evento sul calendario per questa prenotazione</label>
+        </div>
+        <p id="manuale-riepilogo" class="riepilogo-staff"></p>
+      </div>
+      <button type="submit" class="bottone bottone-pieno">Crea prenotazione</button>
+    </form>
+  </div>
+
+  <!-- ===== passeggiata ===== -->
+  <div data-pannello="passeggiata" hidden>
+    <p class="premessa" style="margin-bottom:16px;">Il cliente deve avere il telefono salvato nel profilo: serve per avvisarlo in caso di maltempo.</p>
+    <p id="messaggio-manuale-passeggiata" class="avviso" hidden></p>
+
+    <form id="form-cerca-cliente-passeggiata" class="pannello">
+      <h2>1 · Cliente</h2>
+      <div class="riga riga-2">
+        <div class="campo">
+          <label for="cerca-email-passeggiata">Email del cliente registrato</label>
+          <input type="email" id="cerca-email-passeggiata" required>
+        </div>
+        <div class="campo" style="align-self:end;">
+          <button type="submit" class="bottone bottone-vuoto piccolo">Cerca</button>
+        </div>
+      </div>
+    </form>
+    <div class="cliente-trovato" id="cliente-trovato-passeggiata" hidden></div>
+
+    <form id="form-passeggiata-manuale" hidden>
+      <div class="pannello">
+        <h2>2 · Uscita e cani</h2>
+        <div class="campo">
+          <label for="manuale-passeggiata-uscita">Uscita *</label>
+          <select id="manuale-passeggiata-uscita" required></select>
+        </div>
+        <div class="campo">
+          <label>Cani *</label>
+          <div id="manuale-passeggiata-cani" class="spunte"></div>
+        </div>
+      </div>
+      <button type="submit" class="bottone bottone-pieno">Crea prenotazione</button>
+    </form>
+  </div>
+</div>
+
+</main>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="supabase-client.js"></script>
+<script src="area-comune.js?v=20260927"></script>
+<script>
+(function(){
+  var A = window.CroceviaArea;
+  var sb = A.sb;
+  var esc = A.escapeHtml;
+
+  A.pagina({ staff: true }, function(){
+
+    // ---------- schede ----------
+    function apriScheda(nome){
+      document.querySelectorAll('#schede button').forEach(function(b){ b.classList.toggle('on', b.getAttribute('data-scheda') === nome); });
+      document.querySelectorAll('[data-pannello]').forEach(function(p){ p.hidden = p.getAttribute('data-pannello') !== nome; });
+    }
+    document.getElementById('schede').addEventListener('click', function(e){
+      var b = e.target.closest('button[data-scheda]');
+      if (!b) return;
+      apriScheda(b.getAttribute('data-scheda'));
+      window.history.replaceState({}, '', b.getAttribute('data-scheda') === 'passeggiata' ? '#passeggiata' : window.location.pathname);
+    });
+    if (window.location.hash === '#passeggiata') apriScheda('passeggiata');
+
+    // riquadro "cliente trovato" con il pulsante per cambiare cliente
+    function mostraCliente(box, cliente, righe, cambia){
+      box.innerHTML =
+        '<span class="conto-iniziale" aria-hidden="true">' + esc((cliente.nome || cliente.email || '?').charAt(0).toUpperCase()) + '</span>' +
+        '<div><b>' + esc(A.nomeCompleto(cliente) || '(senza nome)') + '</b><small>' + esc(righe) + '</small></div>' +
+        '<button type="button" class="bottone bottone-vuoto piccolo">Cambia cliente</button>';
+      box.querySelector('button').addEventListener('click', cambia);
+      box.hidden = false;
+    }
+
+    // ---------- pensione / asilo ----------
+    var serviziManuale = [];
+    var clienteTrovato = null;
+    var formCercaCliente = document.getElementById('form-cerca-cliente');
+    var formPrenotazioneManuale = document.getElementById('form-prenotazione-manuale');
+    var messaggioManuale = document.getElementById('messaggio-manuale');
+    var boxCliente = document.getElementById('cliente-trovato');
+
+    function calcolaPrezzoManuale(prezzoNotte, dal, al, pappaFornita){
+      var notti = Math.round((A.dataLocale(al) - A.dataLocale(dal)) / 86400000) + 1;
+      var moltiplicatore = notti >= 30 ? 0.8 : (notti >= 7 ? 0.9 : 1);
+      var base = Math.round(notti * prezzoNotte * moltiplicatore * 100) / 100;
+      var pappa = pappaFornita ? Math.round(notti * 5 * 100) / 100 : 0;
+      var acconto = Math.round(base * 10) / 100;
+      var totale = Math.round((base + pappa) * 100) / 100;
+      var saldo = Math.round((base - acconto + pappa) * 100) / 100;
+      return { notti: notti, totale: totale, acconto: acconto, saldo: saldo, pappa: pappa };
+    }
+
+    sb.from('servizi').select('id,categoria,nome,prezzo').in('categoria', ['pensione', 'asilo']).eq('attivo', true).then(function(r){
+      serviziManuale = r.data || [];
+      document.getElementById('manuale-servizio').innerHTML = serviziManuale.map(function(s){
+        return '<option value="' + s.id + '">' + esc(s.nome) + ' — ' + A.euro(s.prezzo) + '/notte</option>';
+      }).join('');
+    });
+
+    function aggiornaRiepilogo(){
+      var dal = document.getElementById('manuale-dal').value;
+      var al = document.getElementById('manuale-al').value;
+      var servizioId = document.getElementById('manuale-servizio').value;
+      var servizio = serviziManuale.filter(function(s){ return s.id === servizioId; })[0];
+      var box = document.getElementById('manuale-riepilogo');
+      if (!dal || !al || !servizio || al < dal) { box.innerHTML = ''; return; }
+      var pappaFornita = document.getElementById('manuale-pappa-fornita').checked;
+      var p = calcolaPrezzoManuale(Number(servizio.prezzo), dal, al, pappaFornita);
+      box.innerHTML = esc(A.intervallo(dal, al)) + ' · ' + p.notti + (p.notti === 1 ? ' notte' : ' notti') +
+        (pappaFornita ? ' · pappa ' + A.euro(p.pappa) + ' (nel saldo)' : '') +
+        '<br>Totale <b>' + A.euro(p.totale) + '</b> · acconto <b>' + A.euro(p.acconto) + '</b> · saldo <b>' + A.euro(p.saldo) + '</b>';
+    }
+    ['manuale-dal', 'manuale-al', 'manuale-servizio', 'manuale-pappa-fornita'].forEach(function(id){
+      document.getElementById(id).addEventListener('change', aggiornaRiepilogo);
+    });
+
+    function cambiaCliente(){
+      clienteTrovato = null;
+      boxCliente.hidden = true;
+      formPrenotazioneManuale.hidden = true;
+      formCercaCliente.hidden = false;
+      document.getElementById('cerca-email').focus();
+    }
+
+    formCercaCliente.addEventListener('submit', function(e){
+      e.preventDefault();
+      messaggioManuale.hidden = true;
+      formPrenotazioneManuale.hidden = true;
+      var email = document.getElementById('cerca-email').value.trim();
+
+      sb.from('profili').select('id,nome,cognome,email,telefono').eq('email', email).maybeSingle().then(function(r){
+        if (r.error || !r.data) {
+          A.avviso(messaggioManuale, 'Nessun cliente registrato con questa email. Deve prima registrarsi lui stesso nell\'area privata.', 'errore');
+          return;
+        }
+        clienteTrovato = r.data;
+        return sb.from('animali').select('id,nome').eq('proprietario_id', clienteTrovato.id).order('creato_il');
+      }).then(function(r){
+        if (!r) return;
+        if (r.error) { A.avviso(messaggioManuale, r.error.message, 'errore'); return; }
+        if (!r.data.length) {
+          A.avviso(messaggioManuale, 'Il cliente non ha ancora cani registrati.', 'errore');
+          return;
+        }
+        document.getElementById('manuale-animale').innerHTML = r.data.map(function(a){
+          return '<option value="' + a.id + '">' + esc(a.nome) + '</option>';
+        }).join('');
+        mostraCliente(boxCliente, clienteTrovato,
+          [clienteTrovato.email, clienteTrovato.telefono, 'cani: ' + r.data.map(function(a){ return a.nome; }).join(', ')].filter(Boolean).join(' · '),
+          cambiaCliente);
+        formCercaCliente.hidden = true;
+        formPrenotazioneManuale.hidden = false;
+        aggiornaRiepilogo();
+      });
+    });
+
+    formPrenotazioneManuale.addEventListener('submit', function(e){
+      e.preventDefault();
+      messaggioManuale.hidden = true;
+      if (!clienteTrovato) return;
+
+      var servizioId = document.getElementById('manuale-servizio').value;
+      var dal = document.getElementById('manuale-dal').value;
+      var al = document.getElementById('manuale-al').value;
+      var accontoRicevuto = document.getElementById('manuale-acconto-ricevuto').checked;
+      var pappaFornita = document.getElementById('manuale-pappa-fornita').checked;
+
+      if (!dal || !al || al < dal) { A.avviso(messaggioManuale, 'Scegli un intervallo di date valido.', 'errore'); return; }
+
+      var servizio = serviziManuale.filter(function(s){ return s.id === servizioId; })[0];
+      var p = calcolaPrezzoManuale(Number(servizio.prezzo), dal, al, pappaFornita);
+
+      var dati = {
+        cliente_id: clienteTrovato.id,
+        animale_id: document.getElementById('manuale-animale').value,
+        servizio_id: servizioId,
+        data_dal: dal,
+        data_al: al,
+        pappa_fornita: pappaFornita,
+        prezzo_totale: p.totale,
+        acconto_importo: p.acconto,
+        saldo_importo: p.saldo,
+        salta_calendario: document.getElementById('manuale-salta-calendario').checked
+      };
+      if (accontoRicevuto) {
+        dati.stato = 'confermata';
+        dati.acconto_pagato_il = new Date().toISOString();
+      } else {
+        dati.stato = 'in_attesa_pagamento';
+      }
+
+      sb.from('prenotazioni').insert(dati).then(function(r){
+        if (r.error) { A.avviso(messaggioManuale, r.error.message, 'errore'); return; }
+        messaggioManuale.innerHTML = 'Prenotazione creata. <a href="staff-prenotazioni.html">Vai alle prenotazioni →</a>';
+        messaggioManuale.className = 'avviso avviso-ok';
+        messaggioManuale.hidden = false;
+        formPrenotazioneManuale.reset();
+        document.getElementById('manuale-riepilogo').innerHTML = '';
+        formCercaCliente.reset();
+        cambiaCliente();
+        A.aggiornaConteggi();
+      });
+    });
+
+    // ---------- passeggiata ----------
+    var clienteTrovatoPasseggiata = null;
+    var formCercaClientePasseggiata = document.getElementById('form-cerca-cliente-passeggiata');
+    var formPasseggiataManuale = document.getElementById('form-passeggiata-manuale');
+    var messaggioManualePasseggiata = document.getElementById('messaggio-manuale-passeggiata');
+    var boxClientePasseggiata = document.getElementById('cliente-trovato-passeggiata');
+
+    function caricaUscite(){
+      return sb.from('passeggiate_disponibilita').select('*').then(function(r){
+        var uscite = r.data || [];
+        document.getElementById('manuale-passeggiata-uscita').innerHTML = uscite.length
+          ? '<option value="" selected disabled>Scegli un\'uscita…</option>' + uscite.map(function(u){
+              var posti = Math.max(u.posti_liberi, 0);
+              return '<option value="' + u.id + '"' + (posti <= 0 ? ' disabled' : '') + '>' +
+                esc(A.formattaData(u.data)) + ' ore ' + esc(u.ora.slice(0, 5)) + ' — ' + esc(u.argomento) +
+                ' (' + (posti <= 0 ? 'al completo' : posti + ' liberi') + ')</option>';
+            }).join('')
+          : '<option value="" selected disabled>Nessuna uscita in programma</option>';
+      });
+    }
+
+    function cambiaClientePasseggiata(){
+      clienteTrovatoPasseggiata = null;
+      boxClientePasseggiata.hidden = true;
+      formPasseggiataManuale.hidden = true;
+      formCercaClientePasseggiata.hidden = false;
+      document.getElementById('cerca-email-passeggiata').focus();
+    }
+
+    formCercaClientePasseggiata.addEventListener('submit', function(e){
+      e.preventDefault();
+      messaggioManualePasseggiata.hidden = true;
+      formPasseggiataManuale.hidden = true;
+      clienteTrovatoPasseggiata = null;
+      var email = document.getElementById('cerca-email-passeggiata').value.trim();
+
+      sb.from('profili').select('id,nome,cognome,email,telefono').eq('email', email).maybeSingle().then(function(r){
+        if (r.error || !r.data) {
+          A.avviso(messaggioManualePasseggiata, 'Nessun cliente registrato con questa email. Deve prima registrarsi lui stesso nell\'area privata.', 'errore');
+          return;
+        }
+        if (!r.data.telefono) {
+          A.avviso(messaggioManualePasseggiata, 'Il cliente non ha un telefono salvato nel profilo: chiedigli di aggiungerlo nella sua area privata prima di procedere (serve per avvisarlo in caso di maltempo).', 'errore');
+          return;
+        }
+        clienteTrovatoPasseggiata = r.data;
+        return Promise.all([
+          sb.from('animali').select('id,nome').eq('proprietario_id', clienteTrovatoPasseggiata.id).order('creato_il'),
+          sb.from('iscrizioni_passeggiata').select('id').eq('cliente_id', clienteTrovatoPasseggiata.id).eq('stato', 'confermata').maybeSingle(),
+          caricaUscite()
+        ]);
+      }).then(function(r){
+        if (!r || !clienteTrovatoPasseggiata) return;
+        var animaliRes = r[0], iscrizioneRes = r[1];
+        if (animaliRes.error) { A.avviso(messaggioManualePasseggiata, animaliRes.error.message, 'errore'); return; }
+        if (!animaliRes.data.length) {
+          A.avviso(messaggioManualePasseggiata, 'Il cliente non ha ancora cani registrati.', 'errore');
+          return;
+        }
+        if (iscrizioneRes.data) {
+          A.avviso(messaggioManualePasseggiata, 'Il cliente ha già una prenotazione attiva per una passeggiata.', 'errore');
+          return;
+        }
+        document.getElementById('manuale-passeggiata-cani').innerHTML = animaliRes.data.map(function(a){
+          return '<label class="checkriga"><input type="checkbox" name="manuale-cane-passeggiata" value="' + a.id + '"> ' + esc(a.nome) + '</label>';
+        }).join('');
+        mostraCliente(boxClientePasseggiata, clienteTrovatoPasseggiata,
+          [clienteTrovatoPasseggiata.email, clienteTrovatoPasseggiata.telefono].filter(Boolean).join(' · '),
+          cambiaClientePasseggiata);
+        formCercaClientePasseggiata.hidden = true;
+        formPasseggiataManuale.hidden = false;
+      });
+    });
+
+    formPasseggiataManuale.addEventListener('submit', function(e){
+      e.preventDefault();
+      messaggioManualePasseggiata.hidden = true;
+      if (!clienteTrovatoPasseggiata) return;
+
+      var uscitaId = document.getElementById('manuale-passeggiata-uscita').value;
+      var caniId = Array.prototype.map.call(formPasseggiataManuale.querySelectorAll('input[name="manuale-cane-passeggiata"]:checked'), function(el){ return el.value; });
+
+      if (!uscitaId) { A.avviso(messaggioManualePasseggiata, 'Scegli un\'uscita.', 'errore'); return; }
+      if (!caniId.length) { A.avviso(messaggioManualePasseggiata, 'Scegli almeno un cane.', 'errore'); return; }
+
+      sb.from('iscrizioni_passeggiata').insert({
+        cliente_id: clienteTrovatoPasseggiata.id,
+        passeggiata_id: uscitaId,
+        stato: 'confermata'
+      }).select().single().then(function(r){
+        if (r.error) { A.avviso(messaggioManualePasseggiata, r.error.message, 'errore'); return; }
+        var iscrizioneId = r.data.id;
+        sb.from('iscrizione_passeggiata_animali').insert(
+          caniId.map(function(id){ return { iscrizione_id: iscrizioneId, animale_id: id }; })
+        ).then(function(r2){
+          if (r2.error) { A.avviso(messaggioManualePasseggiata, 'Prenotazione creata ma non è stato possibile salvare i cani: ' + r2.error.message, 'errore'); return; }
+          messaggioManualePasseggiata.innerHTML = 'Prenotazione creata. <a href="staff-passeggiate.html">Vai alle uscite →</a>';
+          messaggioManualePasseggiata.className = 'avviso avviso-ok';
+          messaggioManualePasseggiata.hidden = false;
+          formPasseggiataManuale.reset();
+          formCercaClientePasseggiata.reset();
+          cambiaClientePasseggiata();
+        });
+      });
+    });
+  });
+})();
+</script>
+<footer class="site-footer">
+  <div class="footer-inner">
+    <div class="footer-links">
+      <a href="chi-siamo.html">Chi siamo</a> &middot;
+      <a href="dove-operiamo.html">Dove operiamo</a> &middot;
+      <a href="faq.html">FAQ</a> &middot;
+      <a href="contatti.html">Contatti</a> &middot;
+      <a href="contattami.html">Contattami</a> &middot;
+      <a href="privacy.html">Privacy</a> &middot;
+      <a href="termini.html">Termini</a> &middot;
+      <a href="#" id="gestisci-cookie">Gestisci cookie</a>
+    </div>
+    <div class="footer-contact">
+      <a href="tel:+393334325389">+39 333 432 5389</a> &middot;
+      <a href="mailto:info@croceviacani.it">info@croceviacani.it</a>
+    </div>
+    <div class="footer-piva">Crocevia &middot; Manuel &middot; P.IVA 14868890964</div>
+  </div>
+</footer>
+
+<script src="main.js?v=20260927"></script>
+<script src="cookie-consent.js"></script>
+</html>

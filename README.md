@@ -25,10 +25,18 @@ Dettagli tecnici, schema del database ed Edge Function in
 | `pensione-asilo.html` | stallo/pensione, asilo diurno, giornata tipo |
 | `passeggiate.html` | presentazione delle passeggiate di gruppo: format, temi, quando, prezzo |
 | `contattami.html` | modulo informativo (area: educazione, passeggiate, asilo, pensione; niente prezzi) → messaggio precompilato via WhatsApp o email, nessun account richiesto |
-| `area-privata.html` | login/registrazione, profilo, animali e prenotazioni del cliente (Supabase), inclusa la gestione della propria passeggiata |
+| `area-privata.html` | accesso/registrazione/recupero password; da loggato la **panoramica**: cose da fare (acconti, profilo incompleto), prossimo soggiorno, prossima passeggiata, cani, profilo |
+| `area-profilo.html` | dati personali e cambio password |
+| `area-cani.html` | schede dei cani del cliente, aggiunta/modifica/eliminazione |
+| `area-prenotazioni.html` | prenotazioni di pensione e asilo (in arrivo / passate), pagamenti Stripe, richiesta di disdetta; qui atterra anche il ritorno da Stripe |
+| `area-passeggiate.html` | la propria prenotazione di passeggiata: cani presenti, cancellazione |
 | `prenota-pensione-asilo.html` | calendario disponibilità e richiesta di prenotazione per pensione/asilo (richiede accesso) |
 | `prenota-passeggiata.html` | scelta dell'uscita e dei cani per la passeggiata di gruppo (richiede accesso) |
-| `area-staff.html` | riservata ad addetto/admin: prenotazioni in arrivo, conferme, prenotazione manuale, ruoli utenti, calendario e iscritti delle passeggiate, prenotazione passeggiata per un cliente che telefona |
+| `area-staff.html` | staff (addetto/admin) — **Oggi**: contatori (disdette, da pagare, nuove, cani presenti), arrivi e ultimi giorni, arrivi della settimana, prossima uscita |
+| `staff-prenotazioni.html` | staff — prenotazioni pensione/asilo con ricerca e filtri Da gestire / Confermate / Archivio: conferma, saldo, completata, annulla |
+| `staff-nuova-prenotazione.html` | staff — prenotazione per un cliente che telefona: pensione/asilo o passeggiata (`#passeggiata`) |
+| `staff-passeggiate.html` | staff — uscite in programma e passate, iscritti con telefono, nuova uscita/modifica, maltempo |
+| `staff-utenti.html` | solo admin — clienti registrati e ruoli |
 | `chi-siamo.html` | Manuel e Dingo, metodo e filosofia |
 | `dove-operiamo.html` | uscite sul Lago Maggiore, Settimo Milanese |
 | `faq.html` | domande frequenti su prenotazioni, pensione/asilo ed educazione, in accordion (con dati strutturati FAQPage) |
@@ -43,8 +51,20 @@ Contorno: `style.css` (stile condiviso da tutte le pagine), `main.js`
 come sono).
 
 `supabase-client.js` inizializza il collegamento al database (Supabase) usato
-da `area-privata.html`: contiene solo la URL del progetto e la chiave
-"pubblicabile", pensata apposta per stare nel codice del sito. La cartella
+dalle pagine dell'area privata e dello staff: contiene solo la URL del
+progetto e la chiave "pubblicabile", pensata apposta per stare nel codice
+del sito.
+
+`area-comune.js` è lo script condiviso dell'area: da loggato trasforma
+l'icona dell'area privata in testata nel pulsante con l'iniziale, che apre
+il **menù "il mio conto"** con tutte le pagine (il gruppo *Staff* solo per
+addetto/admin, *Clienti e ruoli* solo per l'admin) e un pallino rosso con
+le cose da fare. Protegge anche le pagine: chi non è loggato viene mandato
+all'accesso (`area-privata.html?torna=…`) e riportato lì dopo il login; le
+pagine staff mostrano un avviso a chi non ha il ruolo. Sulle pagine
+pubbliche il menù compare lo stesso: `main.js` carica gli script di Supabase
+solo se nel browser c'è già una sessione salvata, così chi non ha mai fatto
+l'accesso non scarica nulla in più. La cartella
 `supabase/` contiene lo schema del database e le istruzioni per crearlo —
 vedi `supabase/README.md`.
 

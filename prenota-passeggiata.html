@@ -23,7 +23,7 @@
 <meta name="twitter:description" content="Prenota la tua passeggiata di gruppo: scegli l'uscita e i cani, nessun anticipo, saldo il giorno stesso.">
 <meta name="twitter:image" content="https://croceviacani.it/assets/img/brand/logo-nav.webp">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;600;700&family=EB+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&display=swap">
-<link rel="stylesheet" href="style.css?v=20260927c">
+<link rel="stylesheet" href="style.css?v=20260927d">
 <noscript><style>.reveal{opacity:1!important;transform:none!important;}</style></noscript>
 <header class="site-header">
   <nav class="nav">
@@ -47,10 +47,10 @@
 <div class="crumb"><a href="index.html">Home</a> / <a href="passeggiate.html">Passeggiate</a> / Prenota</div>
 <div class="page-head left"><h1 class="left">Prenota la tua passeggiata</h1></div>
 
-<p class="premessa">Scegli l'uscita e i cani che partecipano: la prenotazione è confermata subito, senza anticipo. Il saldo di 50&nbsp;€ a persona si paga il giorno stesso. Puoi avere una sola prenotazione attiva alla volta, e la gestisci sempre dalla tua <a href="area-privata.html">area privata</a>.</p>
+<p class="premessa">Scegli l'uscita e i cani che partecipano: la prenotazione è confermata subito, senza anticipo. Il saldo di 50&nbsp;€ a persona si paga il giorno stesso. Puoi avere una sola prenotazione attiva alla volta, e la gestisci sempre dalla tua <a href="area-passeggiate.html">area privata</a>.</p>
 
 <div id="serve-accesso">
-  <p class="avviso">Devi prima <a href="area-privata.html">accedere o registrarti</a> per prenotare.</p>
+  <p class="avviso">Devi prima <a href="area-privata.html?torna=prenota-passeggiata.html">accedere o registrarti</a> per prenotare.</p>
 </div>
 
 <div id="corpo-prenotazione" hidden>
@@ -59,11 +59,11 @@
 
   <div id="blocco-gia-iscritto" class="sezione-conto" hidden>
     <div class="card-prenotazione" id="card-gia-iscritto"></div>
-    <p style="margin-top:16px;"><a href="area-privata.html" class="bottone bottone-pieno">Gestisci la tua prenotazione nell'area privata &rarr;</a></p>
+    <p style="margin-top:16px;"><a href="area-passeggiate.html" class="bottone bottone-pieno">Gestisci la tua prenotazione nell'area privata &rarr;</a></p>
   </div>
 
   <div id="serve-telefono" hidden>
-    <p class="avviso avviso-errore">Per iscriverti serve un numero di telefono nel tuo profilo: è l'unico modo per avvisarti se una passeggiata salta per maltempo. <a href="area-privata.html">Aggiungilo nella tua area privata</a>, poi torna qui.</p>
+    <p class="avviso avviso-errore">Per iscriverti serve un numero di telefono nel tuo profilo: è l'unico modo per avvisarti se una passeggiata salta per maltempo. <a href="area-profilo.html">Aggiungilo nel tuo profilo</a>, poi torna qui.</p>
   </div>
 
   <form id="form-prenotazione">
@@ -202,7 +202,7 @@
   function renderCani(){
     var lista = document.getElementById('lista-cani');
     if (!animali.length) {
-      lista.innerHTML = '<p class="vuoto">Non hai ancora aggiunto un cane: aggiungine uno nella tua <a href="area-privata.html">area privata</a> prima di prenotare.</p>';
+      lista.innerHTML = '<p class="vuoto">Non hai ancora aggiunto un cane: aggiungine uno nella pagina <a href="area-cani.html">I miei cani</a> prima di prenotare.</p>';
       return;
     }
     lista.innerHTML = animali.map(function(a){
@@ -267,6 +267,6 @@
   </div>
 </footer>
 
-<script src="main.js?v=20260918"></script>
+<script src="main.js?v=20260927"></script>
 <script src="cookie-consent.js"></script>
 </html>

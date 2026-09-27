@@ -1,0 +1,135 @@
+<!doctype html>
+<html lang="it">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#0d2219">
+<script>(function(){try{var t=localStorage.getItem('crocevia-tema');if(t==='chiaro'||t==='scuro'){document.documentElement.setAttribute('data-tema',t);}}catch(e){}})();</script>
+<link rel="icon" type="image/png" href="assets/img/brand/favicon.png">
+<link rel="apple-touch-icon" href="assets/img/brand/apple-touch-icon.png">
+<title>Clienti e ruoli — Staff Crocevia</title>
+<meta name="description" content="Pannello staff Crocevia: clienti registrati e ruoli.">
+<meta name="robots" content="noindex, nofollow">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;600;700&family=EB+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&display=swap">
+<link rel="stylesheet" href="style.css?v=20260927d">
+<noscript><style>.reveal{opacity:1!important;transform:none!important;}</style></noscript>
+<header class="site-header">
+  <nav class="nav">
+    <a href="index.html" class="brand" aria-label="Crocevia — Home">
+      <img class="logo-nav" src="assets/img/brand/logo-nav.webp" alt="Crocevia" width="200" height="201">
+      <span class="brand-text">
+        <span class="brand-word">CROCEVIA</span>
+        <span class="brand-tagline">Asilo · Pensione · Passeggiate</span>
+      </span>
+    </a>
+    <button class="tema-toggle" id="cambia-tema" type="button" aria-label="Passa al tema chiaro" aria-pressed="false">
+      <svg class="icona-sole" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><circle cx="12" cy="12" r="4"></circle><path d="M12 2v3M12 19v3M4.2 4.2l2.1 2.1M17.7 17.7l2.1 2.1M2 12h3M19 12h3M4.2 19.8l2.1-2.1M17.7 6.3l2.1-2.1" stroke-width="1.8" stroke-linecap="round"></path></svg>
+      <svg class="icona-luna" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M20 14.5A8.5 8.5 0 1 1 9.5 4a7 7 0 0 0 10.5 10.5Z"></path></svg>
+    </button>
+    <button class="nav-toggle" id="apri-menu" type="button" aria-controls="menu-crocevia" aria-expanded="false" aria-label="Apri il menu"><span class="barre" aria-hidden="true"></span></button>
+    <ul class="nav-links" id="menu-crocevia"><li><a href="index.html" class="nav">Home</a></li><li><a href="educazione.html" class="nav">Educazione</a></li><li><a href="pensione-asilo.html" class="nav">Pensione &amp; Asilo</a></li><li><a href="passeggiate.html" class="nav">Passeggiate</a></li><li><a href="chi-siamo.html" class="nav">Chi siamo</a></li><li><a href="dove-operiamo.html" class="nav">Dove operiamo</a></li><li><a href="faq.html" class="nav">FAQ</a></li><li><a href="contatti.html" class="nav">Contatti</a></li><li class="nav-item-mobile-only"><a href="contattami.html" class="nav">Contattami</a></li><li class="nav-item-mobile-only"><a href="area-privata.html" class="nav active">Area privata</a></li></ul><span class="nav-divider" aria-hidden="true"></span><a href="contattami.html" class="nav-cta">Contattami</a><a href="area-privata.html" class="nav-account active" aria-label="Area privata"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><circle cx="12" cy="8" r="3.5"></circle><path d="M5 20c1.2-4 4-6 7-6s5.8 2 7 6"></path></svg></a>
+  </nav>
+</header>
+<main class="wrap">
+
+<div class="crumb"><a href="area-staff.html">Staff</a> / Clienti e ruoli</div>
+<p id="area-attesa" class="caricamento">Caricamento…</p>
+<div id="area-vietato" hidden><p class="avviso avviso-errore">Questa pagina è riservata all'admin. <a href="area-privata.html">Torna alla tua area privata</a>.</p></div>
+
+<div id="area-corpo" hidden>
+  <div class="testa-area">
+    <h1>Clienti e ruoli</h1>
+    <p class="premessa">Solo un admin può cambiare il ruolo di un utente. Il ruolo "addetto" è pensato per un futuro collaboratore.</p>
+  </div>
+
+  <p id="messaggio-utenti" class="avviso" hidden></p>
+  <div class="barra-cerca"><input type="search" id="cerca" placeholder="Cerca per nome, email o telefono…" aria-label="Cerca tra gli utenti"></div>
+  <table class="tabella">
+    <thead><tr><th>Nome</th><th>Contatti</th><th>Ruolo</th></tr></thead>
+    <tbody id="lista-utenti"><tr><td colspan="3" class="caricamento">Caricamento…</td></tr></tbody>
+  </table>
+</div>
+
+</main>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="supabase-client.js"></script>
+<script src="area-comune.js?v=20260927"></script>
+<script>
+(function(){
+  var A = window.CroceviaArea;
+  var sb = A.sb;
+  var esc = A.escapeHtml;
+
+  A.pagina({ admin: true }, function(ctx){
+    var corpo = document.getElementById('lista-utenti');
+    var messaggio = document.getElementById('messaggio-utenti');
+    var cerca = document.getElementById('cerca');
+    var utenti = [];
+
+    function mostra(){
+      var q = cerca.value.trim().toLowerCase();
+      var righe = utenti.filter(function(u){
+        return !q || [u.nome, u.cognome, u.email, u.telefono].join(' ').toLowerCase().indexOf(q) !== -1;
+      });
+      corpo.innerHTML = '';
+      if (!righe.length) {
+        corpo.innerHTML = '<tr><td colspan="3" class="vuoto">Nessun utente trovato.</td></tr>';
+        return;
+      }
+      righe.forEach(function(u){
+        var nCani = u.animali && u.animali[0] ? u.animali[0].count : 0;
+        var tr = document.createElement('tr');
+        tr.innerHTML =
+          '<td>' + esc(A.nomeCompleto(u) || '(senza nome)') + '<small>' + (nCani === 1 ? '1 cane' : nCani + ' cani') + '</small></td>' +
+          '<td>' + esc(u.email || '') + (u.telefono ? '<small>' + A.telefonoLink(u.telefono) + '</small>' : '') + '</td>' +
+          '<td><select aria-label="Ruolo di ' + esc(A.nomeCompleto(u) || u.email || '') + '">' +
+            ['cliente', 'addetto', 'admin'].map(function(r){
+              return '<option value="' + r + '"' + (r === u.ruolo ? ' selected' : '') + '>' + r + '</option>';
+            }).join('') +
+          '</select></td>';
+        tr.querySelector('select').addEventListener('change', function(){
+          var select = this;
+          var nuovoRuolo = select.value;
+          if (u.id === ctx.utente.id && !window.confirm('Stai per cambiare il tuo stesso ruolo. Continuare?')) { select.value = u.ruolo; return; }
+          sb.from('profili').update({ ruolo: nuovoRuolo }).eq('id', u.id).then(function(r){
+            if (r.error) { A.avviso(messaggio, r.error.message, 'errore'); select.value = u.ruolo; return; }
+            u.ruolo = nuovoRuolo;
+            A.avviso(messaggio, 'Ruolo aggiornato: ' + (A.nomeCompleto(u) || u.email) + ' ora è ' + nuovoRuolo + '.', 'ok');
+          });
+        });
+        corpo.appendChild(tr);
+      });
+    }
+
+    sb.from('profili').select('id,nome,cognome,email,telefono,ruolo,animali(count)').order('creato_il').then(function(r){
+      if (r.error) { A.avviso(messaggio, r.error.message, 'errore'); return; }
+      utenti = r.data || [];
+      mostra();
+    });
+    cerca.addEventListener('input', mostra);
+  });
+})();
+</script>
+<footer class="site-footer">
+  <div class="footer-inner">
+    <div class="footer-links">
+      <a href="chi-siamo.html">Chi siamo</a> &middot;
+      <a href="dove-operiamo.html">Dove operiamo</a> &middot;
+      <a href="faq.html">FAQ</a> &middot;
+      <a href="contatti.html">Contatti</a> &middot;
+      <a href="contattami.html">Contattami</a> &middot;
+      <a href="privacy.html">Privacy</a> &middot;
+      <a href="termini.html">Termini</a> &middot;
+      <a href="#" id="gestisci-cookie">Gestisci cookie</a>
+    </div>
+    <div class="footer-contact">
+      <a href="tel:+393334325389">+39 333 432 5389</a> &middot;
+      <a href="mailto:info@croceviacani.it">info@croceviacani.it</a>
+    </div>
+    <div class="footer-piva">Crocevia &middot; Manuel &middot; P.IVA 14868890964</div>
+  </div>
+</footer>
+
+<script src="main.js?v=20260927"></script>
+<script src="cookie-consent.js"></script>
+</html>
