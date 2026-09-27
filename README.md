@@ -20,7 +20,7 @@ Dettagli tecnici, schema del database ed Edge Function in
 
 | file | cosa contiene |
 |---|---|
-| `index.html` | home: il bivio tra Educazione e Pensione & Asilo |
+| `index.html` | home: l'incontro tra te e il tuo cane, accesso a Educazione e Pensione & Asilo |
 | `educazione.html` | valutazione, lezioni, pacchetti |
 | `pensione-asilo.html` | stallo/pensione, asilo diurno, giornata tipo |
 | `passeggiate.html` | presentazione delle passeggiate di gruppo: format, temi, quando, prezzo |
