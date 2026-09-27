@@ -12,6 +12,12 @@
   if (!sb || window.CroceviaArea) return;
 
   var CHIAVE_ULTIMA_VISITA = 'crocevia-staff-ultima-visita';
+  var CHIAVE_INIZIALE = 'crocevia-conto';
+  // sessione finita o uscita: torna l'omino
+  function dimenticaIniziale(){
+    try { localStorage.removeItem(CHIAVE_INIZIALE); } catch (e) {}
+    document.documentElement.classList.remove('conto-noto');
+  }
   var CAPIENZA_PASSEGGIATA = 10;
   var nomiGiorni = ['domenica','lunedì','martedì','mercoledì','giovedì','venerdì','sabato'];
   var giorniBrevi = ['dom','lun','mar','mer','gio','ven','sab'];
@@ -163,6 +169,9 @@
 
     // il primo segnaposto diventa il pulsante; eventuali altri spariscono
     segnaposti[0].parentNode.replaceChild(wrap, segnaposti[0]);
+    // ricordata per le prossime pagine: lo script in testa la mostra subito,
+    // senza il lampo dell'omino in attesa della sessione
+    try { localStorage.setItem(CHIAVE_INIZIALE, iniziale); } catch (e) {}
     for (var i = 1; i < segnaposti.length; i++) segnaposti[i].parentNode.removeChild(segnaposti[i]);
 
     var btn = wrap.querySelector('.conto-btn');
@@ -187,6 +196,7 @@
     document.addEventListener('keydown', function(e){ if (e.key === 'Escape' || e.key === 'Esc') apri(false); });
     if (hamburger) hamburger.addEventListener('click', function(){ apri(false); });
     wrap.querySelector('[data-esci]').addEventListener('click', function(){
+      dimenticaIniziale();
       sb.auth.signOut().then(function(){ window.location.href = 'area-privata.html'; });
     });
 
@@ -239,7 +249,7 @@
 
   var ultimoCtx = null;
   sessione.then(function(ctx){
-    if (!ctx) return;
+    if (!ctx) { dimenticaIniziale(); return; }
     ultimoCtx = ctx;
     if (document.readyState === 'loading') {
       document.addEventListener('DOMContentLoaded', function(){ costruisciMenu(ctx); });
