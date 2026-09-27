@@ -700,8 +700,9 @@ main section tr:last-child td{ border-bottom:none; }
   background: var(--gold); color:var(--on-accent); border-color: var(--gold);
 }
 #modulo-contatto .bottone:hover{ background: var(--verde-light); border-color: var(--verde-light); }
+/* due canali di invio affiancati (WhatsApp / email); in colonna su mobile */
+.invio-doppio{ display:grid; grid-template-columns: 1fr 1fr; gap:14px; }
 .info-invio{ font-size:14px; color: var(--ink-muted); text-align:center; margin-top:14px; font-style:italic; }
-.prezzo-nota{ font-size:14px; color: var(--ink-muted); margin-top:8px; }
 
 @media (max-width: 999px){
   .indice{ columns:1; padding: 16px 18px 16px 34px; margin-bottom:30px; }
@@ -710,6 +711,7 @@ main section tr:last-child td{ border-bottom:none; }
   #corpo-prenotazione fieldset, #corpo-staff fieldset{ padding: 16px 16px 18px; }
   .azioni{ flex-direction:column; }
   .bottone{ width:100%; }
+  .invio-doppio{ grid-template-columns: 1fr; }
   .premessa{ font-size:16.5px; }
 }
 @media (orientation: landscape) and (max-width: 999px) and (max-height: 560px){
@@ -718,6 +720,7 @@ main section tr:last-child td{ border-bottom:none; }
   .indice{ columns:2; }
   .azioni{ flex-direction:row; }
   .bottone{ width:auto; }
+  .invio-doppio{ grid-template-columns: 1fr 1fr; }
   .numero{ font-size:48px; }
 }
 
