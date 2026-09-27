@@ -1316,3 +1316,28 @@ a.tessera:hover{ border-color:var(--gold); transform:translateY(-2px); color:var
 
 /* pagina di accesso: colonna stretta */
 .accesso{ max-width:480px; margin:0 auto; }
+
+/* registrazione: i passi che seguono la creazione dell'account */
+.passi-iniziali{ margin:0 0 10px; padding:14px 18px 14px 36px; border:1px dashed var(--border); border-radius:4px; color:var(--ink-muted); font-size:15.5px; line-height:1.45; }
+.passi-iniziali li{ margin:0 0 6px; }
+.passi-iniziali li:last-child{ margin:0; }
+.passi-iniziali b{ color:var(--ink); font-weight:600; }
+.nota-registrazione{ font-style:italic; color:var(--ink-muted); font-size:15px; margin:0 0 18px; }
+
+/* panoramica: checklist "primi passi" del nuovo cliente */
+.primi-passi{ border-left-color:var(--gold); background:var(--gold-tint-soft); }
+.checklist{ list-style:none; margin:0 0 16px; padding:0; }
+.checklist li{ display:flex; align-items:center; gap:12px; padding:10px 0; border-bottom:1px solid var(--border-soft); }
+.checklist li:last-child{ border-bottom:0; }
+.checklist .segno{
+  width:28px; height:28px; border-radius:50%; flex:none; display:grid; place-items:center;
+  border:1px solid var(--border); color:var(--ink-muted); font:700 13px/1 system-ui, sans-serif;
+}
+.checklist li.fatto .segno{ background:var(--verde-light); border-color:var(--verde-light); color:var(--on-accent); }
+.checklist li.ora .segno{ background:var(--gold); border-color:var(--gold); color:var(--on-accent); }
+.checklist li > div{ flex:1; min-width:0; }
+.checklist b{ display:block; font-family:"Cinzel", serif; font-size:13.5px; letter-spacing:.04em; color:var(--ink-strong); }
+.checklist li.fatto b{ color:var(--ink-muted); }
+.checklist small{ display:block; color:var(--ink-muted); font-size:14.5px; }
+.checklist li > a{ font-family:"Cinzel", serif; font-size:12px; letter-spacing:.06em; white-space:nowrap; }
+.checklist li.dopo{ opacity:.7; }

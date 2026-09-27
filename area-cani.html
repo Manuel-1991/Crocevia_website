@@ -10,7 +10,7 @@
 <meta name="description" content="Le schede dei tuoi cani: razza, età, allergie e note sul carattere.">
 <meta name="robots" content="noindex">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;600;700&family=EB+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&display=swap">
-<link rel="stylesheet" href="style.css?v=20260927e">
+<link rel="stylesheet" href="style.css?v=20260927f">
 <noscript><style>.reveal{opacity:1!important;transform:none!important;}</style></noscript>
 <header class="site-header">
   <nav class="nav">
@@ -162,12 +162,16 @@
       return card;
     }
 
+    var numeroCani = null;
     function caricaAnimali(){
       sb.from('animali').select('*').eq('proprietario_id', ctx.utente.id).order('creato_il').then(function(r){
         if (r.error) { A.avviso(messaggioAnimale, r.error.message, 'errore'); return; }
+        var primaVolta = numeroCani === null;
+        numeroCani = r.data.length;
         listaAnimali.innerHTML = '';
         if (!r.data.length) {
           listaAnimali.innerHTML = '<p class="vuoto">Non hai ancora aggiunto nessun cane: compila la scheda qui sotto.</p>';
+          if (primaVolta) A.avviso(messaggioAnimale, 'Primi passi · 3 di 3: aggiungi il tuo cane. Bastano nome e poco altro: le note su salute e carattere le puoi completare quando vuoi.', 'ok');
           apriForm(null, true);
           return;
         }
@@ -208,10 +212,22 @@
       var richiesta = id
         ? sb.from('animali').update(dati).eq('id', id)
         : sb.from('animali').insert(Object.assign({ proprietario_id: ctx.utente.id }, dati));
+      var primoCane = !id && numeroCani === 0;
       richiesta.then(function(r){
         if (r.error) { A.avviso(messaggioAnimale, r.error.message, 'errore'); return; }
         chiudiForm();
-        A.avviso(messaggioAnimale, id ? 'Modifiche salvate.' : 'Cane aggiunto: ' + dati.nome + '.', 'ok');
+        if (primoCane) {
+          // primo cane: si chiude il percorso dei primi passi
+          var mancanti = A.campiMancanti(ctx.profilo);
+          messaggioAnimale.innerHTML = mancanti.length
+            ? 'Cane aggiunto: ' + A.escapeHtml(dati.nome) + '. Per prenotare ti manca solo il profilo: <a href="area-profilo.html">completa i tuoi dati &rarr;</a>'
+            : 'Tutto pronto! ' + A.escapeHtml(dati.nome) + ' è nel tuo profilo e ora puoi prenotare: <a href="prenota-pensione-asilo.html">pensione o asilo</a> · <a href="prenota-passeggiata.html">passeggiata</a>.';
+          messaggioAnimale.className = 'avviso avviso-ok';
+          messaggioAnimale.hidden = false;
+          messaggioAnimale.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        } else {
+          A.avviso(messaggioAnimale, id ? 'Modifiche salvate.' : 'Cane aggiunto: ' + dati.nome + '.', 'ok');
+        }
         caricaAnimali();
         A.aggiornaConteggi();
       });

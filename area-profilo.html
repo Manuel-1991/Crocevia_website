@@ -10,7 +10,7 @@
 <meta name="description" content="I tuoi dati di contatto e la password del tuo account Crocevia.">
 <meta name="robots" content="noindex">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;600;700&family=EB+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&display=swap">
-<link rel="stylesheet" href="style.css?v=20260927e">
+<link rel="stylesheet" href="style.css?v=20260927f">
 <noscript><style>.reveal{opacity:1!important;transform:none!important;}</style></noscript>
 <header class="site-header">
   <nav class="nav">
@@ -120,6 +120,17 @@
     }
 
     var p = ctx.profilo;
+    // primi passi: se il profilo è incompleto o non c'è ancora un cane, dopo
+    // il salvataggio si indica il passo successivo
+    var inPrimiPassi = A.campiMancanti(p).length > 0;
+    var numeroCani = null;
+    sb.from('animali').select('id', { count: 'exact', head: true }).eq('proprietario_id', ctx.utente.id).then(function(r){
+      numeroCani = r.count || 0;
+      if (numeroCani === 0) inPrimiPassi = true;
+      if (inPrimiPassi && !ctx.utente.new_email) {
+        A.avviso(messaggioProfilo, 'Primi passi · 2 di 3: compila i campi evidenziati e salva. Subito dopo aggiungerai il tuo cane.', 'ok');
+      }
+    });
     Object.keys(campi).forEach(function(k){ campi[k].value = p[k] || ''; });
     campoCodiceFiscale.value = p.codice_fiscale || '';
     campoEmail.value = emailAttuale;
@@ -153,7 +164,13 @@
         segnaMancanti(dati);
         A.aggiornaConteggi();
         if (email === String(emailAttuale).toLowerCase()) {
-          A.avviso(messaggioProfilo, 'Profilo salvato.', 'ok');
+          if (inPrimiPassi && numeroCani === 0 && !A.campiMancanti(dati).length) {
+            messaggioProfilo.innerHTML = 'Profilo salvato. Ultimo passo: <a href="area-cani.html">aggiungi il tuo cane &rarr;</a>';
+            messaggioProfilo.className = 'avviso avviso-ok';
+            messaggioProfilo.hidden = false;
+          } else {
+            A.avviso(messaggioProfilo, 'Profilo salvato.', 'ok');
+          }
           return;
         }
         cambiaEmail(email).then(function(r2){

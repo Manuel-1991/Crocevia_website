@@ -24,7 +24,7 @@
 <meta name="twitter:image" content="https://croceviacani.it/assets/img/brand/logo-nav.webp">
 <meta name="robots" content="noindex">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;600;700&family=EB+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&display=swap">
-<link rel="stylesheet" href="style.css?v=20260927e">
+<link rel="stylesheet" href="style.css?v=20260927f">
 <header class="site-header">
   <nav class="nav">
     <a href="index.html" class="brand" aria-label="Crocevia — Home">
@@ -89,6 +89,12 @@
   </form>
 
   <form id="form-registrazione" hidden>
+    <ol class="passi-iniziali">
+      <li><b>Crea l'account</b> con email e password, poi apri il link di conferma che ti arriva per email.</li>
+      <li><b>Completa il profilo</b>: nome, cognome, telefono e indirizzo.</li>
+      <li><b>Aggiungi il tuo cane</b>: razza, età, allergie e carattere.</li>
+    </ol>
+    <p class="nota-registrazione">Profilo e cane servono per prenotare pensione, asilo e passeggiate: al primo accesso ti guido passo passo.</p>
     <fieldset>
       <legend>Registrati</legend>
       <div class="campo">
@@ -132,10 +138,11 @@
   <div class="crumb"><a href="index.html">Home</a> / Area privata</div>
   <div class="testa-area">
     <h1 id="saluto">Ciao</h1>
-    <p class="premessa">Ecco cosa succede con i tuoi cani. Tutte le pagine dell'area sono nel menù in alto a destra.</p>
+    <p class="premessa" id="sottotitolo-panoramica">Ecco cosa succede con i tuoi cani. Tutte le pagine dell'area sono nel menù in alto a destra.</p>
   </div>
 
   <p id="messaggio-panoramica" class="avviso" hidden></p>
+  <div id="primi-passi"></div>
   <div class="da-fare" id="da-fare"></div>
   <div class="tessere" id="tessere"><p class="caricamento">Caricamento…</p></div>
 
@@ -271,7 +278,7 @@
     }).then(function(r){
       if (r.error) { A.avviso(messaggioAuth, r.error.message, 'errore'); return; }
       if (r.data.session) { vaiAvanti(); return; }
-      A.avviso(messaggioAuth, 'Account creato: controlla la tua email per confermarlo, poi accedi da qui.', 'ok');
+      A.avviso(messaggioAuth, 'Account creato! Apri il link di conferma che ti abbiamo mandato per email, poi accedi da qui: al primo accesso ti guidiamo a completare il profilo e ad aggiungere il tuo cane.', 'ok');
       formRegistrazione.reset();
     });
   });
@@ -294,6 +301,28 @@
   function voceDaFare(href, titolo, testo, azione, oro){
     return '<a class="voce-da-fare' + (oro ? ' oro' : '') + '" href="' + href + '"><div><b>' + esc(titolo) + '</b><span>' + esc(testo) + '</span></div><i>' + esc(azione) + ' →</i></a>';
   }
+  function passo(stato, numero, titolo, testo, href, azione){
+    return '<li class="' + stato + '"><span class="segno" aria-hidden="true">' + (stato === 'fatto' ? '✓' : numero) + '</span>' +
+      '<div><b>' + esc(titolo) + '</b><small>' + esc(testo) + '</small></div>' +
+      (stato !== 'fatto' && href ? '<a href="' + href + '">' + esc(azione) + ' →</a>' : '') + '</li>';
+  }
+  function primiPassi(mancanti, nCani){
+    var profiloOk = !mancanti.length;
+    var prossimo = profiloOk
+      ? { href: 'area-cani.html', testo: 'Aggiungi il tuo cane' }
+      : { href: 'area-profilo.html', testo: 'Completa il profilo' };
+    return '<div class="pannello primi-passi"><h2>Primi passi</h2>' +
+      '<p class="nota">Ancora ' + ((profiloOk ? 0 : 1) + (nCani ? 0 : 1) === 1 ? 'un passo' : 'due passi') + ' e puoi prenotare pensione, asilo e passeggiate.</p>' +
+      '<ol class="checklist">' +
+        passo('fatto', 1, 'Account creato', 'Email confermata') +
+        passo(profiloOk ? 'fatto' : 'ora', 2, 'I tuoi dati',
+          profiloOk ? 'Nome, telefono e indirizzo salvati' : 'Manca: ' + mancanti.join(', '), 'area-profilo.html', 'Completa') +
+        passo(nCani ? 'fatto' : (profiloOk ? 'ora' : 'dopo'), 3, 'Il tuo cane',
+          nCani ? 'Scheda del cane salvata' : 'Razza, età, allergie e carattere', 'area-cani.html', 'Aggiungi') +
+      '</ol>' +
+      '<a href="' + prossimo.href + '" class="bottone bottone-pieno piccolo">' + esc(prossimo.testo) + ' &rarr;</a></div>';
+  }
+
   function tessera(href, etichetta, titolo, righe, piede, oro){
     return '<a class="tessera' + (oro ? ' oro' : '') + '" href="' + href + '">' +
       '<span class="etichetta">' + esc(etichetta) + '</span>' +
@@ -335,13 +364,15 @@
           (x.servizi ? x.servizi.nome : '') + ' per ' + (x.animali ? x.animali.nome : '') + ', ' + A.intervallo(x.data_dal, x.data_al) + ' · ' + A.euro(x.acconto_importo),
           'Paga');
       });
-      if (!cani.length) {
-        daFare.push(voceDaFare('area-cani.html', 'Aggiungi il tuo cane', 'Serve per prenotare pensione, asilo e passeggiate', 'Aggiungi', true));
-      }
-      if (mancanti.length) {
-        daFare.push(voceDaFare('area-profilo.html', 'Completa il profilo', 'Manca: ' + mancanti.join(', ') + ' — servono per prenotare', 'Completa', true));
-      }
       document.getElementById('da-fare').innerHTML = daFare.join('');
+
+      // primi passi: finché mancano i dati del profilo o il cane, una
+      // checklist in cima guida il nuovo cliente al passo successivo
+      var nuovoCliente = mancanti.length || !cani.length;
+      document.getElementById('primi-passi').innerHTML = nuovoCliente ? primiPassi(mancanti, cani.length) : '';
+      if (nuovoCliente) {
+        document.getElementById('sottotitolo-panoramica').textContent = 'Ti diamo il benvenuto in Crocevia! Completa i primi passi qui sotto e potrai prenotare. Tutte le pagine dell\'area sono nel menù in alto a destra.';
+      }
 
       // tessere
       var html = '';
@@ -372,7 +403,7 @@
       }
 
       html += tessera('area-cani.html', 'I miei cani', cani.length ? cani.map(function(c){ return c.nome; }).join(', ') : 'Nessun cane ancora',
-        '<p>' + (cani.length === 1 ? '1 cane registrato' : cani.length + ' cani registrati') + '</p>',
+        '<p>' + (!cani.length ? 'Aggiungi il tuo cane per poter prenotare.' : (cani.length === 1 ? '1 cane registrato' : cani.length + ' cani registrati')) + '</p>',
         cani.length ? 'Vedi e modifica' : 'Aggiungi');
 
       html += tessera('area-profilo.html', 'Profilo', A.nomeCompleto(p) || 'Il tuo profilo',
