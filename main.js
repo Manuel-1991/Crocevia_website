@@ -117,7 +117,11 @@
       if (/^sb-.+-auth-token$/.test(localStorage.key(i) || '')) { loggato = true; break; }
     }
   }catch(e){}
-  if (!loggato) return;
+  if (!loggato) {
+    try{ localStorage.removeItem('crocevia-conto'); }catch(e){}
+    document.documentElement.classList.remove('conto-noto');
+    return;
+  }
 
   function carica(src, poi){
     var s = document.createElement('script');
@@ -125,7 +129,7 @@
     if (poi) s.onload = poi;
     document.body.appendChild(s);
   }
-  function area(){ carica('area-comune.js?v=20260927b'); }
+  function area(){ carica('area-comune.js?v=20260927c'); }
   function client(){ if (window.CroceviaSupabase) area(); else carica('supabase-client.js', area); }
   if (window.supabase) client(); else carica('https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2', client);
 })();

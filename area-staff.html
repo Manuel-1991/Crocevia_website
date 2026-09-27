@@ -3,14 +3,14 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="theme-color" content="#0d2219">
-<script>(function(){try{var t=localStorage.getItem('crocevia-tema');if(t==='chiaro'||t==='scuro'){document.documentElement.setAttribute('data-tema',t);}}catch(e){}})();</script>
+<script>(function(){try{var t=localStorage.getItem('crocevia-tema');if(t==='chiaro'||t==='scuro'){document.documentElement.setAttribute('data-tema',t);}}catch(e){}try{var c=localStorage.getItem('crocevia-conto');if(c){for(var i=0;i<localStorage.length;i++){if(/^sb-.+-auth-token$/.test(localStorage.key(i)||'')){var d=document.documentElement;d.classList.add('conto-noto');d.style.setProperty('--conto-iniziale',JSON.stringify(c.charAt(0)));break;}}}}catch(e){}})();</script>
 <link rel="icon" type="image/png" href="assets/img/brand/favicon.png">
 <link rel="apple-touch-icon" href="assets/img/brand/apple-touch-icon.png">
 <title>Oggi — Staff Crocevia</title>
 <meta name="description" content="Pannello staff Crocevia: movimenti del giorno, cose da gestire e prossima uscita.">
 <meta name="robots" content="noindex, nofollow">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;600;700&family=EB+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&display=swap">
-<link rel="stylesheet" href="style.css?v=20260927f">
+<link rel="stylesheet" href="style.css?v=20260927g">
 <noscript><style>.reveal{opacity:1!important;transform:none!important;}</style></noscript>
 <header class="site-header">
   <nav class="nav">
@@ -70,7 +70,7 @@
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script src="supabase-client.js"></script>
-<script src="area-comune.js?v=20260927b"></script>
+<script src="area-comune.js?v=20260927c"></script>
 <script>
 (function(){
   var A = window.CroceviaArea;
@@ -201,6 +201,6 @@
   </div>
 </footer>
 
-<script src="main.js?v=20260927b"></script>
+<script src="main.js?v=20260927c"></script>
 <script src="cookie-consent.js"></script>
 </html>
