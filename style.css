@@ -1157,6 +1157,8 @@ main section tr:last-child td{ border-bottom:none; }
 .pannello .nota{ color:var(--ink-muted); font-size:15px; font-style:italic; margin:-8px 0 16px; }
 .pannello > :last-child{ margin-bottom:0; }
 @media (max-width:999px){ .pannello{ padding:16px 16px 18px; } }
+/* i moduli che si aprono con scrollIntoView non finiscono sotto la testata fissa */
+.pannello{ scroll-margin-top: calc(var(--testata, 70px) + 16px); }
 .campo input.mancante{ border-color:var(--rosso); }
 .riga-bottoni{ display:flex; gap:10px; flex-wrap:wrap; align-items:center; }
 .bottone.piccolo{ padding:10px 16px; font-size:12px; }

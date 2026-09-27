@@ -125,7 +125,10 @@
         (bottoni.length ? '<div class="riga-bottoni">' + bottoni.join('') + '</div>' : '');
 
       card.querySelectorAll('[data-paga]').forEach(function(b){
-        b.addEventListener('click', function(){ b.disabled = true; A.avviaPagamento(p.id, b.getAttribute('data-paga')); });
+        b.addEventListener('click', function(){
+          b.disabled = true;
+          A.avviaPagamento(p.id, b.getAttribute('data-paga')).then(function(partito){ if (!partito) b.disabled = false; });
+        });
       });
       var disdici = card.querySelector('[data-disdici]');
       if (disdici) disdici.addEventListener('click', function(){ chiediDisdetta(p); });

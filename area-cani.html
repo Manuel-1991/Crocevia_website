@@ -117,7 +117,7 @@
       return anni === 1 ? '1 anno' : anni + ' anni';
     }
 
-    function apriForm(a){
+    function apriForm(a, senzaScorrere){
       a = a || {};
       document.getElementById('animale-id').value = a.id || '';
       document.getElementById('animale-nome').value = a.nome || '';
@@ -130,6 +130,7 @@
       document.getElementById('legenda-animale').textContent = a.id ? 'Modifica ' + a.nome : 'Nuovo cane';
       document.getElementById('bottone-salva-animale').textContent = a.id ? 'Salva modifiche' : 'Aggiungi il cane';
       formAnimale.hidden = false;
+      if (senzaScorrere) return;
       formAnimale.scrollIntoView({ behavior: 'smooth', block: 'start' });
       document.getElementById('animale-nome').focus({ preventScroll: true });
     }
@@ -167,7 +168,7 @@
         listaAnimali.innerHTML = '';
         if (!r.data.length) {
           listaAnimali.innerHTML = '<p class="vuoto">Non hai ancora aggiunto nessun cane: compila la scheda qui sotto.</p>';
-          apriForm();
+          apriForm(null, true);
           return;
         }
         r.data.forEach(function(a){ listaAnimali.appendChild(schedaCane(a)); });

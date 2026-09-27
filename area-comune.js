@@ -19,10 +19,10 @@
 
   // ---------- funzioni di appoggio ----------
 
+  // sicuro anche dentro gli attributi: escape pure delle virgolette
+  var ENTITA = { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' };
   function escapeHtml(s){
-    var d = document.createElement('div');
-    d.textContent = s == null ? '' : String(s);
-    return d.innerHTML;
+    return String(s == null ? '' : s).replace(/[&<>"']/g, function(c){ return ENTITA[c]; });
   }
   function euro(n){ return n == null ? '' : Number(n).toLocaleString('it-IT', { style: 'currency', currency: 'EUR' }); }
   function avviso(el, testo, tipo){
@@ -73,13 +73,18 @@
   function ultimaVisitaStaff(){ try { return localStorage.getItem(CHIAVE_ULTIMA_VISITA); } catch (e) { return null; } }
   function segnaVisitaStaff(){ try { localStorage.setItem(CHIAVE_ULTIMA_VISITA, new Date().toISOString()); } catch (e) {} }
 
+  // restituisce false se il pagamento non è partito (per riattivare il pulsante)
   function avviaPagamento(prenotazioneId, tipo){
-    sb.functions.invoke('crea-pagamento', { body: { prenotazione_id: prenotazioneId, tipo: tipo } }).then(function(r){
+    return sb.functions.invoke('crea-pagamento', { body: { prenotazione_id: prenotazioneId, tipo: tipo } }).then(function(r){
       if (r.error || !r.data || !r.data.url) {
         window.alert('Non è stato possibile avviare il pagamento. Riprova tra poco.');
-        return;
+        return false;
       }
       window.location.href = r.data.url;
+      return true;
+    }, function(){
+      window.alert('Non è stato possibile avviare il pagamento. Riprova tra poco.');
+      return false;
     });
   }
 
@@ -108,7 +113,9 @@
     esci: '<path d="M15 4h4a1 1 0 0 1 1 1v14a1 1 0 0 1-1 1h-4M10 16l-4-4 4-4M6 12h10"/>'
   };
 
-  var paginaCorrente = (location.pathname.split('/').pop() || 'index.html');
+  // GitHub Pages serve la stessa pagina anche senza ".html": si normalizza
+  var paginaCorrente = location.pathname.split('/').pop() || 'index.html';
+  if (!/\.html$/.test(paginaCorrente)) paginaCorrente += '.html';
   var PAGINE_AREA = ['area-privata.html','area-profilo.html','area-cani.html','area-prenotazioni.html','area-passeggiate.html',
     'area-staff.html','staff-prenotazioni.html','staff-nuova-prenotazione.html','staff-passeggiate.html','staff-utenti.html'];
 
@@ -163,15 +170,20 @@
       if (si) {
         var testata = document.querySelector('.site-header');
         if (testata) document.documentElement.style.setProperty('--menu-conto-top', (testata.getBoundingClientRect().bottom + 8) + 'px');
-        document.body.classList.remove('menu-aperto'); // chiude l'hamburger, se aperto
+        // chiude l'hamburger, se aperto, lasciando coerente il suo pulsante
+        if (document.body.classList.contains('menu-aperto') && hamburger) {
+          document.body.classList.remove('menu-aperto');
+          hamburger.setAttribute('aria-expanded', 'false');
+          hamburger.setAttribute('aria-label', 'Apri il menu');
+        }
       }
       menu.hidden = !si;
       btn.setAttribute('aria-expanded', si ? 'true' : 'false');
     }
+    var hamburger = document.getElementById('apri-menu');
     btn.addEventListener('click', function(e){ e.stopPropagation(); apri(menu.hidden); });
     document.addEventListener('click', function(e){ if (!wrap.contains(e.target)) apri(false); });
     document.addEventListener('keydown', function(e){ if (e.key === 'Escape' || e.key === 'Esc') apri(false); });
-    var hamburger = document.getElementById('apri-menu');
     if (hamburger) hamburger.addEventListener('click', function(){ apri(false); });
     wrap.querySelector('[data-esci]').addEventListener('click', function(){
       sb.auth.signOut().then(function(){ window.location.href = 'area-privata.html'; });

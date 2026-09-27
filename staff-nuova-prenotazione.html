@@ -267,6 +267,7 @@
       if (!dal || !al || al < dal) { A.avviso(messaggioManuale, 'Scegli un intervallo di date valido.', 'errore'); return; }
 
       var servizio = serviziManuale.filter(function(s){ return s.id === servizioId; })[0];
+      if (!servizio) { A.avviso(messaggioManuale, 'Listino servizi non caricato: ricarica la pagina e riprova.', 'errore'); return; }
       var p = calcolaPrezzoManuale(Number(servizio.prezzo), dal, al, pappaFornita);
 
       var dati = {
