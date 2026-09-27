@@ -1133,10 +1133,16 @@ main section tr:last-child td{ border-bottom:none; }
 .menu-conto hr{ border:0; border-top:1px solid var(--border-soft); margin:6px 0; }
 .menu-conto button.voce{ color:var(--ink-muted); }
 @media (max-width:600px){
+  /* pannello stretto ancorato a destra, sotto il pulsante: copre il meno possibile */
   .menu-conto{
-    position:fixed; left:12px; right:12px; width:auto; top:var(--menu-conto-top, 80px);
+    position:fixed; left:auto; right:10px; width:min(270px, calc(100vw - 20px));
+    top:var(--menu-conto-top, 80px);
     max-height:calc(100vh - var(--menu-conto-top, 80px) - 16px); overflow:auto;
+    padding:6px;
   }
+  .menu-conto .chi{ padding:6px 8px 10px; }
+  .menu-conto .chi .conto-iniziale{ width:32px; height:32px; font-size:14px; }
+  .menu-conto a, .menu-conto button.voce{ padding:7px 8px; font-size:16px; }
 }
 
 /* contenuto delle pagine dell'area */

@@ -10,7 +10,7 @@
 <meta name="description" content="I tuoi dati di contatto e la password del tuo account Crocevia.">
 <meta name="robots" content="noindex">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;600;700&family=EB+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&display=swap">
-<link rel="stylesheet" href="style.css?v=20260927d">
+<link rel="stylesheet" href="style.css?v=20260927e">
 <noscript><style>.reveal{opacity:1!important;transform:none!important;}</style></noscript>
 <header class="site-header">
   <nav class="nav">
@@ -37,7 +37,7 @@
 <div id="area-corpo" hidden>
   <div class="testa-area">
     <h1>Profilo e password</h1>
-    <p class="premessa">Servono tutti questi dati prima di poter prenotare pensione o asilo. Il telefono serve anche per le passeggiate: è l'unico modo per avvisarti se un'uscita salta per maltempo.</p>
+    <p class="premessa">I campi con l'asterisco servono prima di poter prenotare pensione o asilo. Il telefono serve anche per le passeggiate: è l'unico modo per avvisarti se un'uscita salta per maltempo. L'email è anche quella con cui accedi.</p>
   </div>
 
   <p id="messaggio-profilo" class="avviso" hidden></p>
@@ -59,8 +59,8 @@
         <input type="tel" id="profilo-telefono" required autocomplete="tel">
       </div>
       <div class="campo">
-        <label for="profilo-email">Email</label>
-        <input type="email" id="profilo-email" disabled>
+        <label for="profilo-email">Email *</label>
+        <input type="email" id="profilo-email" required autocomplete="email">
       </div>
     </div>
     <div class="campo">
@@ -68,8 +68,8 @@
       <input type="text" id="profilo-indirizzo" required autocomplete="street-address">
     </div>
     <div class="campo">
-      <label for="profilo-codice-fiscale">Codice fiscale *</label>
-      <input type="text" id="profilo-codice-fiscale" required>
+      <label for="profilo-codice-fiscale">Codice fiscale (facoltativo)</label>
+      <input type="text" id="profilo-codice-fiscale" autocomplete="off">
     </div>
     <button type="submit" class="bottone bottone-pieno piccolo">Salva profilo</button>
   </form>
@@ -95,7 +95,7 @@
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script src="supabase-client.js"></script>
-<script src="area-comune.js?v=20260927"></script>
+<script src="area-comune.js?v=20260927b"></script>
 <script>
 (function(){
   var A = window.CroceviaArea;
@@ -108,9 +108,11 @@
       nome: document.getElementById('profilo-nome'),
       cognome: document.getElementById('profilo-cognome'),
       telefono: document.getElementById('profilo-telefono'),
-      indirizzo: document.getElementById('profilo-indirizzo'),
-      codice_fiscale: document.getElementById('profilo-codice-fiscale')
+      indirizzo: document.getElementById('profilo-indirizzo')
     };
+    var campoCodiceFiscale = document.getElementById('profilo-codice-fiscale');
+    var campoEmail = document.getElementById('profilo-email');
+    var emailAttuale = ctx.utente.email;
 
     // i campi obbligatori ancora vuoti restano evidenziati finché non li salvi
     function segnaMancanti(p){
@@ -119,25 +121,50 @@
 
     var p = ctx.profilo;
     Object.keys(campi).forEach(function(k){ campi[k].value = p[k] || ''; });
-    document.getElementById('profilo-email').value = ctx.utente.email;
+    campoCodiceFiscale.value = p.codice_fiscale || '';
+    campoEmail.value = emailAttuale;
     segnaMancanti(p);
+    if (ctx.utente.new_email) {
+      A.avviso(messaggioProfilo, 'Cambio email in attesa: conferma il link che ti abbiamo mandato a ' + ctx.utente.new_email + '. Fino ad allora accedi ancora con ' + emailAttuale + '.', 'ok');
+    }
+
+    // l'email è quella di accesso: la cambia Supabase, dopo che il cliente
+    // conferma il link ricevuto (la copia in profili si aggiorna da sola,
+    // vedi migration 009)
+    function cambiaEmail(nuova){
+      return sb.auth.updateUser({ email: nuova }, { emailRedirectTo: window.location.origin + '/area-privata.html' });
+    }
 
     formProfilo.addEventListener('submit', function(e){
       e.preventDefault();
       messaggioProfilo.hidden = true;
+      var email = campoEmail.value.trim().toLowerCase();
+      if (!email || !campoEmail.checkValidity()) { A.avviso(messaggioProfilo, 'Serve un indirizzo email valido: è quello con cui accedi.', 'errore'); campoEmail.focus(); return; }
       var dati = {
         nome: campi.nome.value.trim(),
         cognome: campi.cognome.value.trim(),
         telefono: campi.telefono.value.trim(),
         indirizzo: campi.indirizzo.value.trim(),
-        codice_fiscale: campi.codice_fiscale.value.trim().toUpperCase()
+        codice_fiscale: campoCodiceFiscale.value.trim().toUpperCase() || null
       };
       sb.from('profili').update(dati).eq('id', ctx.utente.id).then(function(r){
         if (r.error) { A.avviso(messaggioProfilo, r.error.message, 'errore'); return; }
-        campi.codice_fiscale.value = dati.codice_fiscale;
+        campoCodiceFiscale.value = dati.codice_fiscale || '';
         segnaMancanti(dati);
-        A.avviso(messaggioProfilo, 'Profilo salvato.', 'ok');
         A.aggiornaConteggi();
+        if (email === String(emailAttuale).toLowerCase()) {
+          A.avviso(messaggioProfilo, 'Profilo salvato.', 'ok');
+          return;
+        }
+        cambiaEmail(email).then(function(r2){
+          if (r2.error) {
+            A.avviso(messaggioProfilo, 'Profilo salvato, ma l\'email non è stata cambiata: ' + r2.error.message, 'errore');
+            campoEmail.value = emailAttuale;
+            return;
+          }
+          A.avviso(messaggioProfilo, 'Profilo salvato. Per cambiare l\'email apri il link di conferma che ti abbiamo mandato a ' + email + ' (se arriva un link anche al vecchio indirizzo, conferma pure quello): fino ad allora accedi ancora con ' + emailAttuale + '.', 'ok');
+          campoEmail.value = emailAttuale;
+        });
       });
     });
 
@@ -177,6 +204,6 @@
   </div>
 </footer>
 
-<script src="main.js?v=20260927"></script>
+<script src="main.js?v=20260927b"></script>
 <script src="cookie-consent.js"></script>
 </html>
