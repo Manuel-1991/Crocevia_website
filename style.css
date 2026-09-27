@@ -408,7 +408,7 @@ h1.left{ text-align:left; }
   display:block; width:100%; height:auto; aspect-ratio: 16 / 9; object-fit:cover;
   border-radius:4px; border:1px solid var(--border-soft); background: var(--surface);
 }
-/* piccola galleria: 2 o 3 foto affiancate, una sotto l'altra sul telefono */
+/* piccola galleria: 2 o 3 foto affiancate */
 .foto-griglia{
   display:grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
   gap:14px; margin:0 0 20px;
@@ -427,6 +427,19 @@ h1.left{ text-align:left; }
   .foto-griglia{ grid-template-columns: 1fr 1fr; gap:10px; }
   .foto-griglia figure:first-child:nth-last-child(odd){ grid-column: 1 / -1; }
   .foto-griglia figcaption{ font-size:13px; margin-top:5px; }
+}
+/* tablet in verticale: le card vanno una sotto l'altra a tutta larghezza
+   (~700px), e una foto 4:3 o quadrata riempirebbe lo schermo */
+@media (min-width:601px) and (max-width:999px){
+  .card-foto{ aspect-ratio: 16 / 9; }
+  .card-foto.quadrata{ aspect-ratio: 1 / 1; max-width: 320px; }
+}
+/* telefono in orizzontale: lo schermo è alto ~390px, le foto non devono
+   occuparlo tutto */
+@media (orientation: landscape) and (max-width: 999px) and (max-height: 560px){
+  .foto-banner img{ aspect-ratio: 3 / 1; }
+  .card-foto{ aspect-ratio: 16 / 9; }
+  .card-foto.quadrata{ aspect-ratio: 1 / 1; max-width: 180px; }
 }
 
 /* ---------- dividers ---------- */
