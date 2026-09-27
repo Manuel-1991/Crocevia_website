@@ -128,7 +128,7 @@
           </div>
           <div class="campo">
             <label for="nuova-passeggiata-luogo">Luogo</label>
-            <input type="text" id="nuova-passeggiata-luogo" value="Bosco di Campagnola">
+            <input type="text" id="nuova-passeggiata-luogo" value="Lago Maggiore">
           </div>
         </div>
         <div class="campo">
@@ -623,7 +623,7 @@
     document.getElementById('passeggiata-id').value = '';
     document.getElementById('nuova-passeggiata-data').value = prossimoMartedi();
     document.getElementById('nuova-passeggiata-ora').value = '18:00';
-    document.getElementById('nuova-passeggiata-luogo').value = 'Bosco di Campagnola';
+    document.getElementById('nuova-passeggiata-luogo').value = 'Lago Maggiore';
     document.getElementById('legenda-passeggiata').textContent = 'Aggiungi una passeggiata';
     bottoneSalvaPasseggiata.textContent = 'Aggiungi passeggiata';
     bottoneAnnullaPasseggiata.hidden = true;
@@ -652,7 +652,7 @@
     var dati = {
       data: document.getElementById('nuova-passeggiata-data').value,
       ora: document.getElementById('nuova-passeggiata-ora').value,
-      luogo: document.getElementById('nuova-passeggiata-luogo').value.trim() || 'Bosco di Campagnola',
+      luogo: document.getElementById('nuova-passeggiata-luogo').value.trim() || 'Lago Maggiore',
       argomento: document.getElementById('nuova-passeggiata-argomento').value.trim(),
       note: document.getElementById('nuova-passeggiata-note').value.trim() || null
     };

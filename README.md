@@ -2,7 +2,7 @@
 
 Sito di **Crocevia** — educazione cinofila, asilo diurno, pensione e passeggiate
 di gruppo. Manuel, educatore cinofilo FICSS.
-Settimo Milanese (MI) · campo e bosco sul Lago Maggiore.
+Settimo Milanese (MI) · uscite sul Lago Maggiore.
 
 Le pagine di presentazione sono HTML statico senza framework, come all'inizio.
 Da qui però il sito ha anche un vero backend: un database Supabase con account
@@ -30,7 +30,7 @@ Dettagli tecnici, schema del database ed Edge Function in
 | `prenota-passeggiata.html` | scelta dell'uscita e dei cani per la passeggiata di gruppo (richiede accesso) |
 | `area-staff.html` | riservata ad addetto/admin: prenotazioni in arrivo, conferme, prenotazione manuale, ruoli utenti, calendario e iscritti delle passeggiate, prenotazione passeggiata per un cliente che telefona |
 | `chi-siamo.html` | Manuel e Dingo, metodo e filosofia |
-| `dove-operiamo.html` | campo e bosco, Settimo Milanese |
+| `dove-operiamo.html` | uscite sul Lago Maggiore, Settimo Milanese |
 | `faq.html` | domande frequenti su prenotazioni, pensione/asilo ed educazione, in accordion (con dati strutturati FAQPage) |
 | `contatti.html` | telefono, email, P.IVA |
 | `privacy.html` | informativa privacy |
