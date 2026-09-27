@@ -534,6 +534,15 @@ main section th{
   text-transform:uppercase; color: var(--bandana); background: var(--surface-soft);
 }
 main section tr:last-child td{ border-bottom:none; }
+@media (max-width: 600px){
+  /* su telefono le tabelle (es. cookie in privacy) sforavano di qualche px */
+  main section table{ font-size:13.5px; }
+  main section th, main section td{ padding:8px 6px; overflow-wrap:break-word; hyphens:auto; }
+  main section th{ letter-spacing:0.02em; font-size:10px; }
+}
+@media (max-width: 360px){
+  main section th, main section td{ overflow-wrap:anywhere; }
+}
 .riquadro{
   border:1px solid var(--border-soft); border-left:3px solid var(--gold);
   background: var(--gold-tint-soft); border-radius:4px;
